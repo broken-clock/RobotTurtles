@@ -1,1 +1,7 @@
-
+class : - Joueurs -> deck,main
+        - (plateau) (75% convaicu)
+        - carte
+        - Affichage
+        - LogiqueDeJeu
+        alban t'es mauvais
+        
