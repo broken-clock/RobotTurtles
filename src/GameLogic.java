@@ -9,14 +9,14 @@ public class GameLogic {
     public static Scanner scanner = new Scanner(System.in);
     public static int nombreTortues;
     public static Tortue[] tortues;
-    public static Plateau plateau;
+    public static Plateau plateau = new Plateau();
 
     public static void main(String[] args) {
         // demanderNombreTortues();
         nombreTortues = 2;
         initTortues();
         plateau.initPlateau(nombreTortues);
-        // plateau.afficherPlateau();
+        plateau.afficherPlateau();
         int focusTortue = initFocusTortue();
         // TODO: comprendre comment est défini l'ordre de passage des joueurs
         //  et modifier en conséquence
@@ -39,9 +39,8 @@ public class GameLogic {
                             System.out.println(cartes);
                             System.out.println("Indiquer carte (B/J/V/L) ou quitter (Q) si possible: ");
                             carte = scanner.nextLine();
-                            if (carte.equals("Q")) {
-                                quit = true;
-                            }
+                            if (carte.equals("Q")) quit = true;
+
                             else {
                                 cartes.add(carte);
                             }

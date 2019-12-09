@@ -80,7 +80,7 @@ public class Tortue {
         while (!this.prgm.isEmpty()) {
             carte = prgm.pop();
             switch (carte) {
-                case "B":
+                    case "B":
                     this.avancer();
                     break;
                 case "J":
@@ -110,6 +110,7 @@ public class Tortue {
                 this.tournerHoraire();
                 this.tournerHoraire();
                 break;
+
             case 't':
                 // TODO
                 break;

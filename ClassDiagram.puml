@@ -1,0 +1,77 @@
+@startuml
+
+'abstract class AbstractList
+'abstract AbstractCollection
+'interface List
+'interface Collection
+'
+'List <|-- AbstractList
+'Collection <|-- AbstractCollection
+'
+'Collection <|- List
+'AbstractCollection <|- AbstractList
+'AbstractList <|-- ArrayList
+'
+'class ArrayList<E> {
+'+ Object[] elementData
+'- size() : boolean
+'}
+'
+'enum TimeUnit {
+'DAYS
+'HOURS
+'MINUTES
+
+
+interface Position
+class Tortue
+class Joyau
+class MurDeGlace
+class MurDePierre
+
+class Joueur
+class CartesMain
+class Deck
+
+class Plateau
+class UneCase
+class GameLogic
+
+Position <|.. Tortue
+Position <|.. Joyau
+Position <|.. MurDeGlace
+Position <|.. MurDePierre
+
+Joueur *-- Tortue
+Joueur *-- CartesMain
+Joueur *-- Deck
+
+GameLogic *-- Joueur
+GameLogic *-- Plateau
+Plateau *-- UneCase
+
+GameLogic *-- Position
+
+Plateau *-- Position
+
+@enduml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
