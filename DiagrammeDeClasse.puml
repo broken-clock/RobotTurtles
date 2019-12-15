@@ -30,6 +30,7 @@ abstract class Tuile {
 + setPotision(int, int): void
 }
 Tuile -- LogiqueDeJeu
+Tuile --* Plateau
 
 class Position {
 - x: int
@@ -74,8 +75,8 @@ class Joueur {
 + placerMur(Obstacle, int, int): void
 + completerProgramme(Programme, CartesMain): void
 + executerProgramme(Programme): void
-
 }
+Joueur -- LogiqueDeJeu  
 
 class Deck {
 - cartesBleues: int
