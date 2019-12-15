@@ -1,0 +1,32 @@
+@startuml
+interface Position
+class Tortue
+class Joyau
+class MurDeGlace
+class MurDePierre
+
+class Joueur
+class CartesMain
+class Deck
+
+class Plateau
+class UneCase
+class LogiqueDeJeu
+
+Position <|.. Tortue
+Position <|.. Joyau
+Position <|.. MurDeGlace
+Position <|.. MurDePierre
+
+Joueur *-- Tortue
+Joueur *-- CartesMain
+Joueur *-- Deck
+
+LogiqueDeJeu *-- Joueur
+LogiqueDeJeu *-- Plateau
+Plateau *-- UneCase
+
+LogiqueDeJeu *-- Position
+
+Plateau *-- Position
+@enduml

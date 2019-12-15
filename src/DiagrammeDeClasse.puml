@@ -1,0 +1,120 @@
+@startuml
+class LogiqueDeJeu {
++ nombreJoueurs: int
++ focusJoueur: int
++ gameOver: boolean
++ main(): void
++ demanderNombreJoueurs(): int
++ initJoueurs(nombreJoueurs): void
+}
+
+class Plateau {
+- taillePlateau: int
++ initPLateau(): void
++ getCase(int, int): char
++ setCase(): void
++ getCaseSuivante(Tortue): Case
+}
+Plateau -- LogiqueDeJeu
+
+class Case {
+- x: int
+- y: int
+- valeur: char
+}
+Case --* Plateau
+
+abstract class Tuile {
+- position: Position
++ getPosition(Tuile): Position
++ setPotision(int, int): void
+}
+Tuile -- LogiqueDeJeu
+
+class Position {
+- x: int
+- y: int
+- orientation: int
+}
+Position o-- Tuile
+
+class Tortue {
++ avancer(): void
++ tournerHoraire(): void
++ tournerAntiHoraire(): void
++ lancerLaser(): void
+}
+Tortue --|> Tuile
+Tortue --* Joueur
+
+class Joyau {
++ estEncercle(): boolean
+}
+Joyau --|> Tuile
+
+class Obstacle {
++ poseValide(): boolean
+}
+Obstacle --|> Tuile
+
+class MurDeGlace {
+
+}
+MurDeGlace --|> Obstacle
+
+class MurDePierre {
+
+}
+MurDePierre --|> Obstacle
+
+class Joueur {
+- tortue: Tortue
+- mursDePierre: int
+- mursDeGlace: int
++ placerMur(Obstacle, int, int): void
++ completerProgramme(Programme, CartesMain): void
++ executerProgramme(Programme): void
+
+}
+
+class Deck {
+- cartesBleues: int
+- cartesJaunes: int
+- cartesViolettes: int
+- lasers: int
+}
+Deck - CartesMain
+Deck --* Joueur
+
+class CartesMain {
++ tirerCarteDuDeck(Deck): void
++ enleverCarteDuDeck(Deck): void
+}
+CartesMain - Programme
+CartesMain --* Joueur
+
+class Programme {
++ enfilerCarteDeCartesMain(CartesMain): void
++ defilerCarteDeCartesMain(CartesMain): void
+}
+Programme - Deck
+Programme --* Joueur
+
+interface Affichage {
++ afficherPlateau(): void
++ ...()
+}
+Affichage -- LogiqueDeJeu
+
+class InterfaceGraphique {
++ afficherPlateau(): void
++ ...()
+}
+InterfaceGraphique ..|> Affichage
+
+class InterfaceConsole {
++ afficherPlateau(): void
++ ...()
+}
+InterfaceConsole ..|> Affichage
+@enduml
