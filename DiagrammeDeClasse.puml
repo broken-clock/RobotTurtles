@@ -1,4 +1,7 @@
 @startuml
+class Main
+Main -- LogiqueDeJeu
+
 class LogiqueDeJeu {
 + nombreJoueurs: int
 + focusJoueur: int
@@ -15,7 +18,7 @@ class Plateau {
 + setCase(): void
 + getCaseSuivante(Tortue): Case
 }
-Plateau -- LogiqueDeJeu
+Plateau -- Main
 
 class Case {
 - x: int
@@ -25,19 +28,28 @@ class Case {
 Case --* Plateau
 
 abstract class Tuile {
-- position: Position
+# position: Position
 + getPosition(Tuile): Position
 + setPotision(int, int): void
++ gererCollision()
 }
-Tuile -- LogiqueDeJeu
+Tuile -- Main
 Tuile --* Plateau
+
+enum Directions {
++ UP
++ LEFT
++ DOWN
++ RIGHT
+}
 
 class Position {
 - x: int
 - y: int
-- orientation: int
+- orientation: Directions
 }
 Position o-- Tuile
+Position -- Directions
 
 class Tortue {
 + avancer(): void
@@ -76,16 +88,27 @@ class Joueur {
 + completerProgramme(Programme, CartesMain): void
 + executerProgramme(Programme): void
 }
-Joueur -- LogiqueDeJeu  
+Joueur -- Main
+
+enum TypeCarte {
+CarteBleue
+CarteJaune
+CarteViolette
+Laser
+}
+
+class Carte {
+- typeCarte: TypeCarte
++ getTypeCarte(Carte): TypeCarte
+}
+Carte -- TypeCarte
 
 class Deck {
-- cartesBleues: int
-- cartesJaunes: int
-- cartesViolettes: int
-- lasers: int
+- ArrayList<Carte>
 }
 Deck - CartesMain
 Deck --* Joueur
+Deck -- Carte
 
 class CartesMain {
 + tirerCarteDuDeck(Deck): void
@@ -93,6 +116,7 @@ class CartesMain {
 }
 CartesMain - Programme
 CartesMain --* Joueur
+CartesMain -- Carte
 
 class Programme {
 + enfilerCarteDeCartesMain(CartesMain): void
@@ -100,12 +124,13 @@ class Programme {
 }
 Programme - Deck
 Programme --* Joueur
+Programme -- Carte
 
 interface Affichage {
 + afficherPlateau(): void
 + ...()
 }
-Affichage -- LogiqueDeJeu
+Affichage -- Main
 
 class InterfaceGraphique {
 + afficherPlateau(): void
