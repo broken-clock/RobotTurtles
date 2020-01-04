@@ -6,9 +6,9 @@ class LogiqueDeJeu {
 + nombreJoueurs: int
 + focusJoueur: int
 + gameOver: boolean
-+ main(): void
-+ demanderNombreJoueurs(): int
-+ initJoueurs(nombreJoueurs): void
++ lancerJeu(): void
+- demanderNombreJoueurs(): int
+- initJoueurs(int): void
 }
 
 class Plateau {
