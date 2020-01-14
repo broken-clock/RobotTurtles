@@ -1,7 +1,13 @@
 package src.Tuiles;
 
 public class Position {
-    int x;
-    int y;
-    Directions orientation;  // Valeur par défaut
+    public int x;
+    public int y;
+    public Orientations orientation;
+
+    public Position(int _x, int _y, Orientations _orientation) {
+        this.x = _x;
+        this.y = _y;
+        this.orientation = _orientation;
+    }
 }

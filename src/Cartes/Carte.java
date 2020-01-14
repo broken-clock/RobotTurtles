@@ -10,6 +10,13 @@ public class Carte {
     }
 
     public TypeCarte getTypeCarte() {
-        return TypeCarte.CARTE_BLEUE;
+        return this.typeCarte;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof Carte)) return false;
+        return this.typeCarte == ((Carte) o).typeCarte;
     }
 }
