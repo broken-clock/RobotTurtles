@@ -3,7 +3,7 @@ package src.Cartes;
 import java.util.ArrayDeque;
 
 public class Programme {
-    public ArrayDeque<Carte> programme = new ArrayDeque();
+    private ArrayDeque<Carte> programme = new ArrayDeque();
 
     public boolean empty() {
         return programme.isEmpty();

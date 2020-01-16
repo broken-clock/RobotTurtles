@@ -10,6 +10,7 @@ public class Tortue extends Tuile {
     private Position positionDepart;
     private int numeroJoueur;
 
+    // Initialisation (exécuté dès le chargement de Tortue en mémoire)
     static {
         reprTortues.put(Orientations.UP, "T");
         reprTortues.put(Orientations.DOWN, "⊥");
@@ -25,17 +26,17 @@ public class Tortue extends Tuile {
         positionDepart = new Position(x, y, orientation);
     }
 
-    public void retourPositionDepart(LogiqueDeJeu logiqueDeJeu) {
-        deplacerTortue(logiqueDeJeu, this, new Position(this.positionDepart.x, this.positionDepart.y, this.positionDepart.orientation));
+    private void retourPositionDepart(LogiqueDeJeu logiqueDeJeu) {
+        deplacerTortue(logiqueDeJeu, this, new Position(this.positionDepart.getX(), this.positionDepart.getY(), this.positionDepart.getOrientation()));
     }
 
-    public void deplacerTortue(LogiqueDeJeu logiqueDeJeu, Tortue tortue, Position position) {
+    private void deplacerTortue(LogiqueDeJeu logiqueDeJeu, Tortue tortue, Position position) {
         // On vide la case couramment occupée par la tortue
-        logiqueDeJeu.plateau.setCase(tortue.position.x, tortue.position.y, ".");
+        logiqueDeJeu.getPlateau().setCase(tortue.position.getX(), tortue.position.getY(), ".");
 
         // On occupe la case suivante par la tortue
-        logiqueDeJeu.plateau.setCase(position.x, position.y, getReprTortue(tortue, position.orientation));
-        tortue.setPosition(position.x, position.y, position.orientation);
+        logiqueDeJeu.getPlateau().setCase(position.getX(), position.getY(), getReprTortue(tortue, position.getOrientation()));
+        tortue.setPosition(position.getX(), position.getY(), position.getOrientation());
     }
 
     public void avancer(LogiqueDeJeu logiqueDeJeu) {
@@ -57,22 +58,22 @@ public class Tortue extends Tuile {
                 System.out.print("; ");
                 System.out.println(caseDestination.getY());
 
-                deplacerTortue(logiqueDeJeu, this, new Position(caseDestination.getX(), caseDestination.getY(), this.position.orientation));
+                deplacerTortue(logiqueDeJeu, this, new Position(caseDestination.getX(), caseDestination.getY(), this.position.getOrientation()));
 
                 // Si la tortue a atteint un joyau
                 if (caseDestination.getContenu().equals("J")) {
-                    logiqueDeJeu.nombreJoueursGagne++;
+                    logiqueDeJeu.setNombreJoueursGagne(logiqueDeJeu.getNombreJoueursGagne() + 1);
                     // S'il ne reste plus qu’un joueur qui n'a pas atteint de joyau
-                    if (logiqueDeJeu.nombreJoueursGagne == logiqueDeJeu.nombreJoueurs - 1) {
-                        logiqueDeJeu.gameOver = true;
+                    if (logiqueDeJeu.getNombreJoueursGagne() == logiqueDeJeu.getNombreJoueurs() - 1) {
+                        logiqueDeJeu.setGameOver(true);
                     }
 
-                    if (logiqueDeJeu.modeJeu.equals("normal")) {
+                    if (logiqueDeJeu.getModeJeu().equals("normal")) {
                         // On donne son classement au joueur
-                        logiqueDeJeu.joueurs.get(this.numeroJoueur).classement = logiqueDeJeu.nombreJoueursGagne;
-                    } else if (logiqueDeJeu.modeJeu.equals("3àlasuite")) {
+                        logiqueDeJeu.getJoueurs().get(this.numeroJoueur).setClassement(logiqueDeJeu.getNombreJoueursGagne());
+                    } else if (logiqueDeJeu.getModeJeu().equals("3àlasuite")) {
                         // On met à jour le score du joueur
-                        logiqueDeJeu.joueurs.get(this.numeroJoueur).increaseScore(logiqueDeJeu.nombreJoueurs - logiqueDeJeu.nombreJoueursGagne);
+                        logiqueDeJeu.getJoueurs().get(this.numeroJoueur).increaseScore(logiqueDeJeu.getNombreJoueurs() - logiqueDeJeu.getNombreJoueursGagne());
                     }
                 }
                 break;
@@ -80,37 +81,37 @@ public class Tortue extends Tuile {
                 // Si une tortue rencontre une autre tortue
                 if (reprTortues.containsValue(String.valueOf(caseDestination.getContenu().charAt(0)))) {
                     int numeroTortueAdverse = Character.getNumericValue(caseDestination.getContenu().charAt(1));
-                    Tortue tortueAdverse = logiqueDeJeu.joueurs.get(numeroTortueAdverse).getTortue();
+                    Tortue tortueAdverse = logiqueDeJeu.getJoueurs().get(numeroTortueAdverse).getTortue();
                     Position positionDepartTortueAdverse = tortueAdverse.positionDepart;
 
                     // Les deux tortues retournent à leurs positions de départ respectives
                     this.retourPositionDepart(logiqueDeJeu);
-                    deplacerTortue(logiqueDeJeu, tortueAdverse, new Position(positionDepartTortueAdverse.x, positionDepartTortueAdverse.y, positionDepartTortueAdverse.orientation));
+                    deplacerTortue(logiqueDeJeu, tortueAdverse, new Position(positionDepartTortueAdverse.getX(), positionDepartTortueAdverse.getY(), positionDepartTortueAdverse.getOrientation()));
                 }
                 break;
         }
     }
 
     public void tournerHoraire(LogiqueDeJeu logiqueDeJeu) {
-        this.position.orientation = Orientations.getOrientationPrecedente(this.position.orientation);
-        logiqueDeJeu.plateau.setCase(this.position.x, this.position.y, getReprTortue(this, this.position.orientation));
+        this.position.setOrientation(Orientations.getOrientationPrecedente(this.position.getOrientation()));
+        logiqueDeJeu.getPlateau().setCase(this.position.getX(), this.position.getY(), getReprTortue(this, this.position.getOrientation()));
     }
 
     public void tournerAntiHoraire(LogiqueDeJeu logiqueDeJeu) {
-        this.position.orientation = Orientations.getOrientationSuivante(this.position.orientation);
-        logiqueDeJeu.plateau.setCase(this.position.x, this.position.y, getReprTortue(this, this.position.orientation));
+        this.position.setOrientation(Orientations.getOrientationSuivante(this.position.getOrientation()));
+        logiqueDeJeu.getPlateau().setCase(this.position.getX(), this.position.getY(), getReprTortue(this, this.position.getOrientation()));
     }
 
-    public void faireDemiTour(LogiqueDeJeu logiqueDeJeu) {
+    private void faireDemiTour(LogiqueDeJeu logiqueDeJeu) {
         this.tournerHoraire(logiqueDeJeu);
         this.tournerHoraire(logiqueDeJeu);
     }
 
     public void lancerLaser(LogiqueDeJeu logiqueDeJeu) {
         // Déterminer les coordonnées de la case du plateau touchée par le laser
-        int x = this.getPosition().x;
-        int y = this.getPosition().y;
-        Orientations orientation = this.getPosition().orientation;
+        int x = this.getPosition().getX();
+        int y = this.getPosition().getY();
+        Orientations orientation = this.getPosition().getOrientation();
         String caseLueContenu = null;
 
         do {
@@ -129,7 +130,7 @@ public class Tortue extends Tuile {
                     break;
             }
             try {
-                caseLueContenu = logiqueDeJeu.plateau.getCase(x, y);
+                caseLueContenu = logiqueDeJeu.getPlateau().getCase(x, y);
             } catch (Exception e) {
                 if (e.equals("java.lang.ArrayIndexOutOfBoundsException")) break;
                 break;  // Permet de sortir de la boucle
@@ -139,7 +140,7 @@ public class Tortue extends Tuile {
         // Agir sur cette case comme il se doit
         switch (caseLueContenu) {
             case "g":
-                logiqueDeJeu.plateau.setCase(x, y, null);
+                logiqueDeJeu.getPlateau().setCase(x, y, null);
                 break;
             case "J":
                 int nombreJoueurs = logiqueDeJeu.getNombreJoueurs();
@@ -153,13 +154,13 @@ public class Tortue extends Tuile {
                 if (reprTortues.containsValue(String.valueOf(caseLueContenu.charAt(0)))) {
                     // Le laser a touché une tortue
                     int numeroTortueAdverse = Character.getNumericValue(caseLueContenu.charAt(1));
-                    Tortue tortueAdverse = logiqueDeJeu.joueurs.get(numeroTortueAdverse).getTortue();
+                    Tortue tortueAdverse = logiqueDeJeu.getJoueurs().get(numeroTortueAdverse).getTortue();
 
                     if (logiqueDeJeu.getNombreJoueurs() == 2) {
                         tortueAdverse.faireDemiTour(logiqueDeJeu);
                     } else {
                         Position positionDepartTortueAdverse = tortueAdverse.positionDepart;
-                        deplacerTortue(logiqueDeJeu, tortueAdverse, new Position(positionDepartTortueAdverse.x, positionDepartTortueAdverse.y, positionDepartTortueAdverse.orientation));
+                        deplacerTortue(logiqueDeJeu, tortueAdverse, new Position(positionDepartTortueAdverse.getX(), positionDepartTortueAdverse.getY(), positionDepartTortueAdverse.getOrientation()));
                     }
                 }
         }

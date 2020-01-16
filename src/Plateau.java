@@ -3,36 +3,33 @@ package src;
 import src.Tuiles.Joyau;
 import src.Tuiles.Position;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 public class Plateau {
     private int taillePlateau = 8;
-    String[][] plateau;
+    private String[][] plateau;
 
     public Plateau() {
         plateau = new String[taillePlateau][taillePlateau];
     }
 
-    public void initPlateau(LogiqueDeJeu logiqueDeJeu) {
+    void initPlateau(LogiqueDeJeu logiqueDeJeu) {
         // Remplir la dernière colonne de caisses en bois si besoin
-        if (logiqueDeJeu.nombreJoueurs != 4) {
+        if (logiqueDeJeu.getNombreJoueurs() != 4) {
             for (int i = 0; i < taillePlateau; i++) {
                 this.setCase(i, taillePlateau - 1, "b");
             }
         }
 
         // Placer les tortues
-        for (Joueur joueur : logiqueDeJeu.joueurs) {
+        for (Joueur joueur : logiqueDeJeu.getJoueurs()) {
             Position position_tortue = joueur.tortue.getPosition();
-            String reprTortue = joueur.tortue.getReprTortue(joueur.tortue, position_tortue.orientation);
-            this.setCase(position_tortue.x, position_tortue.y, reprTortue);
+            String reprTortue = joueur.tortue.getReprTortue(joueur.tortue, position_tortue.getOrientation());
+            this.setCase(position_tortue.getX(), position_tortue.getY(), reprTortue);
         }
 
         // Placer les joyaux
         for (Joyau joyau : logiqueDeJeu.joyaux) {
             Position position_joyau = joyau.getPosition();
-            this.setCase(position_joyau.x, position_joyau.y, "J");
+            this.setCase(position_joyau.getX(), position_joyau.getY(), "J");
         }
     }
 
@@ -63,7 +60,7 @@ public class Plateau {
 //        return false;
 //    }
 
-    public boolean placementBloquant(int[] coordonnees) {
+    boolean placementBloquant(int[] coordonnees) {
         return false;
     }
 }

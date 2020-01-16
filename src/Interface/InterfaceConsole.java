@@ -7,7 +7,7 @@ import src.LogiqueDeJeu;
 import java.util.Scanner;
 
 public class InterfaceConsole implements Interface {
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     @Override
     public void afficherMessage(String message) {
@@ -16,18 +16,18 @@ public class InterfaceConsole implements Interface {
 
     @Override
     public void afficherPlateau(LogiqueDeJeu logiqueDeJeu) {
-        int taillePlateau = logiqueDeJeu.plateau.getTaillePlateau();
+        int taillePlateau = logiqueDeJeu.getPlateau().getTaillePlateau();
         for (int i = 0; i < taillePlateau; i++) {
             for (int j = 0; j < taillePlateau; j++) {
-                System.out.print(logiqueDeJeu.plateau.getCase(i, j) == null ? "." : logiqueDeJeu.plateau.getCase(i, j));
+                System.out.print(logiqueDeJeu.getPlateau().getCase(i, j) == null ? "." : logiqueDeJeu.getPlateau().getCase(i, j));
                 System.out.print("\t");
             }
-            System.out.println("");
+            System.out.println();
         }
     }
 
     @Override
-    public int demanderNombreJoueurs(LogiqueDeJeu logiqueDeJeu) {
+    public int demanderNombreJoueurs() {
         int nombreJoueurs;
         do {
             System.out.println("Combien de joueurs ? (entre 2 et 4): ");
@@ -57,7 +57,7 @@ public class InterfaceConsole implements Interface {
     @Override
     public String demanderAction(LogiqueDeJeu logiqueDeJeu) {
         String action;
-        if (!logiqueDeJeu.modeBug) {
+        if (!logiqueDeJeu.isModeBug()) {
             do {
                 System.out.println("Action ? (P/M/E (compléter prgm/mur/exécuter prgm): ");
                 action = scanner.nextLine();
@@ -74,7 +74,7 @@ public class InterfaceConsole implements Interface {
     @Override
     public void afficherCartesMain(LogiqueDeJeu logiqueDeJeu) {
         System.out.println("Cartes dans votre main:");
-        for (Carte carteMain : logiqueDeJeu.joueurCourant.cartesMain.getCartesMain()) {
+        for (Carte carteMain : logiqueDeJeu.getJoueurCourant().getCartesMain().getCartesMain()) {
             System.out.println(carteMain.getTypeCarte());
         }
     }
@@ -82,7 +82,7 @@ public class InterfaceConsole implements Interface {
     @Override
     public void afficherProgramme(LogiqueDeJeu logiqueDeJeu) {
         System.out.println("Votre programme courant:");
-        for (Carte cartePrgm : logiqueDeJeu.joueurCourant.programme.getProgramme()) {
+        for (Carte cartePrgm : logiqueDeJeu.getJoueurCourant().getProgramme().getProgramme()) {
             System.out.println(cartePrgm.getTypeCarte());
         }
     }
@@ -123,7 +123,7 @@ public class InterfaceConsole implements Interface {
         do {
             System.out.println("Entrez le numéro du joueur à qui vous voulez poser votre carte bug:");
             cibleCarteBug = scanner.nextInt();
-        } while (cibleCarteBug < 0 || cibleCarteBug > logiqueDeJeu.nombreJoueurs - 1 || cibleCarteBug == logiqueDeJeu.joueurCourant.getNumeroJoueur());
+        } while (cibleCarteBug < 0 || cibleCarteBug > logiqueDeJeu.getNombreJoueurs() - 1 || cibleCarteBug == logiqueDeJeu.getJoueurCourant().getNumeroJoueur());
         return cibleCarteBug;
     }
 
@@ -139,12 +139,12 @@ public class InterfaceConsole implements Interface {
     public void afficherResultats(LogiqueDeJeu logiqueDeJeu) {
         System.out.println("\n////////////////////");
         System.out.println("TERMINE, voici le classement");
-        for (Joueur joueur : logiqueDeJeu.joueurs) {
+        for (Joueur joueur : logiqueDeJeu.getJoueurs()) {
             System.out.print("Joueur " + joueur.getNumeroJoueur() + ": ");
-            System.out.print(joueur.classement + "°");
-            switch (logiqueDeJeu.modeJeu) {
+            System.out.print(joueur.getClassement() + "°");
+            switch (logiqueDeJeu.getModeJeu()) {
                 case "normal":
-                    System.out.println("");
+                    System.out.println();
                     break;
                 case "3àlasuite":
                     System.out.println(" avec " + joueur.getScore() + " points");
@@ -157,7 +157,7 @@ public class InterfaceConsole implements Interface {
     public void afficherFinManche(LogiqueDeJeu logiqueDeJeu, int i) {
         System.out.println("\n\\\\\\\\");
         System.out.println("Fin de la manche " + (i + 1) + " !");
-        for (Joueur joueur : logiqueDeJeu.joueurs) {
+        for (Joueur joueur : logiqueDeJeu.getJoueurs()) {
             System.out.print("Joueur " + joueur.getNumeroJoueur() + ": score courant = ");
             System.out.println(joueur.getScore());
         }

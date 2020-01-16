@@ -1,7 +1,5 @@
 package src.Cartes;
 
-import java.lang.reflect.Type;
-
 public class Carte {
     private TypeCarte typeCarte;
 
@@ -13,6 +11,7 @@ public class Carte {
         return this.typeCarte;
     }
 
+    // Permet de définir la relation d'égalité entre deux objets de type Carte
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;

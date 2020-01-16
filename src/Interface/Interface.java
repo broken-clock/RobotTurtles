@@ -4,7 +4,7 @@ import src.LogiqueDeJeu;
 public interface Interface {
     void afficherMessage(String message);  // Notification quelconque
     void afficherPlateau(LogiqueDeJeu logiqueDeJeu);  // Affiche l'état courant du plateau
-    int demanderNombreJoueurs(LogiqueDeJeu logiqueDeJeu);  // Demande le nombre de joueurs pour la partie à venir
+    int demanderNombreJoueurs();  // Demande le nombre de joueurs pour la partie à venir
     String demanderModeJeu();  // Demande le mode de jeu: normal ou 3 à la suite
     boolean demanderModeCarteBug();  // Demande s'il faut jouer avec la carte bug
     String demanderAction(LogiqueDeJeu logiqueDeJeu);  // Demande quelle action un joueur veut faire: compléter son programme / placer un mur / exécuter son programme

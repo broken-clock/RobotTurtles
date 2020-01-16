@@ -5,7 +5,7 @@ import src.Joueur;
 import java.util.ArrayList;
 
 public class CartesMain {
-    public ArrayList<Carte> cartesMain = new ArrayList();
+    private ArrayList<Carte> cartesMain = new ArrayList();
 
     public ArrayList<Carte> getCartesMain() {
         return cartesMain;
@@ -16,12 +16,12 @@ public class CartesMain {
     }
 
     public void viderCartesMain(Joueur joueur) {
-        joueur.cartesMain.cartesMain = new ArrayList();
+        joueur.getCartesMain().cartesMain = new ArrayList();
     }
 
     public void tirerCartesDuDeck(Joueur joueur, int nombreCartes) {
         for (int i = 0; i < nombreCartes; i++) {
-            joueur.cartesMain.ajouterCarte(joueur.deck.donnerUneCarte(joueur));
+            joueur.getCartesMain().ajouterCarte(joueur.getDeck().donnerUneCarte(joueur));
         }
 
 //        // On triche sur l'initialisation des cartes main

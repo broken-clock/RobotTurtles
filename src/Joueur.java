@@ -5,21 +5,53 @@ import src.Tuiles.*;
 
 public class Joueur {
     private int numeroJoueur;
-    public int classement;
+    private int classement;
     boolean carteBug;
     boolean subiBug;
     private int score = 0;
     Tortue tortue = new Tortue();
-    public Deck deck = new Deck();
-    public CartesMain cartesMain = new CartesMain();
-    public Programme programme = new Programme();
+    private Deck deck = new Deck();
+    private CartesMain cartesMain = new CartesMain();
+    private Programme programme = new Programme();
     int mursDePierre;
     int mursDeGlace;
     String action;  // Action demandée par le joueur à chaque tour de jeu
     boolean choixDefausse;  // Le joueur veut-il défausser sa main  et re-piocher 5 cartes ? (Demandé à la fin de chaque tour)
 
     public Joueur(LogiqueDeJeu logiqueDeJeu) {
-        this.classement = logiqueDeJeu.nombreJoueurs;  // Classement du dernier joueur. Si ce joueur ne finit pas en dernier, on mettra à jour cet attribut
+        this.setClassement(logiqueDeJeu.getNombreJoueurs());  // Classement du dernier joueur. Si ce joueur ne finit pas en dernier, on mettra à jour cet attribut
+    }
+
+    public int getClassement() {
+        return classement;
+    }
+
+    public void setClassement(int classement) {
+        this.classement = classement;
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+    public CartesMain getCartesMain() {
+        return cartesMain;
+    }
+
+    public void setCartesMain(CartesMain cartesMain) {
+        this.cartesMain = cartesMain;
+    }
+
+    public Programme getProgramme() {
+        return programme;
+    }
+
+    public void setProgramme(Programme programme) {
+        this.programme = programme;
     }
 
     public int getScore() {
@@ -34,7 +66,7 @@ public class Joueur {
         return this.numeroJoueur;
     }
 
-    public void setNumeroJoueur(int i) {
+    void setNumeroJoueur(int i) {
         this.numeroJoueur = i;
     }
 
@@ -42,27 +74,27 @@ public class Joueur {
         return this.tortue;
     }
 
-    public void reInitCartes() {
-        this.deck = new Deck();
-        this.cartesMain = new CartesMain();
-        this.programme = new Programme();
+    void reInitCartes() {
+        this.setDeck(new Deck());
+        this.setCartesMain(new CartesMain());
+        this.setProgramme(new Programme());
     }
 
-    public boolean placerMur(LogiqueDeJeu logiqueDeJeu, Obstacle obstacle) {
+    boolean placerMur(LogiqueDeJeu logiqueDeJeu, Obstacle obstacle) {
         switch (obstacle.getTypeObstacle()) {
             case "P":  // Mur de pierre
                 if (this.mursDePierre <= 0) {
                     logiqueDeJeu.monInterface.afficherMessage("Vous ne disposez pas d'un tel obstacle");
                     return false;
-                } else if (logiqueDeJeu.plateau.getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
+                } else if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
                     logiqueDeJeu.monInterface.afficherMessage("La case demandée est déjà occupée");
                     return false;
-                } else if (logiqueDeJeu.plateau.placementBloquant(obstacle.getCoordsObstacle())) {
+                } else if (logiqueDeJeu.getPlateau().placementBloquant(obstacle.getCoordsObstacle())) {
                     logiqueDeJeu.monInterface.afficherMessage("Placer un obstacle ici bloquerait l'accès à un joyau");
                     return false;
                 }
                 // Le placement du mur demandé est valide
-                logiqueDeJeu.plateau.setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "p");
+                logiqueDeJeu.getPlateau().setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "p");
                 this.mursDePierre--;
                 return true;
 
@@ -70,26 +102,26 @@ public class Joueur {
                 if (this.mursDeGlace <= 0) {
                     logiqueDeJeu.monInterface.afficherMessage("Vous ne disposez pas d'un tel obstacle");
                     return false;
-                } else if (logiqueDeJeu.plateau.getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
+                } else if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
                     logiqueDeJeu.monInterface.afficherMessage("Il n'est pas possible de placer un obstacle à cet endroit");
                     return false;
                 }
                 // Le placement du mur demandé est valide
-                logiqueDeJeu.plateau.setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "g");
+                logiqueDeJeu.getPlateau().setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "g");
                 this.mursDeGlace--;
                 return true;
         }
         return false;
     }
 
-    public void completerPrgm(Carte carte) {
-        this.programme.enfilerCarte(carte);
+    void completerPrgm(Carte carte) {
+        this.getProgramme().enfilerCarte(carte);
     }
 
-    public void executerPrgm(LogiqueDeJeu logiqueDeJeu) {
+    void executerPrgm(LogiqueDeJeu logiqueDeJeu) {
         Carte carte;
-        while (!this.programme.empty()) {
-            carte = this.programme.defilerCarte(this.subiBug);
+        while (!this.getProgramme().empty()) {
+            carte = this.getProgramme().defilerCarte(this.subiBug);
             System.out.print("On exécute l'instruction: ");
             System.out.println(carte.getTypeCarte());
             switch (carte.getTypeCarte()) {
@@ -109,15 +141,15 @@ public class Joueur {
         }
     }
 
-    public void subirBug() {
+    void subirBug() {
         System.out.println("Le joueur " + this.getNumeroJoueur() + " subit le bug");
         this.subiBug = true;
     }
 
-    public void terminerTour() {
+    void terminerTour() {
         if (this.choixDefausse) {
-            this.cartesMain.viderCartesMain(this);
-            this.cartesMain.tirerCartesDuDeck(this, 5);
+            this.getCartesMain().viderCartesMain(this);
+            this.getCartesMain().tirerCartesDuDeck(this, 5);
         }
     }
 }
