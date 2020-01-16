@@ -6,6 +6,9 @@ import src.Tuiles.*;
 public class Joueur {
     private int numeroJoueur;
     public int classement;
+    boolean carteBug;
+    boolean subiBug;
+    private int score = 0;
     Tortue tortue = new Tortue();
     public Deck deck = new Deck();
     public CartesMain cartesMain = new CartesMain();
@@ -15,8 +18,16 @@ public class Joueur {
     String action;  // Action demandée par le joueur à chaque tour de jeu
     boolean choixDefausse;  // Le joueur veut-il défausser sa main  et re-piocher 5 cartes ? (Demandé à la fin de chaque tour)
 
-    public Joueur(int nombreJoueurs) {
-        this.classement = nombreJoueurs;  // Classement du dernier joueur. Si ce joueur ne finit pas en dernier, on mettra à jour cet attribut
+    public Joueur(LogiqueDeJeu logiqueDeJeu) {
+        this.classement = logiqueDeJeu.nombreJoueurs;  // Classement du dernier joueur. Si ce joueur ne finit pas en dernier, on mettra à jour cet attribut
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void increaseScore(int i) {
+        this.score += i;
     }
 
     public int getNumeroJoueur() {
@@ -29,6 +40,12 @@ public class Joueur {
 
     public Tortue getTortue() {
         return this.tortue;
+    }
+
+    public void reInitCartes() {
+        this.deck = new Deck();
+        this.cartesMain = new CartesMain();
+        this.programme = new Programme();
     }
 
     public boolean placerMur(LogiqueDeJeu logiqueDeJeu, Obstacle obstacle) {
@@ -72,7 +89,7 @@ public class Joueur {
     public void executerPrgm(LogiqueDeJeu logiqueDeJeu) {
         Carte carte;
         while (!this.programme.empty()) {
-            carte = this.programme.defilerCarte();
+            carte = this.programme.defilerCarte(this.subiBug);
             System.out.print("On exécute l'instruction: ");
             System.out.println(carte.getTypeCarte());
             switch (carte.getTypeCarte()) {
@@ -90,6 +107,11 @@ public class Joueur {
                     break;
             }
         }
+    }
+
+    public void subirBug() {
+        System.out.println("Le joueur " + this.getNumeroJoueur() + " subit le bug");
+        this.subiBug = true;
     }
 
     public void terminerTour() {

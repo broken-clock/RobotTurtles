@@ -37,12 +37,37 @@ public class InterfaceConsole implements Interface {
     }
 
     @Override
+    public String demanderModeJeu() {
+        String modeJeu;
+        do {
+            System.out.println("Quel mode de jeu ? ('normal' / '3àlasuite'): ");
+            modeJeu = scanner.nextLine();
+        } while (!modeJeu.equals("normal") && !modeJeu.equals("3àlasuite"));
+        return modeJeu;
+    }
+
+    @Override
+    public boolean demanderModeCarteBug() {
+        String modeCarteBug;
+        System.out.println("Jouer avec les cartes Bug ? (o/N): ");  // Valeur par défaut = "N"
+        modeCarteBug = scanner.nextLine();
+        return modeCarteBug.equals("o");
+    }
+
+    @Override
     public String demanderAction(LogiqueDeJeu logiqueDeJeu) {
         String action;
-        do {
-            System.out.println("Action ? (P/M/E (compléter prgm/mur/exécuter prgm): ");
-            action = scanner.nextLine();
-        } while (!action.equals("P") && !action.equals("M") && !action.equals("E"));
+        if (!logiqueDeJeu.modeBug) {
+            do {
+                System.out.println("Action ? (P/M/E (compléter prgm/mur/exécuter prgm): ");
+                action = scanner.nextLine();
+            } while (!action.equals("P") && !action.equals("M") && !action.equals("E"));
+        } else {
+            do {
+                System.out.println("Action ? (P/M/E/B (compléter prgm/mur/exécuter prgm/utiliser carte bug): ");
+                action = scanner.nextLine();
+            } while (!action.equals("P") && !action.equals("M") && !action.equals("E") && !action.equals("B"));
+        }
         return action;
     }
 
@@ -93,6 +118,16 @@ public class InterfaceConsole implements Interface {
     }
 
     @Override
+    public int demanderCibleCarteBug(LogiqueDeJeu logiqueDeJeu) {
+        int cibleCarteBug;
+        do {
+            System.out.println("Entrez le numéro du joueur à qui vous voulez poser votre carte bug:");
+            cibleCarteBug = scanner.nextInt();
+        } while (cibleCarteBug < 0 || cibleCarteBug > logiqueDeJeu.nombreJoueurs - 1 || cibleCarteBug == logiqueDeJeu.joueurCourant.getNumeroJoueur());
+        return cibleCarteBug;
+    }
+
+    @Override
     public boolean demanderChoixDefausse() {
         String choixDefausse;
         System.out.println("Voulez-vous défausser votre main et re-piocher 5 cartes ? (O/n)");  // Valeur par défaut = "O"
@@ -106,7 +141,25 @@ public class InterfaceConsole implements Interface {
         System.out.println("TERMINE, voici le classement");
         for (Joueur joueur : logiqueDeJeu.joueurs) {
             System.out.print("Joueur " + joueur.getNumeroJoueur() + ": ");
-            System.out.println(joueur.classement + "°");
+            System.out.print(joueur.classement + "°");
+            switch (logiqueDeJeu.modeJeu) {
+                case "normal":
+                    System.out.println("");
+                    break;
+                case "3àlasuite":
+                    System.out.println(" avec " + joueur.getScore() + " points");
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void afficherFinManche(LogiqueDeJeu logiqueDeJeu, int i) {
+        System.out.println("\n\\\\\\\\");
+        System.out.println("Fin de la manche " + (i + 1) + " !");
+        for (Joueur joueur : logiqueDeJeu.joueurs) {
+            System.out.print("Joueur " + joueur.getNumeroJoueur() + ": score courant = ");
+            System.out.println(joueur.getScore());
         }
     }
 }

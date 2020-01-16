@@ -61,13 +61,19 @@ public class Tortue extends Tuile {
 
                 // Si la tortue a atteint un joyau
                 if (caseDestination.getContenu().equals("J")) {
-                    logiqueDeJeu.nombreJoueursGagne ++;
-                    // Il ne reste plus qu’un joueur qui n'a pas atteint de joyau
+                    logiqueDeJeu.nombreJoueursGagne++;
+                    // S'il ne reste plus qu’un joueur qui n'a pas atteint de joyau
                     if (logiqueDeJeu.nombreJoueursGagne == logiqueDeJeu.nombreJoueurs - 1) {
                         logiqueDeJeu.gameOver = true;
                     }
-                    // On donne son classement au joueur
-                    logiqueDeJeu.joueurs.get(this.numeroJoueur).classement = logiqueDeJeu.nombreJoueursGagne;
+
+                    if (logiqueDeJeu.modeJeu.equals("normal")) {
+                        // On donne son classement au joueur
+                        logiqueDeJeu.joueurs.get(this.numeroJoueur).classement = logiqueDeJeu.nombreJoueursGagne;
+                    } else if (logiqueDeJeu.modeJeu.equals("3àlasuite")) {
+                        // On met à jour le score du joueur
+                        logiqueDeJeu.joueurs.get(this.numeroJoueur).increaseScore(logiqueDeJeu.nombreJoueurs - logiqueDeJeu.nombreJoueursGagne);
+                    }
                 }
                 break;
             default:

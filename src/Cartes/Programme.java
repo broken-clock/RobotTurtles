@@ -18,7 +18,8 @@ public class Programme {
         this.programme.add(carte);
     }
 
-    public Carte defilerCarte() {
-        return this.programme.pop();
+    public Carte defilerCarte(boolean bug) {
+        if (!bug) return this.programme.remove();
+        return this.programme.removeLast();  // Si bug, on lit le programme à l'envers
     }
 }

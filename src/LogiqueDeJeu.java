@@ -6,11 +6,16 @@ import src.Interface.*;
 import src.Tuiles.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LogiqueDeJeu {
     public Interface monInterface;
     public int nombreJoueurs;
+    private ArrayList<Integer> ordreJoueurs;
+    public String modeJeu;
+    public boolean modeBug;
     public int nombreJoueursGagne = 0;
     public ArrayList<Joueur> joueurs = new ArrayList();
     public ArrayList<Position> positionsInitialesJoueurs = new ArrayList();
@@ -24,23 +29,7 @@ public class LogiqueDeJeu {
         return this.nombreJoueurs;
     }
 
-    public void initialiserPartie() {
-        // Choix du type d'interface
-        this.monInterface = new InterfaceConsole();
-
-//        this.nombreJoueurs = this.monInterface.demanderNombreJoueurs(this);
-        this.nombreJoueurs = 2;
-
-        // Création du nombre adéquat de joueurs et initialisation pour chaque joueur de ses obstacles disponibles et de ses cartesMain initiales
-        for (int i = 0; i < this.nombreJoueurs; i++) {
-            this.joueurs.add(new Joueur(this.nombreJoueurs));
-            this.joueurs.get(i).setNumeroJoueur(i);
-            this.joueurs.get(i).tortue.setNumeroJoueur(this.joueurs.get(i).getNumeroJoueur());
-            this.joueurs.get(i).mursDePierre = 3;
-            this.joueurs.get(i).mursDeGlace = 2;
-            this.joueurs.get(i).cartesMain.tirerCartesDuDeck(this.joueurs.get(i), 5);
-        }
-
+    public void initialiserPositionsPlateauOrdrepassage() {
         // En fonction du nombre de joueurs, initialiser les positions des tortues et les joyaux
         Position positionDepart;
         switch (this.nombreJoueurs) {
@@ -124,21 +113,64 @@ public class LogiqueDeJeu {
                 break;
         }
 
-        // Enfin, initialiser le plateau à partir des objets créés précédemment
+        // Initialisation du plateau à partir des objets créés précédemment
         this.plateau = new Plateau();
         this.plateau.initPlateau(this);
+
+        // Génération de l'ordre de passage des joueurs
+        this.focusJoueur = this.initFocusJoueur();  // Choisit au hasard le joueur qui jouera en premier
+        this.ordreJoueurs = new ArrayList();
+        this.ordreJoueurs.add(this.focusJoueur);
+        for (int i = this.focusJoueur + 1; i < nombreJoueurs; i++) this.ordreJoueurs.add(i);
+        for (int i = 0; i < this.focusJoueur; i++) this.ordreJoueurs.add(i);
     }
 
-    public void lancerPartie() {
-        this.focusJoueur = this.initFocusJoueur();  // Choisit au hasard le joueur qui jouera en premier
-        this.gameOver = false;
+    public void initialiserAttributsJoueurs(int i) {
+        this.joueurs.get(i).reInitCartes();
+        this.joueurs.get(i).mursDePierre = 3;
+        this.joueurs.get(i).mursDeGlace = 2;
+        this.joueurs.get(i).cartesMain.tirerCartesDuDeck(this.joueurs.get(i), 5);
+        // Pour le mode avec cartes bug
+        this.joueurs.get(i).carteBug = this.modeBug;
+        this.joueurs.get(i).subiBug = false;
+    }
 
+    public void initialiserPartie() {
+        // Choix du type d'interface
+        this.monInterface = new InterfaceConsole();
+        this.nombreJoueurs = this.monInterface.demanderNombreJoueurs(this);
+        this.modeJeu = this.monInterface.demanderModeJeu();
+        this.modeBug = this.monInterface.demanderModeCarteBug();
+
+        // Création du nombre adéquat de joueurs et initialisation pour chaque joueur de ses obstacles disponibles et de ses cartesMain initiales
+        for (int i = 0; i < this.nombreJoueurs; i++) {
+            this.joueurs.add(new Joueur(this));
+            this.joueurs.get(i).setNumeroJoueur(i);
+            this.joueurs.get(i).tortue.setNumeroJoueur(this.joueurs.get(i).getNumeroJoueur());
+            this.initialiserAttributsJoueurs(i);
+        }
+        this.initialiserPositionsPlateauOrdrepassage();
+    }
+
+    public void reInitialiserPartie() {
+        // On refait uniquement les initialisations nécessaires pour lancer une nouvelle manche
+        this.nombreJoueursGagne = 0;
+        this.gameOver = false;
+        this.initialiserPositionsPlateauOrdrepassage();
+
+        // Réinitialisation attributs (cartes, obstacles) de chaque joueur
+        for (int i = 0; i < this.nombreJoueurs; i++) {
+            this.initialiserAttributsJoueurs(i);
+        }
+    }
+
+    public void jouerManche() {
         while (!this.gameOver) {
-            for (int i = 0; i < nombreJoueurs; i++) {
+            for (int focusJoueur : this.ordreJoueurs) {
                 if (this.gameOver) break;
-                System.out.println("focusJoueur: " + i);
+                System.out.println("focusJoueur: " + focusJoueur);
                 monInterface.afficherPlateau(this);
-                joueurCourant = this.joueurs.get(i);
+                joueurCourant = this.joueurs.get(focusJoueur);
                 joueurCourant.action = this.monInterface.demanderAction(this);
                 switch (joueurCourant.action) {
                     case "P":  // Compléter le programme
@@ -187,6 +219,15 @@ public class LogiqueDeJeu {
                     case "E":  // Exécuter le programme
                         this.joueurCourant.executerPrgm(this);
                         break;
+
+                    case "B":  // Utiliser sa carte bug
+                        int numeroJoueurCibleBug = this.monInterface.demanderCibleCarteBug(this);
+                        if (!joueurCourant.carteBug) this.monInterface.afficherMessage("Refusé: vous n'avez plus de carte bug");
+                        else {
+                            joueurCourant.carteBug = false;  // Le joueur courant a consommé sa carte bug
+                            this.joueurs.get(numeroJoueurCibleBug).subirBug();  // Le joueur cible subit les effets de la carte bug ajoutée à son programme
+                        }
+                        break;
                 }
                 if (this.gameOver) break;
                 this.joueurCourant.choixDefausse = this.monInterface.demanderChoixDefausse();
@@ -194,10 +235,31 @@ public class LogiqueDeJeu {
                 this.monInterface.afficherCartesMain(this);
             }
         }
+    }
+
+    public void lancerPartie() {
+        this.gameOver = false;
+        switch (this.modeJeu) {
+            case "normal":
+                this.jouerManche();
+                break;
+            case "3àlasuite":
+                for (int i = 0; i < 3; i++) {
+                    this.jouerManche();
+                    this.monInterface.afficherFinManche(this, i);
+                    this.reInitialiserPartie();
+                }
+                // Calcul du classement de chaque joueur en fonction de son nombre de points gagné durant les 3 manches
+                Collections.sort(this.joueurs, Comparator.comparing(s -> s.getScore()));
+                for (int i = 0; i < this.nombreJoueurs; i++) {
+                    this.joueurs.get(i).classement = this.nombreJoueurs - i;
+                }
+                break;
+        }
         this.monInterface.afficherResultats(this);
     }
 
     private int initFocusJoueur() {
-        return ThreadLocalRandom.current().nextInt(1, this.nombreJoueurs + 1);
+        return ThreadLocalRandom.current().nextInt(0, this.nombreJoueurs);
     }
 }

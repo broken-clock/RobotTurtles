@@ -48,6 +48,21 @@ public class Plateau {
         plateau[x][y] = contenu;
     }
 
+//    public ArrayList<Case> getCasesAdjacentesLibres(Case Case) {
+//        ArrayList<int[]> casesAdjacentesLibres = new ArrayList();
+//        casesAdjacentesLibres.add(new int[]{0, 1});
+//
+//    }
+//
+//    public boolean placementBloquant(int[] coordonnees) {
+//        ArrayList<ArrayList<Case>> casesCheminAcces = new ArrayList();
+//        if (true) return false;  // TODO
+//        for (Case caseLibre : getCasesAdjacentesLibres(coordonnees)) {
+//            casesCheminAcces.add(getCasesAdjacentesLibres(caseLibre));
+//        }
+//        return false;
+//    }
+
     public boolean placementBloquant(int[] coordonnees) {
         return false;
     }
