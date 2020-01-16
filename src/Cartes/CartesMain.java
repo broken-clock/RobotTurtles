@@ -21,8 +21,7 @@ public class CartesMain {
 
     public void tirerCartesDuDeck(Joueur joueur, int nombreCartes) {
         for (int i = 0; i < nombreCartes; i++) {
-            Carte carte = joueur.deck.donnerUneCarte();
-            joueur.cartesMain.ajouterCarte(carte);
+            joueur.cartesMain.ajouterCarte(joueur.deck.donnerUneCarte(joueur));
         }
 
 //        // On triche sur l'initialisation des cartes main
