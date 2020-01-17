@@ -24,8 +24,7 @@ public class CartesMain {
             joueur.getCartesMain().ajouterCarte(joueur.getDeck().donnerUneCarte(joueur));
         }
 
-//        // On triche sur l'initialisation des cartes main
-//        // TODO enlever cette triche
+//        // Triche sur l'initialisation des cartes main
 //        if (joueur.getNumeroJoueur() == 0) {
 //            joueur.cartesMain.ajouterCarte(new Carte(TypeCarte.CARTE_JAUNE));
 //            joueur.cartesMain.ajouterCarte(new Carte(TypeCarte.CARTE_BLEUE));

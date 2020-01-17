@@ -18,6 +18,17 @@ public class Tortue extends Tuile {
         reprTortues.put(Orientations.RIGHT, "┤");
     }
 
+    // Permet de déterminer si le contenu d'une case du plateau correspond à la représentation d'une tortue
+    public static boolean isReprTortue(String contenuCase) {
+        if (contenuCase == null) return false;
+        return reprTortues.containsValue(String.valueOf(contenuCase.charAt(0)));
+    }
+
+    // Permet de déterminer le numéro de joueur correspondant à une tortue à partie du contenu d'une case du plateau qui correspond à la représentation d'une tortue
+    public static int getNumeroTortue(String contenuCase) {
+        return Integer.parseInt(String.valueOf(contenuCase.charAt(1)));
+    }
+
     public void setNumeroJoueur(int _numeroJoueur) {
         this.numeroJoueur = _numeroJoueur;
     }
@@ -79,7 +90,7 @@ public class Tortue extends Tuile {
                 break;
             default:
                 // Si une tortue rencontre une autre tortue
-                if (reprTortues.containsValue(String.valueOf(caseDestination.getContenu().charAt(0)))) {
+                if (isReprTortue(caseDestination.getContenu())) {
                     int numeroTortueAdverse = Character.getNumericValue(caseDestination.getContenu().charAt(1));
                     Tortue tortueAdverse = logiqueDeJeu.getJoueurs().get(numeroTortueAdverse).getTortue();
                     Position positionDepartTortueAdverse = tortueAdverse.positionDepart;
@@ -151,7 +162,7 @@ public class Tortue extends Tuile {
                 }
                 break;
             default:
-                if (reprTortues.containsValue(String.valueOf(caseLueContenu.charAt(0)))) {
+                if (isReprTortue(caseLueContenu)) {
                     // Le laser a touché une tortue
                     int numeroTortueAdverse = Character.getNumericValue(caseLueContenu.charAt(1));
                     Tortue tortueAdverse = logiqueDeJeu.getJoueurs().get(numeroTortueAdverse).getTortue();

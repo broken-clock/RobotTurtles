@@ -6,17 +6,17 @@ import src.Tuiles.*;
 public class Joueur {
     private int numeroJoueur;
     private int classement;
-    boolean carteBug;
-    boolean subiBug;
+    private boolean carteBug;
+    private boolean subiBug;
     private int score = 0;
-    Tortue tortue = new Tortue();
+    private Tortue tortue = new Tortue();
     private Deck deck = new Deck();
     private CartesMain cartesMain = new CartesMain();
     private Programme programme = new Programme();
-    int mursDePierre;
-    int mursDeGlace;
-    String action;  // Action demandée par le joueur à chaque tour de jeu
-    boolean choixDefausse;  // Le joueur veut-il défausser sa main  et re-piocher 5 cartes ? (Demandé à la fin de chaque tour)
+    private int mursDePierre;
+    private int mursDeGlace;
+    private String action;  // Action demandée par le joueur à chaque tour de jeu
+    private boolean choixDefausse;  // Le joueur veut-il défausser sa main  et re-piocher 5 cartes ? (Demandé à la fin de chaque tour)
 
     public Joueur(LogiqueDeJeu logiqueDeJeu) {
         this.setClassement(logiqueDeJeu.getNombreJoueurs());  // Classement du dernier joueur. Si ce joueur ne finit pas en dernier, on mettra à jour cet attribut
@@ -74,6 +74,54 @@ public class Joueur {
         return this.tortue;
     }
 
+    public boolean isCarteBug() {
+        return carteBug;
+    }
+
+    public void setCarteBug(boolean carteBug) {
+        this.carteBug = carteBug;
+    }
+
+    public boolean isSubiBug() {
+        return subiBug;
+    }
+
+    public void setSubiBug(boolean subiBug) {
+        this.subiBug = subiBug;
+    }
+
+    public int getMursDePierre() {
+        return mursDePierre;
+    }
+
+    public void setMursDePierre(int mursDePierre) {
+        this.mursDePierre = mursDePierre;
+    }
+
+    public int getMursDeGlace() {
+        return mursDeGlace;
+    }
+
+    public void setMursDeGlace(int mursDeGlace) {
+        this.mursDeGlace = mursDeGlace;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public boolean isChoixDefausse() {
+        return choixDefausse;
+    }
+
+    public void setChoixDefausse(boolean choixDefausse) {
+        this.choixDefausse = choixDefausse;
+    }
+
     void reInitCartes() {
         this.setDeck(new Deck());
         this.setCartesMain(new CartesMain());
@@ -81,37 +129,36 @@ public class Joueur {
     }
 
     boolean placerMur(LogiqueDeJeu logiqueDeJeu, Obstacle obstacle) {
-        switch (obstacle.getTypeObstacle()) {
-            case "P":  // Mur de pierre
-                if (this.mursDePierre <= 0) {
-                    logiqueDeJeu.monInterface.afficherMessage("Vous ne disposez pas d'un tel obstacle");
-                    return false;
-                } else if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
-                    logiqueDeJeu.monInterface.afficherMessage("La case demandée est déjà occupée");
-                    return false;
-                } else if (logiqueDeJeu.getPlateau().placementBloquant(obstacle.getCoordsObstacle())) {
-                    logiqueDeJeu.monInterface.afficherMessage("Placer un obstacle ici bloquerait l'accès à un joyau");
-                    return false;
-                }
-                // Le placement du mur demandé est valide
-                logiqueDeJeu.getPlateau().setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "p");
-                this.mursDePierre--;
-                return true;
-
-            case "G":  // Mur de glace
-                if (this.mursDeGlace <= 0) {
-                    logiqueDeJeu.monInterface.afficherMessage("Vous ne disposez pas d'un tel obstacle");
-                    return false;
-                } else if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
-                    logiqueDeJeu.monInterface.afficherMessage("Il n'est pas possible de placer un obstacle à cet endroit");
-                    return false;
-                }
-                // Le placement du mur demandé est valide
-                logiqueDeJeu.getPlateau().setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "g");
-                this.mursDeGlace--;
-                return true;
+        String messagePossedePasObstacle = "Refusé: vous ne disposez pas d'un tel obstacle";
+        if (obstacle.getTypeObstacle().equals("P")) {
+            if (this.getMursDePierre() <= 0) {
+                logiqueDeJeu.getMonInterface().afficherMessage(messagePossedePasObstacle);
+                return false;
+            }
+        } else if (obstacle.getTypeObstacle().equals("G")) {
+            if (this.getMursDeGlace() <= 0) {
+                logiqueDeJeu.getMonInterface().afficherMessage(messagePossedePasObstacle);
+                return false;
+            }
         }
-        return false;
+
+        if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
+            logiqueDeJeu.getMonInterface().afficherMessage("Refusé: la case demandée est déjà occupée");
+            return false;
+        } else if (logiqueDeJeu.getPlateau().placementBloquant(logiqueDeJeu, obstacle.getCoordsObstacle())) {
+            logiqueDeJeu.getMonInterface().afficherMessage("Refusé: placer un obstacle ici bloquerait l'accès à un joyau");
+            return false;
+        }
+
+        // Le placement du mur demandé est valide
+        if (obstacle.getTypeObstacle().equals("P")) {
+            logiqueDeJeu.getPlateau().setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "p");
+            this.setMursDePierre(this.getMursDePierre() - 1);
+        } else if (obstacle.getTypeObstacle().equals("G")) {
+            logiqueDeJeu.getPlateau().setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "g");
+            this.setMursDeGlace(this.getMursDeGlace() - 1);
+        }
+        return true;
     }
 
     void completerPrgm(Carte carte) {
@@ -121,21 +168,21 @@ public class Joueur {
     void executerPrgm(LogiqueDeJeu logiqueDeJeu) {
         Carte carte;
         while (!this.getProgramme().empty()) {
-            carte = this.getProgramme().defilerCarte(this.subiBug);
+            carte = this.getProgramme().defilerCarte(this.isSubiBug());
             System.out.print("On exécute l'instruction: ");
             System.out.println(carte.getTypeCarte());
             switch (carte.getTypeCarte()) {
                 case CARTE_BLEUE:
-                    this.tortue.avancer(logiqueDeJeu);
+                    this.getTortue().avancer(logiqueDeJeu);
                     break;
                 case CARTE_JAUNE:
-                    this.tortue.tournerAntiHoraire(logiqueDeJeu);
+                    this.getTortue().tournerAntiHoraire(logiqueDeJeu);
                     break;
                 case CARTE_VIOLETTE:
-                    this.tortue.tournerHoraire(logiqueDeJeu);
+                    this.getTortue().tournerHoraire(logiqueDeJeu);
                     break;
                 case LASER:
-                    this.tortue.lancerLaser(logiqueDeJeu);
+                    this.getTortue().lancerLaser(logiqueDeJeu);
                     break;
             }
         }
@@ -143,11 +190,11 @@ public class Joueur {
 
     void subirBug() {
         System.out.println("Le joueur " + this.getNumeroJoueur() + " subit le bug");
-        this.subiBug = true;
+        this.setSubiBug(true);
     }
 
     void terminerTour() {
-        if (this.choixDefausse) {
+        if (this.isChoixDefausse()) {
             this.getCartesMain().viderCartesMain(this);
             this.getCartesMain().tirerCartesDuDeck(this, 5);
         }
