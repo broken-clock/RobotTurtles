@@ -20,6 +20,18 @@ public class Plateau {
         plateau = new String[taillePlateau][taillePlateau];
     }
 
+    public int getTaillePlateau() {
+        return taillePlateau;
+    }
+
+    public String getCase(int x, int y) {
+        return plateau[x][y];
+    }
+
+    public void setCase(int x, int y, String contenu) {
+        plateau[x][y] = contenu;
+    }
+
     void initPlateau(LogiqueDeJeu logiqueDeJeu) {
         // Remplir la dernière colonne de caisses en bois si besoin
         if (logiqueDeJeu.getNombreJoueurs() != 4) {
@@ -40,18 +52,6 @@ public class Plateau {
             Position position_joyau = joyau.getPosition();
             this.setCase(position_joyau.getX(), position_joyau.getY(), "J");
         }
-    }
-
-    public int getTaillePlateau() {
-        return taillePlateau;
-    }
-
-    public String getCase(int x, int y) {
-        return plateau[x][y];
-    }
-
-    public void setCase(int x, int y, String contenu) {
-        plateau[x][y] = contenu;
     }
 
     // Fonction récursive déterminant l'ensemble des cases accessibles à partir d'une case de départ (d'une liste de cases de départ pouvant être de taille 1)

@@ -1,0 +1,197 @@
+@startuml
+'On ommet les getters et setters
+'src
+class Main {
+    logiqueDeJeu: LogiqueDeJeu
+
+    + static main(String[] args): void
+}
+
+class LogiqueDeJeu {
+    - monInterface: Interface
+    - nombreJoueurs: int
+    - ordreJoueurs: ArrayList<Integer>
+    - modeJeu: String
+    - modeBug: boolean
+    - nombreJoueursGagne: int
+    - joueurs: ArrayList<Joueur>
+    - positionsInitialesJoueurs: ArrayList<Position>
+    - joyaux: ArrayList<Joyau>
+    - plateau: Plateau
+    - joueurCourant: Joueur
+    - gameOver: boolean
+
+    - initialiserPositionsPlateauOrdrepassage(): void
+    - initialiserAttributsJoueurs(int): void
+    ~ initialiserPartie(): void
+    - reInitialiserPartie(): void
+    - jouerManche(): void
+    ~ lancerPartie(): void
+    - initFocusJoueur(): int
+}
+Main -- LogiqueDeJeu
+
+class Plateau {
+    - taillePlateau: int
+    - plateau: String[][]
+    - casesAccessibles: ArrayList<ArrayList<Integer>>
+    - numerosTortuesVerifiees: ArrayList<Integer>
+    - aucuneTortueBloquee: boolean
+
+    ~ initPlateau(): void
+    - getRecursiveCasesAdjacentesLibres(ArrayDeque<int[]>, boolean): ArrayDeque<int[]>
+    - getCasesAccessibles(int[], boolean): ArrayList<ArrayList<Integer>>
+    ~ placementBloquant(int[]): boolean
+}
+Plateau -- LogiqueDeJeu
+
+class Case {
+    - x: int
+    - y: int
+    - contenu: String
+}
+Case --* Plateau
+
+class Joueur {
+    - numeroJoueur: int
+    - classement: int
+    - carteBug: boolean
+    - subiBug: boolean
+    - score: int
+    - tortue: Tortue
+    - deck: Deck
+    - cartesMain: CartesMain
+    - programme: Programme
+    - mursDePierre: int
+    - mursDeGlace: int
+    - action: String
+
+    ~ reInitCartes(): void
+    ~ placerMur(Obstacle): boolean
+    ~ completerPrgm(Carte): void
+    ~ executerPrgm(): void
+    ~ subirBug(): void
+    ~ terminerTour(): void
+}
+Joueur -- LogiqueDeJeu
+
+'src.Tuiles
+abstract class Tuile {
+    # position: Position
+    # getCaseSuivante(): Case
+}
+Tuile -- LogiqueDeJeu
+Tuile --* Plateau
+
+enum Orientations {
+    UP
+    LEFT
+    DOWN
+    RIGHT
+
+    + static getOrientationSuivante(Orientations): Orientations
+    + static getOrientationPrecedente(Orientations): Orientations
+}
+
+class Position {
+    - x: int
+    - y: int
+    - orientation: Orientations
+}
+Position o-- Tuile
+Position -- Orientations
+
+class Tortue {
+    - reprTortues: HashMap<Orientations, String>
+    - positionDepart: Position
+    - numeroJoueur: int
+
+    - retourPositionDepart(): void
+    - deplacerTortue(Tortue, Position): void
+    + avancer(): void
+    + tournerHoraire(): void
+    - faireDemiTour(): void
+    + tournerAntiHoraire(): void
+    + lancerLaser(): void
+    + getReprTortue(Tortue, Orientations): String
+}
+Tortue --|> Tuile
+Tortue --* Joueur
+
+class Joyau {
+}
+Joyau --|> Tuile
+
+class Obstacle {
+    - typeObstacle: String
+    - coordsObstacle: int[]
+}
+Obstacle --|> Tuile
+
+'src.Cartes
+enum TypeCarte {
+    CARTE_BLEUE,
+    CARTE_JAUNE,
+    CARTE_VIOLETTE,
+    LASER,
+    NOT_A_CARD
+}
+
+class Carte {
+    - typeCarte: TypeCarte
+
+    + @Override equals(Object): boolean
+}
+Carte -- TypeCarte
+
+class Deck {
+    - deck: ArrayList<Carte>
+
+    ~ donnerUneCarte(Joueur): Carte
+}
+Deck - CartesMain
+Deck --* Joueur
+Deck -- Carte
+
+class CartesMain {
+    - cartesMain: ArrayList<Carte>
+
+    + empty(): boolean
+    + tirerCarteDuDeck(Joueur, int): void
+    - ajouterCarte(Carte carte): void
+    + retirerCarte(TypeCarte): Carte
+}
+CartesMain - Programme
+CartesMain --* Joueur
+CartesMain -- Carte
+
+class Programme {
+    - programme: ArrayDeque<Carte>
+
+    + empty(): boolean
+    + enfilerCarte(Carte): void
+    + defilerCarte(boolean): Carte
+}
+Programme - Deck
+Programme --* Joueur
+Programme -- Carte
+
+'src.Interface
+interface Interface {
++ afficherPlateau(): void
++ ...()
+}
+Affichage -- LogiqueDeJeu
+
+class InterfaceGraphique {
++ afficherPlateau(): void
++ ...()
+}
+InterfaceGraphique ..|> Affichage
+
+class InterfaceConsole {
++ afficherPlateau(): void
++ ...()
+}
+InterfaceConsole ..|> Affichage
+@enduml

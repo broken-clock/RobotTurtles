@@ -16,10 +16,6 @@ public class CartesMain {
         return cartesMain.isEmpty();
     }
 
-    public void viderCartesMain(Joueur joueur) {
-        joueur.getCartesMain().cartesMain = new ArrayList();
-    }
-
     public void tirerCartesDuDeck(Joueur joueur, int nombreCartes) {
         for (int i = 0; i < nombreCartes; i++) {
             joueur.getCartesMain().ajouterCarte(joueur.getDeck().donnerUneCarte(joueur));
