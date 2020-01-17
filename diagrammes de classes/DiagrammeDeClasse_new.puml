@@ -181,17 +181,17 @@ interface Interface {
 + afficherPlateau(): void
 + ...()
 }
-Affichage -- LogiqueDeJeu
+Interface -- LogiqueDeJeu
 
 class InterfaceGraphique {
 + afficherPlateau(): void
 + ...()
 }
-InterfaceGraphique ..|> Affichage
+InterfaceGraphique ..|> Interface
 
 class InterfaceConsole {
 + afficherPlateau(): void
 + ...()
 }
-InterfaceConsole ..|> Affichage
+InterfaceConsole ..|> Interface
 @enduml
