@@ -21,7 +21,7 @@ public interface Interface {
 
     int demanderCibleCarteBug(LogiqueDeJeu logiqueDeJeu);  // Demande au joueur en cours le numéro du joueur à qui il veut poser sa carte bug
 
-    boolean demanderChoixDefausse();  // A la fin de son tour, demande au joueur en cours s'il souhaite défausser sa main et re-piocher 5 cartes
+    String demanderChoixDefausse();  // A la fin de son tour, demande au joueur en cours s'il souhaite défausser sa main et re-piocher 5 cartes
 
     // Divers utilisables au cours du jeu
     void afficherMessage(String message);  // Notification quelconque

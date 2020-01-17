@@ -16,7 +16,6 @@ public class Joueur {
     private int mursDePierre;
     private int mursDeGlace;
     private String action;  // Action demandée par le joueur à chaque tour de jeu
-    private boolean choixDefausse;  // Le joueur veut-il défausser sa main  et re-piocher 5 cartes ? (Demandé à la fin de chaque tour)
 
     public Joueur(LogiqueDeJeu logiqueDeJeu) {
         this.setClassement(logiqueDeJeu.getNombreJoueurs());  // Classement du dernier joueur. Si ce joueur ne finit pas en dernier, on mettra à jour cet attribut
@@ -114,14 +113,6 @@ public class Joueur {
         this.action = action;
     }
 
-    public boolean isChoixDefausse() {
-        return choixDefausse;
-    }
-
-    public void setChoixDefausse(boolean choixDefausse) {
-        this.choixDefausse = choixDefausse;
-    }
-
     void reInitCartes() {
         this.setDeck(new Deck());
         this.setCartesMain(new CartesMain());
@@ -145,7 +136,9 @@ public class Joueur {
         if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
             logiqueDeJeu.getMonInterface().afficherMessage("Refusé: la case demandée est déjà occupée");
             return false;
-        } else if (logiqueDeJeu.getPlateau().placementBloquant(logiqueDeJeu, obstacle.getCoordsObstacle())) {
+        }
+        // Les murs de glace sont destructibles donc ne peuvent pas bloquer l'accès à un joyau
+        else if (!obstacle.getTypeObstacle().equals("G") && logiqueDeJeu.getPlateau().placementBloquant(logiqueDeJeu, obstacle.getCoordsObstacle())) {
             logiqueDeJeu.getMonInterface().afficherMessage("Refusé: placer un obstacle ici bloquerait l'accès à un joyau");
             return false;
         }
@@ -194,9 +187,7 @@ public class Joueur {
     }
 
     void terminerTour() {
-        if (this.isChoixDefausse()) {
-            this.getCartesMain().viderCartesMain(this);
-            this.getCartesMain().tirerCartesDuDeck(this, 5);
-        }
+        // Si besoin, remplir cartesMain jusqu'à avoir 5 cartes
+        this.getCartesMain().tirerCartesDuDeck(this, 5 - this.getCartesMain().getCartesMain().size());
     }
 }

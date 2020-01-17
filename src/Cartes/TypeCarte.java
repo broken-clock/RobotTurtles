@@ -4,5 +4,6 @@ public enum TypeCarte {
     CARTE_BLEUE,
     CARTE_JAUNE,
     CARTE_VIOLETTE,
-    LASER
+    LASER,
+    NOT_A_CARD  // Utile pour signifier une erreur
 }

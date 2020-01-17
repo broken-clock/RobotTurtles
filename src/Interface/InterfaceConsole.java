@@ -128,11 +128,14 @@ public class InterfaceConsole implements Interface {
     }
 
     @Override
-    public boolean demanderChoixDefausse() {
-        String choixDefausse;
-        System.out.println("Voulez-vous défausser votre main et re-piocher 5 cartes ? (O/n)");  // Valeur par défaut = "O"
-        choixDefausse = scanner.nextLine();
-        return !choixDefausse.equals("n");
+    public String demanderChoixDefausse() {
+        String choixCarteADefausser;
+        do {
+            System.out.println("Indiquer carte (B/J/V/L/none) à défausser de votre main");
+            choixCarteADefausser = scanner.nextLine();
+        } while (!choixCarteADefausser.equals("B") && !choixCarteADefausser.equals("J") && !choixCarteADefausser.equals("V") && !choixCarteADefausser.equals("L") && !choixCarteADefausser.equals("none"));
+
+        return choixCarteADefausser;
     }
 
     @Override

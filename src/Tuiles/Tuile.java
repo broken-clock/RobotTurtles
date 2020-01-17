@@ -36,9 +36,9 @@ public class Tuile {
                 break;
         }
 
+        // Si une tortue rencontre un bord de plateau
         if (x < 0 || y < 0 || x > logiqueDeJeu.getPlateau().getTaillePlateau() - 1 || y > logiqueDeJeu.getPlateau().getTaillePlateau() - 1) {
-            // On suppose que le contour du plateau est formé de caisses en bois
-            return new Case(-1, -1, "b");  // -1 pour signifier qu'on est en dehors du plateau
+            return new Case(-1, -1, "bord");  // x et y n'importent pas
         }
 
         return new Case(x, y, logiqueDeJeu.getPlateau().getCase(x, y));

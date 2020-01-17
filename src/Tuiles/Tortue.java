@@ -55,6 +55,11 @@ public class Tortue extends Tuile {
         System.out.println(caseDestination.getContenu());
 
         switch (caseDestination.getContenu()) {
+            // Si la tortue rencontre un bord de plateau
+            case "bord":
+                // Alors elle retourne à sa position initiale
+                this.retourPositionDepart(logiqueDeJeu);
+                break;
             // Si c'est un mur
             case "b":
             case "p":
@@ -142,38 +147,40 @@ public class Tortue extends Tuile {
             }
             try {
                 caseLueContenu = logiqueDeJeu.getPlateau().getCase(x, y);
-            } catch (Exception e) {
-                if (e.equals("java.lang.ArrayIndexOutOfBoundsException")) break;
-                break;  // Permet de sortir de la boucle
+            } catch (java.lang.ArrayIndexOutOfBoundsException e) {
+                break;
             }
         } while (caseLueContenu == null);
 
         // Agir sur cette case comme il se doit
-        switch (caseLueContenu) {
-            case "g":
-                logiqueDeJeu.getPlateau().setCase(x, y, null);
-                break;
-            case "J":
-                int nombreJoueurs = logiqueDeJeu.getNombreJoueurs();
-                if (nombreJoueurs == 2) {
-                    this.faireDemiTour(logiqueDeJeu);
-                } else {
-                    this.retourPositionDepart(logiqueDeJeu);
-                }
-                break;
-            default:
-                if (isReprTortue(caseLueContenu)) {
-                    // Le laser a touché une tortue
-                    int numeroTortueAdverse = Character.getNumericValue(caseLueContenu.charAt(1));
-                    Tortue tortueAdverse = logiqueDeJeu.getJoueurs().get(numeroTortueAdverse).getTortue();
-
-                    if (logiqueDeJeu.getNombreJoueurs() == 2) {
-                        tortueAdverse.faireDemiTour(logiqueDeJeu);
+        // Si caseLueContenu == null, alors le laser n'a rien touché, donc on ne fait rien
+        if (caseLueContenu != null) {
+            switch (caseLueContenu) {
+                case "g":
+                    logiqueDeJeu.getPlateau().setCase(x, y, null);
+                    break;
+                case "J":
+                    int nombreJoueurs = logiqueDeJeu.getNombreJoueurs();
+                    if (nombreJoueurs == 2) {
+                        this.faireDemiTour(logiqueDeJeu);
                     } else {
-                        Position positionDepartTortueAdverse = tortueAdverse.positionDepart;
-                        deplacerTortue(logiqueDeJeu, tortueAdverse, new Position(positionDepartTortueAdverse.getX(), positionDepartTortueAdverse.getY(), positionDepartTortueAdverse.getOrientation()));
+                        this.retourPositionDepart(logiqueDeJeu);
                     }
-                }
+                    break;
+                default:
+                    if (isReprTortue(caseLueContenu)) {
+                        // Le laser a touché une tortue
+                        int numeroTortueAdverse = Character.getNumericValue(caseLueContenu.charAt(1));
+                        Tortue tortueAdverse = logiqueDeJeu.getJoueurs().get(numeroTortueAdverse).getTortue();
+
+                        if (logiqueDeJeu.getNombreJoueurs() == 2) {
+                            tortueAdverse.faireDemiTour(logiqueDeJeu);
+                        } else {
+                            Position positionDepartTortueAdverse = tortueAdverse.positionDepart;
+                            deplacerTortue(logiqueDeJeu, tortueAdverse, new Position(positionDepartTortueAdverse.getX(), positionDepartTortueAdverse.getY(), positionDepartTortueAdverse.getOrientation()));
+                        }
+                    }
+            }
         }
     }
 

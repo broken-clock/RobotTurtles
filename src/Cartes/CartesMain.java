@@ -2,6 +2,7 @@ package src.Cartes;
 
 import src.Joueur;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class CartesMain {
@@ -46,8 +47,13 @@ public class CartesMain {
 
     public Carte retirerCarte(TypeCarte typeCarte) {
         int indexToPop = this.cartesMain.indexOf(new Carte(typeCarte));
-        Carte carte = this.cartesMain.get(indexToPop);
-        this.cartesMain.remove(indexToPop);
+        Carte carte = new Carte(TypeCarte.NOT_A_CARD);  // Placeholder
+        try {
+            carte = this.cartesMain.get(indexToPop);
+            this.cartesMain.remove(indexToPop);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+            return new Carte(TypeCarte.NOT_A_CARD);
+        }
         return carte;
     }
 }

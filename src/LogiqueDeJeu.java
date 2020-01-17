@@ -104,12 +104,10 @@ public class LogiqueDeJeu {
                 positionDepart = this.positionsInitialesJoueurs.get(0);
                 this.getJoueurs().get(0).getTortue().setPosition(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
                 this.getJoueurs().get(0).getTortue().setPositionDepart(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
-//                System.out.println(this.joueurs.get(0).getTortue().positionDepart.y);
 
                 positionDepart = this.positionsInitialesJoueurs.get(1);
                 this.getJoueurs().get(1).getTortue().setPosition(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
                 this.getJoueurs().get(1).getTortue().setPositionDepart(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
-//                System.out.println(this.joueurs.get(1).getTortue().positionDepart.y);
 
                 // Créer les joyaux et définir leur position
                 this.getJoyaux().add(new Joyau());
@@ -293,7 +291,37 @@ public class LogiqueDeJeu {
                         break;
                 }
                 if (this.isGameOver()) break;
-                this.getJoueurCourant().setChoixDefausse(this.getMonInterface().demanderChoixDefausse());
+
+                this.getMonInterface().afficherCartesMain(this);
+                boolean continuerDefausserCartes = true;
+                while (!getJoueurCourant().getCartesMain().empty() && continuerDefausserCartes) {
+                    String carteStr = this.getMonInterface().demanderChoixDefausse();
+                    TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
+                    switch (carteStr) {
+                        case "B":
+                            typeCarte = TypeCarte.CARTE_BLEUE;
+                            break;
+                        case "J":
+                            typeCarte = TypeCarte.CARTE_JAUNE;
+                            break;
+                        case "V":
+                            typeCarte = TypeCarte.CARTE_VIOLETTE;
+                            break;
+                        case "L":
+                            typeCarte = TypeCarte.LASER;
+                            break;
+                        case "none":
+                            continuerDefausserCartes = false;
+                    }
+
+                    if (continuerDefausserCartes) {
+                        Carte carte = getJoueurCourant().getCartesMain().retirerCarte(typeCarte);
+                        if (carte.getTypeCarte() == TypeCarte.NOT_A_CARD) {
+                            this.monInterface.afficherMessage("Refusé: vous ne possédez pas de telle carte");
+                        }
+                    }
+                }
+
                 this.getJoueurCourant().terminerTour();
                 this.getMonInterface().afficherCartesMain(this);
             }
@@ -302,7 +330,7 @@ public class LogiqueDeJeu {
 
     void lancerPartie() {
 //        // Triche init plateau
-//        this.plateau.setCase(1, 0, "b");
+//        this.plateau.setCase(1, 0, "g");
 //        this.plateau.setCase(1, 1, "b");
 //        this.plateau.setCase(1, 4, "b");
 //        this.plateau.setCase(2, 2, "b");

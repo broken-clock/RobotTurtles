@@ -78,8 +78,8 @@ public class Plateau {
                     if (newX >= 0 && newX <= 7 && newY >= 0 && newY <= 7) {
                         contenuCase = this.getCase(X - x, Y - y);
                         if (contenuCase == null) contenuCase = "";
-                        // Si la case est considérée libre, i.e. pas occupée par un mur
-                        if (!contenuCase.equals("b") && !contenuCase.equals("g") && !contenuCase.equals("p"))
+                        // Si la case est considérée libre, i.e. pas occupée par un mur indestructible
+                        if (!contenuCase.equals("b") && !contenuCase.equals("p"))
                             // Alors on l'ajoute à la liste des cases à prendre en compte pour la recherche de chemin...
                             casesAdjacentesLibres.add(new int[]{X - x, Y - y});
                     }
@@ -120,13 +120,12 @@ public class Plateau {
     // Fonction déterminant si placer un obstacle à ces coordonnées bloquerait l'accès à au moins une tortue à au moins un joyau
     boolean placementBloquant(LogiqueDeJeu logiqueDeJeu, int[] coordonnees) {
         boolean placementBloquant = false;
-        // Simulation d'un obstacles aux coordonnées à tester
+        // Simulation d'un obstacle indestructible aux coordonnées à tester
         // On sait que ces coordonnées correspondent à une case vide, donc pas besoin de backup le contenu de la case
         this.setCase(coordonnees[0], coordonnees[1], "b");
 
         // Obtention des positions de tous les joyaux
         ArrayList<Position> positionsJoyaux = new ArrayList();
-        ArrayList<ArrayList<Integer>> casesAccessiblesJoyau;
         for (Joyau joyau : logiqueDeJeu.getJoyaux()) {
             positionsJoyaux.add(joyau.getPosition());
         }
@@ -144,7 +143,7 @@ public class Plateau {
                 placementBloquant = true;
             }
         }
-        // FIN simulation d'un obstacles aux coordonnées à tester
+        // FIN simulation d'un obstacle indestructible aux coordonnées à tester
         this.setCase(coordonnees[0], coordonnees[1], null);
 
         return placementBloquant;
