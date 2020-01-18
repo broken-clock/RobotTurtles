@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LogiqueDeJeu {
-    private Interface monInterface;
+    private Affichage monInterface;
     private int nombreJoueurs;
     private ArrayList<Integer> ordreJoueurs;
     private String modeJeu;
@@ -83,12 +83,12 @@ public class LogiqueDeJeu {
         return joyaux;
     }
 
-    public Interface getMonInterface() {
+    public Affichage getMonInterface() {
         return monInterface;
     }
 
-    public void setMonInterface(Interface monInterface) {
-        this.monInterface = monInterface;
+    public void setMonInterface(Affichage affichage) {
+        this.monInterface = affichage;
     }
 
     private void initialiserPositionsPlateauOrdrepassage() {
@@ -197,10 +197,11 @@ public class LogiqueDeJeu {
 
     void initialiserPartie() {
         // Choix du type d'interface
-        this.setMonInterface(new InterfaceConsole());
-        this.nombreJoueurs = this.getMonInterface().demanderNombreJoueurs();
-        this.setModeJeu(this.getMonInterface().demanderModeJeu());
-        this.setModeBug(this.getMonInterface().demanderModeCarteBug());
+        this.setMonInterface(new Affichage());
+        Parametres parametre = this.getMonInterface().parametresMenu();
+        this.nombreJoueurs = parametre.getNbJoueurs();
+        this.setModeJeu(parametre.getModeJeu());
+        this.setModeBug(parametre.getModeBug());
 
         // Création du nombre adéquat de joueurs et initialisation pour chaque joueur de ses obstacles disponibles et de ses cartesMain initiales
         for (int i = 0; i < this.nombreJoueurs; i++) {
@@ -208,6 +209,7 @@ public class LogiqueDeJeu {
             this.getJoueurs().get(i).setNumeroJoueur(i);
             this.getJoueurs().get(i).getTortue().setNumeroJoueur(this.getJoueurs().get(i).getNumeroJoueur());
             this.initialiserAttributsJoueurs(i);
+
         }
         this.initialiserPositionsPlateauOrdrepassage();
     }
@@ -229,30 +231,42 @@ public class LogiqueDeJeu {
             for (int focusJoueur : this.ordreJoueurs) {
                 if (this.isGameOver()) break;
                 System.out.println("focusJoueur: " + focusJoueur);
-                getMonInterface().afficherPlateau(this);
                 setJoueurCourant(this.getJoueurs().get(focusJoueur));
-                getJoueurCourant().setAction(this.getMonInterface().demanderAction(this));
+            	this.getMonInterface().afficherPlateauJeu(this);
+                getJoueurCourant().setAction(this.getMonInterface().demanderAction());
                 switch (getJoueurCourant().getAction()) {
                     case "P":  // Compléter le programme
-                        this.getMonInterface().afficherCartesMain(this);
+                        this.getMonInterface().afficherCartesMain("compl�ter le programme",this.getJoueurCourant().getCartesMain().getCartesMain());
                         boolean continuerAjouterCartes = true;
-                        while (!getJoueurCourant().getCartesMain().empty() && continuerAjouterCartes) {
-                            String carteStr = this.getMonInterface().demanderCarteAAjouterAProgramme();
+                        while (continuerAjouterCartes) {
+
+                            String carteStr = this.getMonInterface().selectionnerCarte(this.getJoueurCourant().getCartesMain().getCartesMain());
+                            System.out.println(carteStr);
+
                             TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
                             switch (carteStr) {
-                                case "B":
+                                case "CARTE_BLEUE":
                                     typeCarte = TypeCarte.CARTE_BLEUE;
+                                    System.out.println(1);
                                     break;
-                                case "J":
+                                case "CARTE_JAUNE":
                                     typeCarte = TypeCarte.CARTE_JAUNE;
+                                    System.out.println(2);
+
                                     break;
-                                case "V":
+                                case "CARTE_VIOLETTE":
                                     typeCarte = TypeCarte.CARTE_VIOLETTE;
+                                    System.out.println(3);
+
                                     break;
-                                case "L":
-                                    typeCarte = TypeCarte.LASER;
+                                case "LASER":
+                                    typeCarte = TypeCarte.LASER;            
+                                    System.out.println(4);
+
                                     break;
-                                case "none":
+                                case "NOT_A_CARD":
+                                    System.out.println(5);
+
                                     continuerAjouterCartes = false;
                             }
 
@@ -261,69 +275,70 @@ public class LogiqueDeJeu {
                                 getJoueurCourant().completerPrgm(carte);
                             }
                         }
-                        this.getMonInterface().afficherCartesMain(this);
-                        this.getMonInterface().afficherProgramme(this);
+             //a voir           this.getMonInterface().afficherProgramme(this);
                         break;
 
                     case "M":  // Construire un mur
                         Obstacle obstacle;
                         boolean murPlaceOk;
                         do {
-                            String typeObstacle = this.getMonInterface().demanderTypeObstacleAPlacer();
-                            int[] coordsObstacle = this.getMonInterface().demanderCoordsObstacleAPlacer();
-                            obstacle = new Obstacle(typeObstacle, coordsObstacle);
+                            obstacle = this.getMonInterface().demanderObstacleAPlacer();
+                            System.out.println(obstacle.getCoordsObstacle()[0] +obstacle.getCoordsObstacle()[1] );
+
                             murPlaceOk = getJoueurCourant().placerMur(this, obstacle);
                         } while (!murPlaceOk);
                         break;
 
                     case "E":  // Exécuter le programme
+
                         this.getJoueurCourant().executerPrgm(this);
                         break;
 
-                    case "B":  // Utiliser sa carte bug
-                        int numeroJoueurCibleBug = this.getMonInterface().demanderCibleCarteBug(this);
-                        if (!getJoueurCourant().isCarteBug())
-                            this.getMonInterface().afficherMessage("Refusé: vous n'avez plus de carte bug");
-                        else {
-                            getJoueurCourant().setCarteBug(false);  // Le joueur courant a consommé sa carte bug
-                            this.getJoueurs().get(numeroJoueurCibleBug).subirBug();  // Le joueur cible subit les effets de la carte bug ajoutée à son programme
-                        }
-                        break;
+         //           case "B":  // Utiliser sa carte bug
+         //               int numeroJoueurCibleBug = this.getMonInterface().demanderCibleCarteBug(this);
+        //                if (!getJoueurCourant().isCarteBug())
+        //                    this.getMonInterface().afficherMessage("Refusé: vous n'avez plus de carte bug");
+        //                else {
+        //                    getJoueurCourant().setCarteBug(false);  // Le joueur courant a consommé sa carte bug
+       //                     this.getJoueurs().get(numeroJoueurCibleBug).subirBug();  // Le joueur cible subit les effets de la carte bug ajoutée à son programme
+       //                 }
+       //                 break;
                 }
                 if (this.isGameOver()) break;
+                System.out.println("abcdfinsess");
 
-                this.getMonInterface().afficherCartesMain(this);
                 boolean continuerDefausserCartes = true;
-                while (!getJoueurCourant().getCartesMain().empty() && continuerDefausserCartes) {
-                    String carteStr = this.getMonInterface().demanderChoixDefausse();
-                    TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
+                this.getMonInterface().afficherCartesMain("choissisez les cartes � d�fausser",this.getJoueurCourant().getCartesMain().getCartesMain());
+                while (continuerDefausserCartes) {
+                	String carteStr = this.getMonInterface().selectionnerCarte(this.getJoueurCourant().getCartesMain().getCartesMain());     
+                	TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
                     switch (carteStr) {
-                        case "B":
+                        case "CARTE_BLEUE":
                             typeCarte = TypeCarte.CARTE_BLEUE;
                             break;
-                        case "J":
+                        case "CARTE_JAUNE":
                             typeCarte = TypeCarte.CARTE_JAUNE;
                             break;
-                        case "V":
+                        case "CARTE_VIOLETTE":
                             typeCarte = TypeCarte.CARTE_VIOLETTE;
                             break;
-                        case "L":
+                        case "LASER":
                             typeCarte = TypeCarte.LASER;
                             break;
-                        case "none":
+                        case "NOT_A_CARD":
                             continuerDefausserCartes = false;
                     }
 
                     if (continuerDefausserCartes) {
                         Carte carte = getJoueurCourant().getCartesMain().retirerCarte(typeCarte);
-                        if (carte.getTypeCarte() == TypeCarte.NOT_A_CARD) {
-                            this.monInterface.afficherMessage("Refusé: vous ne possédez pas de telle carte");
-                        }
-                    }
+              //          if (carte.getTypeCarte() == TypeCarte.NOT_A_CARD) {
+          //                  this.monInterface.afficherMessage("Refus�: vous ne poss�dez pas de telle carte");
+             //           }
+                    	}
                 }
 
                 this.getJoueurCourant().terminerTour();
-                this.getMonInterface().afficherCartesMain(this);
+                System.out.println("end turn");
             }
         }
     }
@@ -342,13 +357,16 @@ public class LogiqueDeJeu {
         this.setGameOver(false);
         switch (this.getModeJeu()) {
             case "normal":
-                this.jouerManche();
+                jouerManche();
                 break;
-            case "3àlasuite":
+            case "3 a la suite":
                 for (int i = 0; i < 3; i++) {
-                    this.jouerManche();
+                    jouerManche();
+                    System.out.println("abcdMANCHE");
                     this.getMonInterface().afficherFinManche(this, i);
+                    System.out.println("abcdFIN");
                     this.reInitialiserPartie();
+                    System.out.println("abcdRESET");
                 }
                 // Calcul du classement de chaque joueur en fonction de son nombre de points gagné durant les 3 manches
                 this.getJoueurs().sort(Comparator.comparing(Joueur::getScore));
@@ -358,6 +376,7 @@ public class LogiqueDeJeu {
                 break;
         }
         this.getMonInterface().afficherResultats(this);
+        System.out.println("test");
     }
 
     private int initFocusJoueur() {

@@ -134,12 +134,12 @@ public class Joueur {
         }
 
         if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
-            logiqueDeJeu.getMonInterface().afficherMessage("Refusé: la case demandée est déjà occupée");
+            logiqueDeJeu.getMonInterface().afficherMessage("Refus�: la case demandée est déjà occupée");
             return false;
         }
         // Les murs de glace sont destructibles donc ne peuvent pas bloquer l'accès à un joyau
         else if (!obstacle.getTypeObstacle().equals("G") && logiqueDeJeu.getPlateau().placementBloquant(logiqueDeJeu, obstacle.getCoordsObstacle())) {
-            logiqueDeJeu.getMonInterface().afficherMessage("Refusé: placer un obstacle ici bloquerait l'accès à un joyau");
+            logiqueDeJeu.getMonInterface().afficherMessage("Refus�: placer un obstacle ici bloquerait l'accès à un joyau");
             return false;
         }
 

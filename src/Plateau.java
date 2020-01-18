@@ -33,10 +33,10 @@ public class Plateau {
     }
 
     void initPlateau(LogiqueDeJeu logiqueDeJeu) {
-        // Remplir la dernière colonne de caisses en bois si besoin
+        // Remplir la dernière colonne de mur en pierre si besoin
         if (logiqueDeJeu.getNombreJoueurs() != 4) {
             for (int i = 0; i < taillePlateau; i++) {
-                this.setCase(i, taillePlateau - 1, "b");
+                this.setCase(i, taillePlateau - 1, "p");
             }
         }
 

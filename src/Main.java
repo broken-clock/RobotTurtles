@@ -5,6 +5,7 @@ public class Main {
         LogiqueDeJeu logiqueDeJeu = new LogiqueDeJeu();
 
         logiqueDeJeu.initialiserPartie();
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         logiqueDeJeu.lancerPartie();
 
     }
