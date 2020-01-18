@@ -1,0 +1,17 @@
+1) gérer nombres de joueurs (difficulté facile/moyen)
+2) ajouter le choix du gamemode/bug (facile)
+3) fixer le design du choix gamemode/bug (moyen/dur (je sais pas faire))
+4) design du bouton valider (facile)
+
+menu : 
+5)fixer affichage personnages (moyen/dur)
+6)mettre le bon nom au bon perso (facile)
+7)ajouter l'option bug (moyen)
+8) réparer l'option mur (j'en sais rien)
+9)indiquer qui doit jouer(facile/moyen)
+10)styles des cartes (facile/moyen)
+11)styles boutons (facile)
+12)gérer l'animation pour les déplacements (facile (pour décomposer action par action))
+13)animation laser (j'en sais rien)
+
+14)écran victoire manche/partie (moyen)
