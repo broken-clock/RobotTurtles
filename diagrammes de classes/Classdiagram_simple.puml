@@ -1,0 +1,93 @@
+@startuml
+'On ommet les getters et setters
+'src
+class Main {
+    logiqueDeJeu: LogiqueDeJeu
+
+    + static main(String[] args): void
+}
+
+class LogiqueDeJeu {
+}
+Main -- LogiqueDeJeu
+
+class Plateau {
+
+}
+Plateau -- LogiqueDeJeu
+
+class Case {
+}
+Case --* Plateau
+
+class Joueur {
+}
+Joueur -- LogiqueDeJeu
+
+'src.Tuiles
+abstract class Tuile {
+}
+Tuile -- LogiqueDeJeu
+Tuile --* Plateau
+
+enum Orientations {
+}
+
+class Position {
+}
+Position o-- Tuile
+Position -- Orientations
+
+class Tortue {
+}
+Tortue --|> Tuile
+Tortue --* Joueur
+
+class Joyau {
+}
+Joyau --|> Tuile
+
+class Obstacle {
+}
+Obstacle --|> Tuile
+
+'src.Cartes
+enum TypeCarte {
+}
+
+class Carte {
+}
+Carte -- TypeCarte
+
+class Deck {
+
+}
+Deck - CartesMain
+Deck --* Joueur
+Deck -- Carte
+
+class CartesMain {
+}
+CartesMain - Programme
+CartesMain --* Joueur
+CartesMain -- Carte
+
+class Programme {
+}
+Programme - Deck
+Programme --* Joueur
+Programme -- Carte
+
+'src.Interface
+interface Interface {
+}
+Interface -- LogiqueDeJeu
+
+class InterfaceGraphique {
+}
+InterfaceGraphique ..|> Interface
+
+class InterfaceConsole {
+}
+InterfaceConsole ..|> Interface
+@enduml
