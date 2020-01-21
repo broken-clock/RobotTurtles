@@ -41,4 +41,6 @@ public interface Interface {
     void afficherFinManche(LogiqueDeJeu logiqueDeJeu, int i);  // Pour le mode de jeu 3 à la suite, afficher les scores courants à la fin de chaque manche
     
     Parametres parametresMenu();
+
+	void actualiser();
 }

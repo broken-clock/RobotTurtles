@@ -121,6 +121,8 @@ public class Joueur {
 
     boolean placerMur(LogiqueDeJeu logiqueDeJeu, Obstacle obstacle) {
         String messagePossedePasObstacle = "Refusé: vous ne disposez pas d'un tel obstacle";
+        System.out.println(obstacle.getCoordsObstacle()[0]);
+        System.out.println(obstacle.getCoordsObstacle()[1]);
         if (obstacle.getTypeObstacle().equals("P")) {
             if (this.getMursDePierre() <= 0) {
                 logiqueDeJeu.getMonInterface().afficherMessage(messagePossedePasObstacle);
@@ -178,6 +180,7 @@ public class Joueur {
                     this.getTortue().lancerLaser(logiqueDeJeu);
                     break;
             }
+            logiqueDeJeu.getMonInterface().actualiser();
         }
     }
 

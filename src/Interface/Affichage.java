@@ -45,10 +45,10 @@ public class Affichage extends JFrame implements Interface {
 	public Affichage fenetre = this;
 	String joueur1;
 	String joueur2;
-	Image[] img = new Image[20];
+	Image[] img = new Image[25];
 	Image[] imgSkins = new Image[4];
 	public String[] noms = new String[4];
-	String[] personnage = {"Non","pieuvre", "requin", "grenouille","tortue"};
+	String[] personnage = {"Non","Pieuvre", "Requin", "Grenouille","Tortue"};
 	menuDeroulant liste1 = new menuDeroulant(personnage,0,380,0);
 	menuDeroulant liste2 = new menuDeroulant(personnage,305,380,1);
 	menuDeroulant liste3 = new menuDeroulant(personnage,610,380,2);
@@ -81,13 +81,17 @@ public class Affichage extends JFrame implements Interface {
 			img[15] = (new ImageIcon("src/images/avatarTortue.png")).getImage();
 			img[16] = (new ImageIcon("src/images/cellule2.png")).getImage();
 			img[17] = (new ImageIcon("src/images/RUBYgrand.png")).getImage();
+			img[18] = (new ImageIcon("src/images/carteAvancer.png")).getImage();
+			img[19] = (new ImageIcon("src/images/carteGauche.png")).getImage();
+			img[20] = (new ImageIcon("src/images/carteDroite.png")).getImage();
+			img[21] = (new ImageIcon("src/images/carteLaser.png")).getImage();
 
 
 
 
 		  	this.setVisible(true);
 	        this.setResizable(true);
-	        this.setSize(1280, 800);
+	        this.setSize(1280, 835);
 	        this.setTitle("Robot Turtles");
 	        this.setLocationRelativeTo(null);
 	        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,21 +139,19 @@ public class Affichage extends JFrame implements Interface {
 				g.drawString("Veuillez choisir les joueurs :",15, 340);
 
 				for(int i=0;i<4;i++) {
-				if(choix[i] == "pieuvre") {
+				if(choix[i] == "Pieuvre") {
 					g.drawImage(img[0], 60 + 305*i, 380  , this); 
 				}
-				else if(choix[i]== "requin") {
+				else if(choix[i]== "Requin") {
 					g.drawImage(img[1], 60 +305*i,360  , this); 
 				}
-				else if(choix[i]== "grenouille") {
+				else if(choix[i]== "Grenouille") {
 					g.drawImage(img[2], 60 +305*i, 390  , this); 
 				}
-				else if(choix[i]== "tortue") {
+				else if(choix[i]== "Tortue") {
 					g.drawImage(img[3], 60 +305*i, 370  , this); 
 				}
-				else if(choix[i]== "plongeur") {
-					g.drawImage(img[4], 60 +305*i, 360  , this); 
-				}
+
 				else {
 					g.drawImage(img[5], 60 +305*i, 360  , this); 
 
@@ -253,6 +255,7 @@ public class Affichage extends JFrame implements Interface {
 
 			}
 			  public void paintComponent(Graphics g){
+				  	
 				  	g.setColor(Color.black);
 					this.setLocation(posx, posy);
 					this.setSize(345, 180);
@@ -267,25 +270,38 @@ public class Affichage extends JFrame implements Interface {
 	    
 	  }
 }
+	  public boolean persoDiff(ArrayList<Integer> personnageJeu) {
+		  for (int i=1;i<personnage.length;i++) {
+			  if (Collections.frequency(personnageJeu, i)>1) {
+				  return false;
+			  }
+		  }
+		  return true;
+	  }
 	  public Parametres parametresMenu() {
+		  ArrayList<Integer> perso = new ArrayList<Integer>();
+		  perso.add(liste1.getSelectedIndex());
+		  perso.add(liste2.getSelectedIndex());
+		  perso.add(liste3.getSelectedIndex());
+		  perso.add(liste4.getSelectedIndex());
 
 		  int nbJoueurs = 0;
 		  fenetre.setContentPane(menu);
 		  System.out.println("1");
-		  while (menu.getValidation() == false) {		
+		  while (!menu.getValidation() || !persoDiff(perso)) {		
 				  try {									//sans mettre d'instructions dans le while ça fonctionne pas donc je met un thread sleep
 					Thread.sleep(50);
+					  perso.set(0,liste1.getSelectedIndex());
+					  perso.set(1,liste2.getSelectedIndex());
+					  perso.set(2,liste3.getSelectedIndex());
+					  perso.set(3,liste4.getSelectedIndex());
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 		  }
 		  System.out.println("3");
 
-		  ArrayList<Integer> perso = new ArrayList<Integer>();
-		  perso.add(liste1.getSelectedIndex());
-		  perso.add(liste2.getSelectedIndex());
-		  perso.add(liste3.getSelectedIndex());
-		  perso.add(liste4.getSelectedIndex());
+
 		  Collections.sort(perso, Collections.reverseOrder());
 
 		  int i = 0;
@@ -348,6 +364,7 @@ public class Affichage extends JFrame implements Interface {
 		  String modeJeu;
 		  int nbJoueurs;
 		  ArrayList<Joyau> joyaux = new ArrayList();
+
 		  
 		  public Jeu(Plateau plateau,ArrayList<Joueur> joueurs,Joueur joueurCourant,String modeJeu,int nbJoueurs,ArrayList<Joyau> joyaux) {
 			  this.plateau =plateau;
@@ -357,16 +374,26 @@ public class Affichage extends JFrame implements Interface {
 			  this.nbJoueurs = nbJoueurs;
 			  this.joyaux = joyaux;
 			  //On ajoute les boutons de controle
-				Bouton boutonC = new Bouton("Completer",190,400,900,560,new Color(255,36,25));
-				Bouton boutonE = new Bouton("Executer",190,400,1090,560,new Color(233,76,54));
-				Bouton boutonB = new Bouton("Bloquer",190,400,710,560, new Color(254,99,155));
+			  if (modeJeu == "3 a la suite") {
+				  Bouton boutonBug = new Bouton("Bug",285,120,710,680,new Color(255,36,25));
+					Bouton boutonC = new Bouton("Completer",285,120,995,560,new Color(255,36,25));
+					Bouton boutonE = new Bouton("Executer",285,120,995,680,new Color(233,76,54));
+					Bouton boutonB = new Bouton("Bloquer",285,120,710,560, new Color(254,99,155));
+					add(boutonC);
+					add(boutonE);
+					add(boutonB);
+					add(boutonBug);
+			  }
+			  else {
+				Bouton boutonC = new Bouton("Completer",190,240,900,560,new Color(255,36,25));
+				Bouton boutonE = new Bouton("Executer",190,240,1090,560,new Color(233,76,54));
+				Bouton boutonB = new Bouton("Bloquer",190,240,710,560, new Color(254,99,155));
 				add(boutonC);
 				add(boutonE);
 				add(boutonB);
-
-
 		  }
-		  public Plateau getPlateau() {
+		  }
+			  public Plateau getPlateau() {
 			  return plateau;
 		  }
 		  public void setPlateau(Plateau plateau) {
@@ -435,23 +462,24 @@ public class Affichage extends JFrame implements Interface {
 						orientation = 0;  
 					}
 					else if (joueurs.get(i).getTortue().getPosition().getOrientation() == Orientations.LEFT) {
-						orientation = 3*Math.PI/2;
+						orientation = 3*(Math.PI)/2;
 					}
 					else if (joueurs.get(i).getTortue().getPosition().getOrientation() == Orientations.RIGHT) {
-						orientation = Math.PI/2;
+						orientation = (Math.PI)/2;
 					}
 					System.out.println(orientation);
 					AffineTransform rotation = new AffineTransform();
-					rotation.setToTranslation(360 + CELL_SIZE * positionY, CELL_SIZE*positionX);
-					rotation.setToRotation(orientation, (360 + CELL_SIZE * positionY+70)/2, (CELL_SIZE*positionX+70)/2);
+					rotation.translate(360 + (CELL_SIZE * positionY), CELL_SIZE*positionX);
+					rotation.rotate(orientation, CELL_SIZE/2, CELL_SIZE/2);
 					g2d.drawImage(imgSkins[i],rotation,null);
+					
 					//rotation.rotate(-orientation, (360 + CELL_SIZE * positionY+70)/2, (CELL_SIZE*positionX+70)/2);
 				//	rotation.translate(-(360 + CELL_SIZE * positionY),-( CELL_SIZE*positionX));
 					//g2d.rotate(orientation, (360 + CELL_SIZE * positionY+70)/2, (CELL_SIZE*positionX+70)/2);
 					//g.drawImage(imgSkins[i],360 + CELL_SIZE * positionY, CELL_SIZE*positionX,ecran);
 					//g2d.rotate(2*Math.PI-orientation, (360 + CELL_SIZE * positionY+70)/2, (CELL_SIZE*positionX+70)/2);
 
-					
+
 				  	}
 				  //dessine joyaux
 				  for(int i=0;i<joyaux.size();i++) {
@@ -462,26 +490,27 @@ public class Affichage extends JFrame implements Interface {
 				  }
 				//dessine la main
 			        for (int i=0; i<joueurCourant.getCartesMain().getCartesMain().size();i++) {
+			        	int dessin = 0;
 			        	Carte carteMain = joueurCourant.getCartesMain().getCartesMain().get(i);
 						if (carteMain.getTypeCarte() == TypeCarte.CARTE_BLEUE) {
-							g.setColor(Color.blue);
+							dessin = 18;
 						}
 						else if (carteMain.getTypeCarte() == TypeCarte.CARTE_JAUNE) {
-							g.setColor(Color.yellow);
+							dessin = 19;
 						}
 						else if (carteMain.getTypeCarte() == TypeCarte.CARTE_VIOLETTE) {
-							g.setColor(Color.magenta);
+							dessin = 20;
 						}
 						else if (carteMain.getTypeCarte() == TypeCarte.LASER) {
-							g.setColor(Color.CYAN);
+							dessin = 21;
 			        }
-					g.fillRect(25+(135*i), 600, 130, 360);
+					g.drawImage(img[dessin],25+(135*i), 600,this);
 			        }
 					//Rectangle de gauche affichant l'Ã©tat de la partie
 					g.setColor(Color.black);
 					g.setFont(new Font("TimesRoman", Font.PLAIN, 16)); 
 					if(modeJeu == "3 a la suite") { 
-						g.drawString("Mode de jeu : Trois à  la suite - Partie 2/3", 10, 20);
+						g.drawString("Mode de jeu : Trois à  la suite - Partie 1/3", 10, 20);
 					}
 					else {
 						g.drawString("Mode de jeu : Partie normale", 10, 20);
@@ -500,8 +529,10 @@ public class Affichage extends JFrame implements Interface {
 						g.drawString("x" + joueurs.get(i).getMursDePierre(), 170, 110 + j*200);		//le nombre de murs de pierre
 						g.drawImage(img[10], 210, 75 + j * 200, this); //l'instruction
 						g.drawString("x" + joueurs.get(i).getProgramme().getProgramme().size(), 265, 110 + j*200);		//le nombre d'instructions
+						if (modeJeu == "3 a la suite") {
 						g.drawImage(img[9], 10, 140 + j * 200, this); //Joyau
-						g.drawString("3 points", 65, 175 + j*200);		//le nombre de murs de pierre
+						g.drawString(joueurs.get(i).getScore() + "points", 65, 175 + j*200);		//le nombre de murs de pierre
+						}
 						j++;
 					//On affiche les donnÃ©es correspondantes au joueur actif
 					}
@@ -514,8 +545,11 @@ public class Affichage extends JFrame implements Interface {
 					g.drawString("x" + joueurCourant.getMursDePierre(), 1025, 235);		//le nombre de murs de pierre
 					g.drawImage(img[10], 950, 300, this); //Instruction
 					g.drawString("x" + joueurCourant.getProgramme().getProgramme().size(), 1025, 335);		//Le nombre d'instructions
+					if (modeJeu == "3 a la suite") {
 					g.drawImage(img[9], 950, 400, this); //joyau
-					g.drawString("x2", 1025, 435);		//Le nombre de points
+					g.drawString(joueurs.get(j).getScore() + "points", 1025, 435);		//Le nombre de points
+
+					}
 						}
 		  }
 	  }
@@ -605,7 +639,7 @@ public class Affichage extends JFrame implements Interface {
 	  		JFrame fenetreCompleter = new JFrame();
 	  		fenetreCompleter.setVisible(true);
 	        fenetreCompleter.setResizable(true);
-	        fenetreCompleter.setSize(800, 600);
+	        fenetreCompleter.setSize(800, 300);
 	        fenetreCompleter.setTitle(title);
 	        fenetreCompleter.setLocationRelativeTo(null);
 	        fenetreCompleter.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -647,7 +681,7 @@ public class Affichage extends JFrame implements Interface {
 	  		JFrame fenetreBloquer = new JFrame();
 	  		fenetreBloquer.setVisible(true);
 	        fenetreBloquer.setResizable(true);
-	        fenetreBloquer.setSize(800, 600);
+	        fenetreBloquer.setSize(800, 200);
 	        fenetreBloquer.setTitle("Compléter le programme");
 	        fenetreBloquer.setLocationRelativeTo(null);
 	        fenetreBloquer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -672,8 +706,8 @@ public class Affichage extends JFrame implements Interface {
 		    fenetreBloquer.add(choixMur);
 		    String[] position = {"1","2","3","4","5","6","7","8"};
 
-		    JComboBox<?> positionX = new JComboBox(position) ;
-		    JComboBox<int[]> positionY = new JComboBox(position) ;
+		    JComboBox<String> positionX = new JComboBox<String>(position) ;
+		    JComboBox<String> positionY = new JComboBox<String>(position) ;
 		    positionX.setMaximumSize(new Dimension(300, 150));
 		    fenetreBloquer.add(positionX);
 		   	fenetreBloquer.add(positionY);
@@ -696,7 +730,7 @@ public class Affichage extends JFrame implements Interface {
 			
 		    });
 	        fenetreBloquer.add(valide);
-	        while (ObstacleSelectionne== null) {
+	        while (ObstacleSelectionne == null) {
 				  try {									//sans mettre d'instructions dans le while ça fonctionne pas donc je met un thread sleep
 					Thread.sleep(50);
 				} catch (InterruptedException e) {
@@ -730,28 +764,27 @@ public class Affichage extends JFrame implements Interface {
 	  		    this.fenetreC = fenetreC;
 	  		    addMouseListener(this);
 	  		    this.setName(name);
-	  		    int hauteur = (int) (fenetreC.getHeight()*0.8);
+	  		    int hauteur = (int) (fenetreC.getHeight()*0.75);
 	  		    int longueur = (int) (fenetreC.getWidth()*0.185);
 	  		    this.setPreferredSize(new Dimension(longueur , hauteur ));
 	  	}
 	  	  public void paintComponent(Graphics g){
-
+	  		  int dessin =0;
+	  		  this.setSize(130, 200);
 	  		  if (name == "CARTE_BLEUE") {
-					g.setColor(Color.blue);
+					dessin = 18;
 				}
 				if (name == "CARTE_JAUNE") {
-					g.setColor(Color.yellow);
+					dessin = 19;
 				}
 				if (name == "CARTE_VIOLETTE") {
-					g.setColor(Color.magenta);
+					dessin = 20;
 				}
 				if (name == "LASER") {
-					g.setColor(Color.CYAN);
+					dessin=21;
 	        }
-	  		    g.fillRect(0, 0, this.getWidth(), this.getHeight());
-	  		    g.setColor(Color.BLACK);
-	  		    g.drawString(this.name, (this.getWidth()/2) -25 , (this.getHeight() / 2) + 5);
-	  		    
+	  		   
+	  		    g.drawImage(img[dessin],0,0,this);	  		    
 	  		    
 	  		  }
 	  	@Override
@@ -841,6 +874,17 @@ public class Affichage extends JFrame implements Interface {
 		public void afficherProgramme(LogiqueDeJeu logiqueDeJeu) {
 			// TODO Auto-generated method stub
 			
+		}
+		public void actualiser() {
+			fenetre.revalidate();
+			fenetre.repaint();
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
 		}
 }
 
