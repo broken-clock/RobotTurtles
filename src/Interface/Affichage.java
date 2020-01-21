@@ -53,8 +53,8 @@ public class Affichage extends JFrame implements Interface {
 	menuDeroulant liste2 = new menuDeroulant(personnage,305,380,1);
 	menuDeroulant liste3 = new menuDeroulant(personnage,610,380,2);
 	menuDeroulant liste4 = new menuDeroulant(personnage,915,380,3);
-	toggleButton toggleButtonTroisALaSuite = new toggleButton("Mode trois à la suite",150,700);
-	toggleButton toggleButtonCarteBug = new toggleButton("Carte Bug",450,700);
+	toggleButton toggleButtonTroisALaSuite = new toggleButton("Mode trois à la suite",85,660);
+	toggleButton toggleButtonCarteBug = new toggleButton("     Carte Bug",570,660);
 	public int cell;
 	public static final int CELL_SIZE =70;
 	public JPanel ecran;
@@ -85,7 +85,9 @@ public class Affichage extends JFrame implements Interface {
 			img[19] = (new ImageIcon("src/images/carteGauche.png")).getImage();
 			img[20] = (new ImageIcon("src/images/carteDroite.png")).getImage();
 			img[21] = (new ImageIcon("src/images/carteLaser.png")).getImage();
-
+			img[22] = (new ImageIcon("src/images/designToggleButtonON.png")).getImage();
+			img[23] = (new ImageIcon("src/images/designToggleButtonOFF.png")).getImage();
+			img[24] = (new ImageIcon("src/images/boutonValider.png")).getImage();
 
 
 
@@ -118,7 +120,7 @@ public class Affichage extends JFrame implements Interface {
 
 				add(toggleButtonTroisALaSuite);
 				add(toggleButtonCarteBug);
-				Bouton valider = new Bouton("valider",300,150,900,600,Color.blue);
+				Bouton valider = new Bouton("valider",300,250,950,620,Color.blue);
 			    add(valider);
 				System.out.println(toggleButtonTroisALaSuite.isSelected());
 		       
@@ -129,15 +131,14 @@ public class Affichage extends JFrame implements Interface {
 				g.drawImage(img[6],0,0,this);
 				g.setFont(new Font("Anton Bold DB", Font.PLAIN, 200)); 
 				g.setColor(Color.GREEN);
-				g.drawString("Robot Turtle ",100, 200);
+				g.drawString("Robot Turtles ",40, 200);
 				g.setFont(new Font("Anton Bold DB", Font.ITALIC, 60)); 
 				g.setColor(Color.red);
 				g.drawString("DELUXE EDITION",400, 270);
 
 				g.setFont(new Font("Anton Bold DB", Font.BOLD, 40)); 
-				g.setColor(Color.black);
+				g.setColor(Color.white);
 				g.drawString("Veuillez choisir les joueurs :",15, 340);
-
 				for(int i=0;i<4;i++) {
 				if(choix[i] == "Pieuvre") {
 					g.drawImage(img[0], 60 + 305*i, 380  , this); 
@@ -185,6 +186,7 @@ public class Affichage extends JFrame implements Interface {
 			 private String texte;
 			 private int posx;
 			 private int posy;
+			 private int state;
 
 
 			public toggleButton(String str,int posx, int posy) {
@@ -197,7 +199,7 @@ public class Affichage extends JFrame implements Interface {
 				    ItemListener itemListener = new ItemListener() {
 						@Override
 				        public void itemStateChanged(ItemEvent itemEvent) {
-				            int state = itemEvent.getStateChange();
+				            state = itemEvent.getStateChange();
 				            if (state == ItemEvent.SELECTED) {
 							    if (texte == "Mode trois à la suite") {
 				            	menu.setModeDeJeu("3 a la suite"); 
@@ -219,18 +221,26 @@ public class Affichage extends JFrame implements Interface {
 
 							    }
 				            		}
+				            fenetre.repaint();
 								}
 				    		};
 
 				    this.addItemListener(itemListener);
 				}
 			  public void paintComponent(Graphics g){
-				  	g.setColor(Color.black);
-				  	g.drawRect(posx, posy, this.getWidth()/2, this.getHeight()/2);
-				  	this.setText(texte);
+				  g.setColor(Color.white);
+				  if(state == ItemEvent.SELECTED ) {
+				  g.drawImage(img[22],0,0,null);
+				  g.drawString(texte + " ON", 65,30);
+
+				  }
+				  else {
+					g.drawImage(img[23],0,0,null);
+					g.drawString(texte + " OFF", 65,30);
+
+				  }
 					this.setLocation(posx, posy);
-					this.setSize(150, 50);
-					g.drawString(texte, posx, posy);
+					this.setSize(250, 70);
 				  }
 	  }
 	  //Classe créant nos menu déroulants
@@ -318,21 +328,6 @@ public class Affichage extends JFrame implements Interface {
 		  menu.removeAll();
 
 		  return parametres;
-		//  while(i<nbJoueurs-1) {
-		//	  
-		//  }
-		//  if(perso.get(0) != perso.get(1) && perso.get(1) != perso.get(2) &&  perso.get(2) != perso.get(3))   {
-
-	  
-	//	  else {
-		//		    JFrame frame = new JFrame("showMessageDialog");
-		//		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//		    JOptionPane.showMessageDialog(frame,
-		//		            "Veuillez prendre des personnages différents afin de pouvoir commencer une partie",
-		//		            "Erreur",
-		//		            JOptionPane.ERROR_MESSAGE);
-		//		}
-		//  }
 	  }
 	  
 	  public void afficherPlateau(LogiqueDeJeu etatDuJeu) {
@@ -559,7 +554,7 @@ public class Affichage extends JFrame implements Interface {
 	  }
 	  	 public class Bouton extends JButton implements MouseListener {
 	  	 private String name;
-	  	 private int posx;
+	  	 private int posx; 
 	  	 private int sizex;
 	  	 private int sizey;
 	  	 private int posy;
@@ -580,12 +575,18 @@ public class Affichage extends JFrame implements Interface {
 	  			this.setSize(sizex, sizey);
 	  			this.setLocation(posx, posy);
 	  			g.setColor(color);
-	  		    g.fillRect(0, 0, this.getWidth(), this.getHeight());
-	  		    g.setColor(Color.BLACK);
-	  		    g.drawString(this.name, (this.getWidth()/2) -25 , (this.getHeight() / 2) + 5);
-	  		    
-	  		    
+	  		  if (this.name == "valider") {
+	  			  this.setBorderPainted(false);
+	  			g.drawImage(img[24],0,0,null);
+
 	  		  }
+	  		  else {
+		  			g.setColor(color);
+		  		    g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		  		    g.setColor(Color.BLACK);
+		  		    g.drawString(this.name, (this.getWidth()/2) -25 , (this.getHeight() / 2) + 5);
+	  		  }
+	  	  }
 	  	@Override
 	  	public void mouseClicked(MouseEvent arg0) {
 	  		if (this.name == "Bloquer") {
@@ -597,7 +598,7 @@ public class Affichage extends JFrame implements Interface {
 	  		else if (this.name == "Completer") {
 	  				action = "P";
 	  	}
-	  		else if (this.name == "bug") {
+	  		else if (this.name == "Bug") {
   				action = "B";
   	}
 	  		else if (this.name == "valider") {
@@ -611,13 +612,13 @@ public class Affichage extends JFrame implements Interface {
 	  	@Override
 	  	public void mouseEntered(MouseEvent arg0) {
 	  		// TODO Auto-generated method stub
-	  		
+	  		fenetre.repaint();
 	  	}
 
 	  	@Override
 	  	public void mouseExited(MouseEvent arg0) {
 	  		// TODO Auto-generated method stub
-	  		
+	  		fenetre.repaint();
 	  	}
 
 	  	@Override
@@ -742,6 +743,42 @@ public class Affichage extends JFrame implements Interface {
 			return ObstacleRetour;
 			
 	  	 }
+	  	 
+			public int demanderCibleCarteBug(LogiqueDeJeu logiqueDeJeu) {
+				int cible = 2;
+				JFrame fenetreBloquer = new JFrame();
+		  		fenetreBloquer.setVisible(true);
+		        fenetreBloquer.setResizable(true);
+		        fenetreBloquer.setSize(800, 600);
+		        fenetreBloquer.setTitle("Cible de la carte Bug");
+		        fenetreBloquer.setLocationRelativeTo(null);
+		        fenetreBloquer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		        ArrayList<JButton> boutonCible = new ArrayList<JButton>();
+	        	int j=0;
+		        for(int i=0; i<logiqueDeJeu.getNombreJoueurs();i++) {
+		        	if(i != logiqueDeJeu.getJoueurCourant().getNumeroJoueur()) {
+		        	boutonCible.add(new JButton(noms[i]));
+		        	boutonCible.get(j).addActionListener(new ActionListener(){
+		        		
+		        		@Override
+		    			public void actionPerformed(ActionEvent arg0)  {
+		        		int cible = 2;
+		        	}
+		        	});
+		        	fenetreBloquer.add(boutonCible.get(j));
+		        	j++;
+		        }
+			}
+				  while(cible == 2) {						
+					  try {									//sans mettre d'instructions dans le while ça fonctionne pas 
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				  }
+		        return cible;
+		        }
+
 
 
 	  	 
@@ -821,8 +858,8 @@ public class Affichage extends JFrame implements Interface {
 	  		// TODO Auto-generated method stub
 	  		
 	  	}
-
 	  	 }
+	  	 
 	  	public void afficherFinManche(LogiqueDeJeu a,int i) {
 	  		ecran.removeAll();
 	  		ecran = new Victoire(a.getJoueurCourant(),i);
@@ -856,12 +893,6 @@ public class Affichage extends JFrame implements Interface {
 			return selectionnerCarte();
 		}
 
-
-		@Override
-		public int demanderCibleCarteBug(LogiqueDeJeu logiqueDeJeu) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
 
 		@Override
 		public String demanderChoixDefausse() {

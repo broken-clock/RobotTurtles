@@ -294,15 +294,15 @@ public class LogiqueDeJeu {
                         this.getJoueurCourant().executerPrgm(this);
                         break;
 
-         //           case "B":  // Utiliser sa carte bug
-         //               int numeroJoueurCibleBug = this.getMonInterface().demanderCibleCarteBug(this);
-        //                if (!getJoueurCourant().isCarteBug())
-        //                    this.getMonInterface().afficherMessage("Refusé: vous n'avez plus de carte bug");
-        //                else {
-        //                    getJoueurCourant().setCarteBug(false);  // Le joueur courant a consommé sa carte bug
-       //                     this.getJoueurs().get(numeroJoueurCibleBug).subirBug();  // Le joueur cible subit les effets de la carte bug ajoutée à son programme
-       //                 }
-       //                 break;
+                   case "B":  // Utiliser sa carte bug
+                       int numeroJoueurCibleBug = this.getMonInterface().demanderCibleCarteBug(this);
+                        if (!getJoueurCourant().isCarteBug())
+                            this.getMonInterface().afficherMessage("Refusé: vous n'avez plus de carte bug");
+                        else {
+                           getJoueurCourant().setCarteBug(false);  // Le joueur courant a consommé sa carte bug
+                            this.getJoueurs().get(numeroJoueurCibleBug).subirBug();  // Le joueur cible subit les effets de la carte bug ajoutée à son programme
+                        }
+                        break;
                 }
                 if (this.isGameOver()) break;
                 System.out.println("abcdfinsess");
