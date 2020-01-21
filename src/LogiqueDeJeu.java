@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LogiqueDeJeu {
-    private Affichage monInterface;
+    private Interface monInterface;
     private int nombreJoueurs;
     private ArrayList<Integer> ordreJoueurs;
     private String modeJeu;
@@ -83,12 +83,12 @@ public class LogiqueDeJeu {
         return joyaux;
     }
 
-    public Affichage getMonInterface() {
+    public Interface getMonInterface() {
         return monInterface;
     }
 
-    public void setMonInterface(Affichage affichage) {
-        this.monInterface = affichage;
+    public void setMonInterface(Interface interfacee) {
+        this.monInterface = interfacee;
     }
 
     private void initialiserPositionsPlateauOrdrepassage() {
@@ -232,15 +232,15 @@ public class LogiqueDeJeu {
                 if (this.isGameOver()) break;
                 System.out.println("focusJoueur: " + focusJoueur);
                 setJoueurCourant(this.getJoueurs().get(focusJoueur));
-            	this.getMonInterface().afficherPlateauJeu(this);
-                getJoueurCourant().setAction(this.getMonInterface().demanderAction());
+            	this.getMonInterface().afficherPlateau(this);
+                getJoueurCourant().setAction(this.getMonInterface().demanderAction(this));
                 switch (getJoueurCourant().getAction()) {
                     case "P":  // ComplÃ©ter le programme
-                        this.getMonInterface().afficherCartesMain("compléter le programme",this.getJoueurCourant().getCartesMain().getCartesMain());
+                        this.getMonInterface().afficherCartesMain("compléter le programme",this);
                         boolean continuerAjouterCartes = true;
                         while (continuerAjouterCartes) {
 
-                            String carteStr = this.getMonInterface().selectionnerCarte(this.getJoueurCourant().getCartesMain().getCartesMain());
+                            String carteStr = this.getMonInterface().demanderCarteAAjouterAProgramme();
                             System.out.println(carteStr);
 
                             TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
@@ -308,9 +308,9 @@ public class LogiqueDeJeu {
                 System.out.println("abcdfinsess");
 
                 boolean continuerDefausserCartes = true;
-                this.getMonInterface().afficherCartesMain("choissisez les cartes à défausser",this.getJoueurCourant().getCartesMain().getCartesMain());
+                this.getMonInterface().afficherCartesMain("choissisez les cartes à défausser",this);
                 while (continuerDefausserCartes) {
-                	String carteStr = this.getMonInterface().selectionnerCarte(this.getJoueurCourant().getCartesMain().getCartesMain());     
+                	String carteStr = this.getMonInterface().demanderChoixDefausse();     
                 	TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
                     switch (carteStr) {
                         case "CARTE_BLEUE":

@@ -72,7 +72,7 @@ public class InterfaceConsole implements Interface {
     }
 
     @Override
-    public void afficherCartesMain(LogiqueDeJeu logiqueDeJeu) {
+    public void afficherCartesMain(String str, LogiqueDeJeu logiqueDeJeu) {
         System.out.println("Cartes dans votre main:");
         for (Carte carteMain : logiqueDeJeu.getJoueurCourant().getCartesMain().getCartesMain()) {
             System.out.println(carteMain.getTypeCarte());

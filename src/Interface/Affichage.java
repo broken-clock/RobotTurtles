@@ -13,6 +13,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -36,7 +37,7 @@ import src.LogiqueDeJeu;
 import src.Parametres;
 import src.Plateau;
 
-public class Affichage extends JFrame {
+public class Affichage extends JFrame implements Interface {
 	public String action = "";
 	public Carte carteSelectionnee = null;
 	public Obstacle ObstacleSelectionne = null;
@@ -46,11 +47,14 @@ public class Affichage extends JFrame {
 	String joueur2;
 	Image[] img = new Image[20];
 	Image[] imgSkins = new Image[4];
-	String[] personnage = {"Non","pieuvre", "requin", "grenouille","tortue","plongeur"};
-	menuDeroulant liste1 = new menuDeroulant(personnage,0,650,0);
-	menuDeroulant liste2 = new menuDeroulant(personnage,305,650,1);
-	menuDeroulant liste3 = new menuDeroulant(personnage,610,650,2);
-	menuDeroulant liste4 = new menuDeroulant(personnage,915,650,3);
+	public String[] noms = new String[4];
+	String[] personnage = {"Non","pieuvre", "requin", "grenouille","tortue"};
+	menuDeroulant liste1 = new menuDeroulant(personnage,0,380,0);
+	menuDeroulant liste2 = new menuDeroulant(personnage,305,380,1);
+	menuDeroulant liste3 = new menuDeroulant(personnage,610,380,2);
+	menuDeroulant liste4 = new menuDeroulant(personnage,915,380,3);
+	toggleButton toggleButtonTroisALaSuite = new toggleButton("Mode trois à la suite",150,700);
+	toggleButton toggleButtonCarteBug = new toggleButton("Carte Bug",450,700);
 	public int cell;
 	public static final int CELL_SIZE =70;
 	public JPanel ecran;
@@ -65,7 +69,7 @@ public class Affichage extends JFrame {
 			img[3] = (new ImageIcon("src/images/tortueAccueil.png")).getImage();
 			img[4] = (new ImageIcon("src/images/plongeurAccueil.png")).getImage();
 			img[5] = (new ImageIcon("src/images/noAccueil.png")).getImage();
-			img[6] = (new ImageIcon("src/images/test1.jpg")).getImage();
+			img[6] = (new ImageIcon("src/images/image de fond menu.png")).getImage();
 			img[7] = (new ImageIcon("src/images/ICE.png")).getImage();
 			img[8] = (new ImageIcon("src/images/WALL.png")).getImage();
 			img[9] = (new ImageIcon("src/images/RUBY.png")).getImage();
@@ -83,7 +87,7 @@ public class Affichage extends JFrame {
 
 		  	this.setVisible(true);
 	        this.setResizable(true);
-	        this.setSize(1280, 960);
+	        this.setSize(1280, 800);
 	        this.setTitle("Robot Turtles");
 	        this.setLocationRelativeTo(null);
 	        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,18 +105,16 @@ public class Affichage extends JFrame {
 
 			public Menu() {
 				validation = false;
-				modeJeu = "3 a la suite";
+				modeJeu = "normal";
 				modeBug = false;
 				add(liste1);
 				add(liste2);
 				add(liste3);
 				add(liste4);
 
-				toggleButton toggleButtonTroisALaSuite = new toggleButton("Mode trois à la suite",100,400);
-				toggleButton toggleButtonCarteBug = new toggleButton("Carte Bug",400,400);
 				add(toggleButtonTroisALaSuite);
 				add(toggleButtonCarteBug);
-				Bouton valider = new Bouton("valider",150,150,800,400,Color.cyan);
+				Bouton valider = new Bouton("valider",300,150,900,600,Color.blue);
 			    add(valider);
 				System.out.println(toggleButtonTroisALaSuite.isSelected());
 		       
@@ -130,30 +132,31 @@ public class Affichage extends JFrame {
 
 				g.setFont(new Font("Anton Bold DB", Font.BOLD, 40)); 
 				g.setColor(Color.black);
-				g.drawString("Veuillez choisir les joueurs :",15, 580);
+				g.drawString("Veuillez choisir les joueurs :",15, 340);
 
 				for(int i=0;i<4;i++) {
 				if(choix[i] == "pieuvre") {
-					g.drawImage(img[0], 60 + 305*i, 600  , this); 
+					g.drawImage(img[0], 60 + 305*i, 380  , this); 
 				}
 				else if(choix[i]== "requin") {
-					g.drawImage(img[1], 60 +305*i, 600  , this); 
+					g.drawImage(img[1], 60 +305*i,360  , this); 
 				}
 				else if(choix[i]== "grenouille") {
-					g.drawImage(img[2], 60 +305*i, 600  , this); 
+					g.drawImage(img[2], 60 +305*i, 390  , this); 
 				}
 				else if(choix[i]== "tortue") {
-					g.drawImage(img[3], 60 +305*i, 600  , this); 
+					g.drawImage(img[3], 60 +305*i, 370  , this); 
 				}
 				else if(choix[i]== "plongeur") {
-					g.drawImage(img[4], 60 +305*i, 600  , this); 
+					g.drawImage(img[4], 60 +305*i, 360  , this); 
 				}
 				else {
-					g.drawImage(img[5], 60 +305*i, 600  , this); 
+					g.drawImage(img[5], 60 +305*i, 360  , this); 
 
 				}
-
 			}
+				toggleButtonTroisALaSuite.repaint();
+
 			}
 			public void setModeDeJeu(String ModeJeu) {
 				this.modeJeu = ModeJeu;
@@ -188,31 +191,43 @@ public class Affichage extends JFrame {
 				    this.posx= posx;
 				    this.posy = posy;
 				    this.texte = str;
-				    if (this.texte == "Mode trois à la suite") {
+
 				    ItemListener itemListener = new ItemListener() {
 						@Override
 				        public void itemStateChanged(ItemEvent itemEvent) {
 				            int state = itemEvent.getStateChange();
 				            if (state == ItemEvent.SELECTED) {
+							    if (texte == "Mode trois à la suite") {
 				            	menu.setModeDeJeu("3 a la suite"); 
+				            	System.out.println("3ala");
+							    }
+							    else {
+					            menu.setCarteBug(true); 
+				            	System.out.println("bug");
+
+							    }	    
 				            } else {
+							    if (texte == "Mode trois à la suite") {
+					            System.out.println("!3ala");
 				                menu.setModeDeJeu("normal"); 
+							    }
+							    else {
+							    menu.setCarteBug(false);
+				            	System.out.println("!bug");
+
+							    }
 				            		}
 								}
 				    		};
-				    	}
-				    else {
-				    
-				    }
+
 				    this.addItemListener(itemListener);
 				}
 			  public void paintComponent(Graphics g){
 				  	g.setColor(Color.black);
-				  	this.setFocusPainted(false);
-				  	this.setText(this.texte);
+				  	g.drawRect(posx, posy, this.getWidth()/2, this.getHeight()/2);
+				  	this.setText(texte);
 					this.setLocation(posx, posy);
 					this.setSize(150, 50);
-					
 					g.drawString(texte, posx, posy);
 				  }
 	  }
@@ -233,14 +248,14 @@ public class Affichage extends JFrame {
 				    this.compteur=compteur;
 				    for(int i=0;i<str.length;i++)
 				    this.addItem(str[i]);
-				    this.setSelectedIndex(1);
+				    this.setSelectedIndex(0);
 				    addActionListener(this);
 
 			}
 			  public void paintComponent(Graphics g){
 				  	g.setColor(Color.black);
 					this.setLocation(posx, posy);
-					this.setSize(345, 260);
+					this.setSize(345, 180);
 				
 				  }
 			    public void actionPerformed(ActionEvent e) {
@@ -253,6 +268,7 @@ public class Affichage extends JFrame {
 	  }
 }
 	  public Parametres parametresMenu() {
+
 		  int nbJoueurs = 0;
 		  fenetre.setContentPane(menu);
 		  System.out.println("1");
@@ -271,9 +287,13 @@ public class Affichage extends JFrame {
 		  perso.add(liste3.getSelectedIndex());
 		  perso.add(liste4.getSelectedIndex());
 		  Collections.sort(perso, Collections.reverseOrder());
+
 		  int i = 0;
 		  while (i<4 && perso.get(i) != 0) {
-		  imgSkins[i] = img[(perso.get(i)+12)];
+				  System.out.println(perso.get(i));
+		  imgSkins[i] = img[(perso.get(i)+11)];
+		  noms[i] = personnage[perso.get(i)];
+		 
 		  i++;
 		  nbJoueurs++;
 		  }
@@ -299,7 +319,7 @@ public class Affichage extends JFrame {
 		//  }
 	  }
 	  
-	  public void afficherPlateauJeu(LogiqueDeJeu etatDuJeu) {
+	  public void afficherPlateau(LogiqueDeJeu etatDuJeu) {
 		ecran = new Jeu(etatDuJeu.getPlateau(),etatDuJeu.getJoueurs(),etatDuJeu.getJoueurCourant(),etatDuJeu.getModeJeu(),etatDuJeu.getNombreJoueurs(),etatDuJeu.getJoyaux());
 
 		fenetre.setContentPane(ecran);
@@ -307,7 +327,7 @@ public class Affichage extends JFrame {
 		fenetre.repaint(); 
 	  }
 	  
-	  public String demanderAction() {
+	  public String demanderAction(LogiqueDeJeu LogiqueDeJeu) {
 		  while(action == "") {						
 			  try {									//sans mettre d'instructions dans le while ça fonctionne pas 
 				Thread.sleep(50);
@@ -387,7 +407,7 @@ public class Affichage extends JFrame {
 				for (int i=0; i< 8;i++) {
 					for (int j=0; j<8;j++) {
 						String valeurCase = plateau.getCase(i, j);
-						if (valeurCase == "g") {	//p correspond au mur de pierre
+						if (valeurCase == "p") {	//p correspond au mur de pierre
 							cell = 8;
 						}
 						else if (valeurCase =="g") { //g correspond au mur de glace
@@ -404,24 +424,33 @@ public class Affichage extends JFrame {
 					
 				}
 				  for(int i=0;i<nbJoueurs;i++) {
+					  
 					int positionX =joueurs.get(i).getTortue().getPosition().getX();
 					int positionY =joueurs.get(i).getTortue().getPosition().getY();
 					System.out.println(positionX);
 					System.out.println(positionY);
-					int orientation = 180 ;
+					System.out.println(noms[i]);
+					double orientation = Math.PI ;
 					if (joueurs.get(i).getTortue().getPosition().getOrientation() == Orientations.UP) {
 						orientation = 0;  
 					}
 					else if (joueurs.get(i).getTortue().getPosition().getOrientation() == Orientations.LEFT) {
-						orientation = 270;
+						orientation = 3*Math.PI/2;
 					}
 					else if (joueurs.get(i).getTortue().getPosition().getOrientation() == Orientations.RIGHT) {
-						orientation = 90;
+						orientation = Math.PI/2;
 					}
-					
-					g2d.rotate(orientation, (CELL_SIZE*positionY+70)/2, (CELL_SIZE*positionX+70)/2);	//On effectue la rotation au centre de notre image
-					g.drawImage(imgSkins[i],360 + CELL_SIZE * positionY, CELL_SIZE*positionX,ecran);
-					g2d.rotate(-orientation, (CELL_SIZE*positionY+70)/2, (CELL_SIZE*positionX+70)/2);	//On effectue la rotation au centre de notre image
+					System.out.println(orientation);
+					AffineTransform rotation = new AffineTransform();
+					rotation.setToTranslation(360 + CELL_SIZE * positionY, CELL_SIZE*positionX);
+					rotation.setToRotation(orientation, (360 + CELL_SIZE * positionY+70)/2, (CELL_SIZE*positionX+70)/2);
+					g2d.drawImage(imgSkins[i],rotation,null);
+					//rotation.rotate(-orientation, (360 + CELL_SIZE * positionY+70)/2, (CELL_SIZE*positionX+70)/2);
+				//	rotation.translate(-(360 + CELL_SIZE * positionY),-( CELL_SIZE*positionX));
+					//g2d.rotate(orientation, (360 + CELL_SIZE * positionY+70)/2, (CELL_SIZE*positionX+70)/2);
+					//g.drawImage(imgSkins[i],360 + CELL_SIZE * positionY, CELL_SIZE*positionX,ecran);
+					//g2d.rotate(2*Math.PI-orientation, (360 + CELL_SIZE * positionY+70)/2, (CELL_SIZE*positionX+70)/2);
+
 					
 				  	}
 				  //dessine joyaux
@@ -451,7 +480,7 @@ public class Affichage extends JFrame {
 					//Rectangle de gauche affichant l'Ã©tat de la partie
 					g.setColor(Color.black);
 					g.setFont(new Font("TimesRoman", Font.PLAIN, 16)); 
-					if(modeJeu == "t") { 
+					if(modeJeu == "3 a la suite") { 
 						g.drawString("Mode de jeu : Trois à  la suite - Partie 2/3", 10, 20);
 					}
 					else {
@@ -463,7 +492,7 @@ public class Affichage extends JFrame {
 						if(joueurCourant.getNumeroJoueur() != i) {
 					//	if(joueur[i] != joueurActif)
 						g.setFont(new Font("TimesRoman", Font.PLAIN, 40)); 
-						g.drawString("Requin", 15, 60+j*200);
+						g.drawString(noms[i], 15, 60+j*200);
 						
 						g.drawImage(img[7], 10, 75 + j * 200, this); //le mur de glace
 						g.drawString("x" + joueurs.get(i).getMursDeGlace(), 65, 110 + j*200);		//le nombre de murs de glace
@@ -478,7 +507,7 @@ public class Affichage extends JFrame {
 					}
 						else {
 					g.setFont(new Font("TimesRoman", Font.PLAIN, 60)); 
-					g.drawString("Tortue", 950, 50); //On affiche le nom du joueur
+					g.drawString(noms[j], 950, 50); //On affiche le nom du joueur
 					g.drawImage(img[7], 950, 100, this); //le mur de glace
 					g.drawString("x" + joueurCourant.getMursDeGlace(), 1025, 135);		//le nombre de murs de glace
 					g.drawImage(img[8], 950, 200, this); //le mur de pierre
@@ -571,7 +600,8 @@ public class Affichage extends JFrame {
 
 	  	 }
 	  //La fonction qui se lance quand on appuie sur compléter
-	  	 public void afficherCartesMain(String title,ArrayList<Carte> cartesMain) {
+	  	 public void afficherCartesMain(String title,LogiqueDeJeu logiqueDeJeu) {
+	  		ArrayList<Carte> cartesMain = logiqueDeJeu.getJoueurCourant().getCartesMain().getCartesMain();
 	  		JFrame fenetreCompleter = new JFrame();
 	  		fenetreCompleter.setVisible(true);
 	        fenetreCompleter.setResizable(true);
@@ -599,7 +629,7 @@ public class Affichage extends JFrame {
 		    });
 	        fenetreCompleter.add(valide);
 	        	  	 }
-	  	public String selectionnerCarte(ArrayList<Carte> cartesMain) {
+	  	public String selectionnerCarte() {
 	  		while (carteSelectionnee == null) {
 				  try {									//sans mettre d'instructions dans le while ça fonctionne pas donc je met un thread sleep
 					Thread.sleep(50);
@@ -785,5 +815,32 @@ public class Affichage extends JFrame {
 	  	public void afficherMessage(String str) {
 	  		JOptionPane.showMessageDialog(null, str, "Alerte", JOptionPane.ERROR_MESSAGE);
 	  	}
+
+
+
+		@Override
+		public String demanderCarteAAjouterAProgramme() {
+			return selectionnerCarte();
+		}
+
+
+		@Override
+		public int demanderCibleCarteBug(LogiqueDeJeu logiqueDeJeu) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public String demanderChoixDefausse() {
+			return selectionnerCarte();
+		}
+
+
+
+		@Override
+		public void afficherProgramme(LogiqueDeJeu logiqueDeJeu) {
+			// TODO Auto-generated method stub
+			
+		}
 }
 
