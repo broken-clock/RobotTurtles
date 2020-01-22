@@ -16,6 +16,7 @@ import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -149,13 +150,13 @@ public class Affichage extends JFrame implements Interface {
             g.setColor(Color.white);
             g.drawString("Veuillez choisir les joueurs :", 15, 340);
             for (int i = 0; i < 4; i++) {
-                if (choix[i].equals("Pieuvre")) {
+                if (Objects.equals(choix[i], "Pieuvre")) {
                     g.drawImage(img[0], 60 + 305 * i, 380, this);
-                } else if (choix[i].equals("Requin")) {
+                } else if (Objects.equals(choix[i], "Requin")) {
                     g.drawImage(img[1], 60 + 305 * i, 360, this);
-                } else if (choix[i].equals("Grenouille")) {
+                } else if (Objects.equals(choix[i], "Grenouille")) {
                     g.drawImage(img[2], 60 + 305 * i, 390, this);
-                } else if (choix[i].equals("Tortue")) {
+                } else if (Objects.equals(choix[i], "Tortue")) {
                     g.drawImage(img[3], 60 + 305 * i, 370, this);
                 } else {
                     g.drawImage(img[5], 60 + 305 * i, 360, this);
@@ -353,7 +354,7 @@ public class Affichage extends JFrame implements Interface {
     }
 
     public String demanderAction(LogiqueDeJeu LogiqueDeJeu) {
-        while (action.equals("")) {
+        while (Objects.equals(action, "")) {
             try {                                    //sans mettre d'instructions dans le while �a fonctionne pas
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -454,9 +455,9 @@ public class Affichage extends JFrame implements Interface {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     String valeurCase = plateau.getCase(i, j);
-                    if (valeurCase.equals("p")) {    //p correspond au mur de pierre
+                    if (Objects.equals(valeurCase, "p")) {    //p correspond au mur de pierre
                         cell = 8;
-                    } else if (valeurCase.equals("g")) { //g correspond au mur de glace
+                    } else if (Objects.equals(valeurCase, "g")) { //g correspond au mur de glace
                         cell = 7;
                     } else {
                         cell = 16;
@@ -521,7 +522,7 @@ public class Affichage extends JFrame implements Interface {
             //Rectangle de gauche affichant l'état de la partie
             g.setColor(Color.black);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 16));
-            if (modeJeu.equals("3 a la suite")) {
+            if (Objects.equals(modeJeu, "3 a la suite")) {
                 g.drawString("Mode de jeu : Trois a la suite - Partie 1/3", 10, 20);
             } else {
                 g.drawString("Mode de jeu : Partie normale", 10, 20);
@@ -540,7 +541,7 @@ public class Affichage extends JFrame implements Interface {
                     g.drawString("x" + joueurs.get(i).getMursDePierre(), 170, 110 + j * 200);        //le nombre de murs de pierre
                     g.drawImage(img[10], 210, 75 + j * 200, this); //l'instruction
                     g.drawString("x" + joueurs.get(i).getProgramme().getProgramme().size(), 265, 110 + j * 200);        //le nombre d'instructions
-                    if (modeJeu.equals("3 a la suite")) {
+                    if (Objects.equals(modeJeu, "3 a la suite")) {
                         g.drawImage(img[9], 10, 140 + j * 200, this); //Joyau
                         g.drawString(joueurs.get(i).getScore() + "points", 65, 175 + j * 200);        //le nombre de murs de pierre
                     }
@@ -555,7 +556,7 @@ public class Affichage extends JFrame implements Interface {
                     g.drawString("x" + joueurCourant.getMursDePierre(), 1025, 235);        //le nombre de murs de pierre
                     g.drawImage(img[10], 950, 300, this); //Instruction
                     g.drawString("x" + joueurCourant.getProgramme().getProgramme().size(), 1025, 335);        //Le nombre d'instructions
-                    if (modeJeu.equals("3 a la suite")) {
+                    if (Objects.equals(modeJeu, "3 a la suite")) {
                         g.drawImage(img[9], 950, 400, this); //joyau
                         g.drawString(joueurs.get(j).getScore() + "points", 1025, 435);        //Le nombre de points
 
@@ -592,7 +593,7 @@ public class Affichage extends JFrame implements Interface {
             this.setSize(sizex, sizey);
             this.setLocation(posx, posy);
             g.setColor(color);
-            if (this.name.equals("valider")) {
+            if (Objects.equals(this.name, "valider")) {
                 this.setBorderPainted(false);
                 g.drawImage(img[24], 0, 0, null);
 
@@ -606,15 +607,15 @@ public class Affichage extends JFrame implements Interface {
 
         @Override
         public void mouseClicked(MouseEvent arg0) {
-            if (this.name.equals("Bloquer")) {
+            if (Objects.equals(this.name, "Bloquer")) {
                 action = "M";
-            } else if (this.name.equals("Executer")) {
+            } else if (Objects.equals(this.name, "Executer")) {
                 action = "E";
-            } else if (this.name.equals("Completer")) {
+            } else if (Objects.equals(this.name, "Completer")) {
                 action = "P";
-            } else if (this.name.equals("Bug")) {
+            } else if (Objects.equals(this.name, "Bug")) {
                 action = "B";
-            } else if (this.name.equals("valider")) {
+            } else if (Objects.equals(this.name, "valider")) {
                 menu.setValidation(true);
             }
         }
@@ -735,7 +736,7 @@ public class Affichage extends JFrame implements Interface {
                 // TODO Auto-generated method stub
                 String typeMur = "g";
                 int[] coord = {positionX.getSelectedIndex(), positionY.getSelectedIndex()};
-                if (choixMur.getText().equals("Mur de pierre")) {
+                if (Objects.equals(choixMur.getText(), "Mur de pierre")) {
                     typeMur = "p";
                 }
                 ObstacleSelectionne = new Obstacle(typeMur, coord);
@@ -804,13 +805,13 @@ public class Affichage extends JFrame implements Interface {
         public void paintComponent(Graphics g) {
             this.setSize(280, 280);
             this.setLocation(posx, 10);
-            if (name.equals("Tortue")) {
+            if (Objects.equals(name, "Tortue")) {
                 g.drawImage(img[3], posx, 10, null);
-            } else if (name.equals("Pieuvre")) {
+            } else if (Objects.equals(name, "Pieuvre")) {
                 g.drawImage(img[0], posx, 10, null);
-            } else if (name.equals("Requin")) {
+            } else if (Objects.equals(name, "Requin")) {
                 g.drawImage(img[1], posx, 10, null);
-            } else if (name.equals("Grenouille")) {
+            } else if (Objects.equals(name, "Grenouille")) {
                 g.drawImage(img[2], posx, 10, null);
             }
         }
@@ -882,16 +883,16 @@ public class Affichage extends JFrame implements Interface {
         public void paintComponent(Graphics g) {
             int dessin = 0;
             this.setSize(130, 200);
-            if (name.equals("CARTE_BLEUE")) {
+            if (Objects.equals(name, "CARTE_BLEUE")) {
                 dessin = 18;
             }
-            if (name.equals("CARTE_JAUNE")) {
+            if (Objects.equals(name, "CARTE_JAUNE")) {
                 dessin = 19;
             }
-            if (name.equals("CARTE_VIOLETTE")) {
+            if (Objects.equals(name, "CARTE_VIOLETTE")) {
                 dessin = 20;
             }
-            if (name.equals("LASER")) {
+            if (Objects.equals(name, "LASER")) {
                 dessin = 21;
             }
 

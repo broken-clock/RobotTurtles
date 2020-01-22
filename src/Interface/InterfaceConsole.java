@@ -43,7 +43,7 @@ public class InterfaceConsole implements Interface {
         int nombreJoueurs;
         do {
             System.out.println("Combien de joueurs ? (entre 2 et 4): ");
-            nombreJoueurs = scanner.nextInt();
+            nombreJoueurs = Integer.parseInt(scanner.nextLine().trim());
         } while (nombreJoueurs < 2 || nombreJoueurs > 4);
 
         String modeJeu;
@@ -113,8 +113,8 @@ public class InterfaceConsole implements Interface {
 
         int[] coordsObstacle = new int[2];
         System.out.println("A quelles coordonées ?");
-        coordsObstacle[0] = scanner.nextInt();
-        coordsObstacle[1] = scanner.nextInt();
+        coordsObstacle[0] = Integer.parseInt(scanner.nextLine().trim());
+        coordsObstacle[1] = Integer.parseInt(scanner.nextLine().trim());
         return new Obstacle(typeObstacle, coordsObstacle);
     }
 
@@ -123,7 +123,7 @@ public class InterfaceConsole implements Interface {
         int cibleCarteBug;
         do {
             System.out.println("Entrez le numéro du joueur à qui vous voulez poser votre carte bug:");
-            cibleCarteBug = scanner.nextInt();
+            cibleCarteBug = Integer.parseInt(scanner.nextLine().trim());
         } while (cibleCarteBug < 0 || cibleCarteBug > logiqueDeJeu.getNombreJoueurs() - 1 || cibleCarteBug == logiqueDeJeu.getJoueurCourant().getNumeroJoueur());
         return cibleCarteBug;
     }

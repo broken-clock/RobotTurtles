@@ -195,7 +195,7 @@ public class LogiqueDeJeu {
 
     void initialiserPartie() {
         // Choix du type d'interface
-        this.setMonInterface(new Affichage());
+        this.setMonInterface(new InterfaceConsole());
         Parametres parametres = this.getMonInterface().parametresMenu();
         System.out.println("modejeu: " + parametres.gameMode);
         this.nombreJoueurs = parametres.getNbJoueurs();
