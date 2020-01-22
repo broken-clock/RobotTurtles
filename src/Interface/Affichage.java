@@ -98,6 +98,13 @@ public class Affichage extends JFrame implements Interface {
         img[23] = (new ImageIcon("src/images/designToggleButtonOFF.png")).getImage();
         img[24] = (new ImageIcon("src/images/boutonValider.png")).getImage();
         img[25] = (new ImageIcon("src/images/victoire.png")).getImage();
+        img[26] = (new ImageIcon("src/images/poissonBug.png")).getImage();
+        img[28] = (new ImageIcon("src/images/poissonExecuter.png")).getImage();
+        img[29] = (new ImageIcon("src/images/poissonCompleter.png")).getImage();
+        img[30] = (new ImageIcon("src/images/poissonBloquer.png")).getImage();
+
+
+
 
 
         this.setVisible(true);
