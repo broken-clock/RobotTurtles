@@ -15,12 +15,12 @@ public class Joueur {
     private Programme programme = new Programme();
     private int mursDePierre;
     private int mursDeGlace;
-    private String action;  // Action demandée par le joueur à chaque tour de jeu
+    private String action;  // Action demandÃ©e par le joueur Ã  chaque tour de jeu
     private boolean fini;
 
     public Joueur(LogiqueDeJeu logiqueDeJeu) {
         this.fini = false;
-        this.setClassement(logiqueDeJeu.getNombreJoueurs());  // Classement du dernier joueur. Si ce joueur ne finit pas en dernier, on mettra à jour cet attribut
+        this.setClassement(logiqueDeJeu.getNombreJoueurs());  // Classement du dernier joueur. Si ce joueur ne finit pas en dernier, on mettra Ã  jour cet attribut
     }
 
     public int getClassement() {
@@ -143,8 +143,8 @@ public class Joueur {
             }
         }
 
-        if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
-            logiqueDeJeu.getMonInterface().afficherMessage("Refuse: la case demandee est deja� occupee");
+        if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandÃ©e est dÃ©jÃ  occupÃ©e
+            logiqueDeJeu.getMonInterface().afficherMessage("Refuse: la case demandee est deja  occupee");
             return false;
         }
         // Les murs de glace sont destructibles donc ne peuvent pas bloquer l'acces a un joyau
@@ -199,7 +199,7 @@ public class Joueur {
     }
 
     void terminerTour() {
-        // Si besoin, remplir cartesMain jusqu'à avoir 5 cartes
+        // Si besoin, remplir cartesMain jusqu'Ã  avoir 5 cartes
         this.getCartesMain().tirerCartesDuDeck(this, 5 - this.getCartesMain().getCartesMain().size());
     }
 }

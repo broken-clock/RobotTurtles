@@ -16,7 +16,6 @@ import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,7 +54,7 @@ public class Affichage extends JFrame implements Interface {
     menuDeroulant liste2 = new menuDeroulant(personnage, 305, 380, 1);
     menuDeroulant liste3 = new menuDeroulant(personnage, 610, 380, 2);
     menuDeroulant liste4 = new menuDeroulant(personnage, 915, 380, 3);
-    toggleButton toggleButtonTroisALaSuite = new toggleButton("Mode trois a la suite", 85, 660);
+    toggleButton toggleButtonTroisALaSuite = new toggleButton("Mode trois � la suite", 85, 660);
     toggleButton toggleButtonCarteBug = new toggleButton("     Carte Bug", 570, 660);
     public int cell;
     public static final int CELL_SIZE = 70;
@@ -103,7 +102,7 @@ public class Affichage extends JFrame implements Interface {
 
         this.setVisible(true);
         this.setResizable(true);
-        this.setSize(1280, 835);
+        this.setSize(1280, 825);
         this.setTitle("Robot Turtles");
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -144,19 +143,19 @@ public class Affichage extends JFrame implements Interface {
             g.drawString("Robot Turtles ", 40, 200);
             g.setFont(new Font("Anton Bold DB", Font.ITALIC, 60));
             g.setColor(Color.red);
-            g.drawString("DELUXE EDITION", 400, 270);
+            g.drawString("DELUXE EDITION SPECIAL 2002", 200, 270);
 
             g.setFont(new Font("Anton Bold DB", Font.BOLD, 40));
             g.setColor(Color.white);
             g.drawString("Veuillez choisir les joueurs :", 15, 340);
             for (int i = 0; i < 4; i++) {
-                if (Objects.equals(choix[i], "Pieuvre")) {
+                if (choix[i] == "Pieuvre") {
                     g.drawImage(img[0], 60 + 305 * i, 380, this);
-                } else if (Objects.equals(choix[i], "Requin")) {
+                } else if (choix[i] == "Requin") {
                     g.drawImage(img[1], 60 + 305 * i, 360, this);
-                } else if (Objects.equals(choix[i], "Grenouille")) {
+                } else if (choix[i] == "Grenouille") {
                     g.drawImage(img[2], 60 + 305 * i, 390, this);
-                } else if (Objects.equals(choix[i], "Tortue")) {
+                } else if (choix[i] == "Tortue") {
                     g.drawImage(img[3], 60 + 305 * i, 370, this);
                 } else {
                     g.drawImage(img[5], 60 + 305 * i, 360, this);
@@ -213,8 +212,8 @@ public class Affichage extends JFrame implements Interface {
                 public void itemStateChanged(ItemEvent itemEvent) {
                     state = itemEvent.getStateChange();
                     if (state == ItemEvent.SELECTED) {
-                        if (texte.equals("Mode trois a la suite")) {
-                            menu.setModeDeJeu("3alasuite");
+                        if (texte == "Mode trois � la suite") {
+                            menu.setModeDeJeu("3 a la suite");
                             System.out.println("3ala");
                         } else {
                             menu.setCarteBug(true);
@@ -222,7 +221,7 @@ public class Affichage extends JFrame implements Interface {
 
                         }
                     } else {
-                        if (texte.equals("Mode trois a la suite")) {
+                        if (texte == "Mode trois � la suite") {
                             System.out.println("!3ala");
                             menu.setModeDeJeu("normal");
                         } else {
@@ -315,7 +314,7 @@ public class Affichage extends JFrame implements Interface {
         System.out.println("1");
         while (!menu.getValidation() || !persoDiff(perso)) {
             try {                                    //sans mettre d'instructions dans le while �a fonctionne pas donc je met un thread sleep
-                Thread.sleep(50);
+                Thread.sleep(20);
                 perso.set(0, liste1.getSelectedIndex());
                 perso.set(1, liste2.getSelectedIndex());
                 perso.set(2, liste3.getSelectedIndex());
@@ -354,9 +353,9 @@ public class Affichage extends JFrame implements Interface {
     }
 
     public String demanderAction(LogiqueDeJeu LogiqueDeJeu) {
-        while (Objects.equals(action, "")) {
+        while (action == "") {
             try {                                    //sans mettre d'instructions dans le while �a fonctionne pas
-                Thread.sleep(50);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -455,9 +454,9 @@ public class Affichage extends JFrame implements Interface {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     String valeurCase = plateau.getCase(i, j);
-                    if (Objects.equals(valeurCase, "p")) {    //p correspond au mur de pierre
+                    if (valeurCase == "p") {    //p correspond au mur de pierre
                         cell = 8;
-                    } else if (Objects.equals(valeurCase, "g")) { //g correspond au mur de glace
+                    } else if (valeurCase == "g") { //g correspond au mur de glace
                         cell = 7;
                     } else {
                         cell = 16;
@@ -522,7 +521,7 @@ public class Affichage extends JFrame implements Interface {
             //Rectangle de gauche affichant l'état de la partie
             g.setColor(Color.black);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 16));
-            if (Objects.equals(modeJeu, "3 a la suite")) {
+            if (modeJeu == "3 a la suite") {
                 g.drawString("Mode de jeu : Trois a la suite - Partie 1/3", 10, 20);
             } else {
                 g.drawString("Mode de jeu : Partie normale", 10, 20);
@@ -541,7 +540,7 @@ public class Affichage extends JFrame implements Interface {
                     g.drawString("x" + joueurs.get(i).getMursDePierre(), 170, 110 + j * 200);        //le nombre de murs de pierre
                     g.drawImage(img[10], 210, 75 + j * 200, this); //l'instruction
                     g.drawString("x" + joueurs.get(i).getProgramme().getProgramme().size(), 265, 110 + j * 200);        //le nombre d'instructions
-                    if (Objects.equals(modeJeu, "3 a la suite")) {
+                    if (modeJeu == "3 a la suite") {
                         g.drawImage(img[9], 10, 140 + j * 200, this); //Joyau
                         g.drawString(joueurs.get(i).getScore() + "points", 65, 175 + j * 200);        //le nombre de murs de pierre
                     }
@@ -556,7 +555,7 @@ public class Affichage extends JFrame implements Interface {
                     g.drawString("x" + joueurCourant.getMursDePierre(), 1025, 235);        //le nombre de murs de pierre
                     g.drawImage(img[10], 950, 300, this); //Instruction
                     g.drawString("x" + joueurCourant.getProgramme().getProgramme().size(), 1025, 335);        //Le nombre d'instructions
-                    if (Objects.equals(modeJeu, "3 a la suite")) {
+                    if (modeJeu == "3 a la suite") {
                         g.drawImage(img[9], 950, 400, this); //joyau
                         g.drawString(joueurs.get(j).getScore() + "points", 1025, 435);        //Le nombre de points
 
@@ -593,7 +592,7 @@ public class Affichage extends JFrame implements Interface {
             this.setSize(sizex, sizey);
             this.setLocation(posx, posy);
             g.setColor(color);
-            if (Objects.equals(this.name, "valider")) {
+            if (this.name == "valider") {
                 this.setBorderPainted(false);
                 g.drawImage(img[24], 0, 0, null);
 
@@ -607,15 +606,15 @@ public class Affichage extends JFrame implements Interface {
 
         @Override
         public void mouseClicked(MouseEvent arg0) {
-            if (Objects.equals(this.name, "Bloquer")) {
+            if (this.name == "Bloquer") {
                 action = "M";
-            } else if (Objects.equals(this.name, "Executer")) {
+            } else if (this.name == "Executer") {
                 action = "E";
-            } else if (Objects.equals(this.name, "Completer")) {
+            } else if (this.name == "Completer") {
                 action = "P";
-            } else if (Objects.equals(this.name, "Bug")) {
+            } else if (this.name == "Bug") {
                 action = "B";
-            } else if (Objects.equals(this.name, "valider")) {
+            } else if (this.name == "valider") {
                 menu.setValidation(true);
             }
         }
@@ -683,7 +682,7 @@ public class Affichage extends JFrame implements Interface {
     public String selectionnerCarte() {
         while (carteSelectionnee == null) {
             try {                                    //sans mettre d'instructions dans le while sa fonctionne pas donc je met un thread sleep
-                Thread.sleep(50);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -719,7 +718,6 @@ public class Affichage extends JFrame implements Interface {
         };
         choixMur.addItemListener(itemListenerChoixMur);
         choixMur.setSize(200, 200);
-        choixMur.repaint();
         fenetreBloquer.add(choixMur);
         String[] position = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
@@ -736,7 +734,7 @@ public class Affichage extends JFrame implements Interface {
                 // TODO Auto-generated method stub
                 String typeMur = "g";
                 int[] coord = {positionX.getSelectedIndex(), positionY.getSelectedIndex()};
-                if (Objects.equals(choixMur.getText(), "Mur de pierre")) {
+                if (choixMur.getText() == "Mur de pierre") {
                     typeMur = "p";
                 }
                 ObstacleSelectionne = new Obstacle(typeMur, coord);
@@ -747,9 +745,10 @@ public class Affichage extends JFrame implements Interface {
 
         });
         fenetreBloquer.add(valide);
+        fenetreBloquer.repaint();
         while (ObstacleSelectionne == null) {
             try {                                    //sans mettre d'instructions dans le while �a fonctionne pas donc je met un thread sleep
-                Thread.sleep(50);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -772,19 +771,34 @@ public class Affichage extends JFrame implements Interface {
         int j = 0;
         for (int i = 0; i < logiqueDeJeu.getNombreJoueurs(); i++) {
             if (i != logiqueDeJeu.getJoueurCourant().getNumeroJoueur()) {
-                fenetreBug.add(new BoutonBug(j * 300, logiqueDeJeu.getNombreJoueurs(), j, noms[j]));
+                fenetreBug.add(new BoutonBug(j * 300, logiqueDeJeu.getNombreJoueurs(), i, noms[i]));
                 j++;
             }
         }
         while (cible == 10) {
             try {                                    //sans mettre d'instructions dans le while �a fonctionne pas
-                Thread.sleep(50);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        fenetreBug.dispose();
         return cible;
-    }
+    }      
+    //ArrayList<BoutonBug> listeBug = new ArrayList<BoutonBug>();
+   // listeBug.add(new BoutonBug(0, logiqueDeJeu.getNombreJoueurs(), 0, noms[0]));
+    //listeBug.add(new BoutonBug(0, logiqueDeJeu.getNombreJoueurs(), 0, noms[0]));
+    //listeBug.add(new BoutonBug(0, logiqueDeJeu.getNombreJoueurs(), 0, noms[0]));
+   // listeBug.add(new BoutonBug(0, logiqueDeJeu.getNombreJoueurs(), 0, noms[0]));
+
+   // for (int i = 0; i < logiqueDeJeu.getNombreJoueurs(); i++) {
+   //     if (i != logiqueDeJeu.getJoueurCourant().getNumeroJoueur()) {
+    //    	listeBug.get(i).setPosx(j*300);
+    //    	listeBug.get(i).setIdJoueur(i);
+     //   	listeBug.get(i).setName(noms[i]);
+     //       j++;
+     //       listeBug.get(i).repaint();
+     //   }
 
 
     private class BoutonBug extends JButton implements MouseListener {
@@ -805,13 +819,13 @@ public class Affichage extends JFrame implements Interface {
         public void paintComponent(Graphics g) {
             this.setSize(280, 280);
             this.setLocation(posx, 10);
-            if (Objects.equals(name, "Tortue")) {
+            if (name == "Tortue") {
                 g.drawImage(img[3], posx, 10, null);
-            } else if (Objects.equals(name, "Pieuvre")) {
+            } else if (name == "Pieuvre") {
                 g.drawImage(img[0], posx, 10, null);
-            } else if (Objects.equals(name, "Requin")) {
+            } else if (name == "Requin") {
                 g.drawImage(img[1], posx, 10, null);
-            } else if (Objects.equals(name, "Grenouille")) {
+            } else if (name == "Grenouille") {
                 g.drawImage(img[2], posx, 10, null);
             }
         }
@@ -853,6 +867,21 @@ public class Affichage extends JFrame implements Interface {
         public int getIdJoueur() {
             return idJoueur;
         }
+        public void setIdJoueur(int idJoueur) {
+        	this.idJoueur = idJoueur;
+        }
+        public void setPosx(int posX) {
+        	this.posx = posX;
+        }
+        public void setName(String nom) {
+        	this.name = name;
+        }
+        public String getName() {
+        	return name;
+        }
+        public int getPosx() {
+        	return posx;
+        }
     }
 
     //Classe responsable de la creation des boutons de choix d'action
@@ -883,16 +912,16 @@ public class Affichage extends JFrame implements Interface {
         public void paintComponent(Graphics g) {
             int dessin = 0;
             this.setSize(130, 200);
-            if (Objects.equals(name, "CARTE_BLEUE")) {
+            if (name == "CARTE_BLEUE") {
                 dessin = 18;
             }
-            if (Objects.equals(name, "CARTE_JAUNE")) {
+            if (name == "CARTE_JAUNE") {
                 dessin = 19;
             }
-            if (Objects.equals(name, "CARTE_VIOLETTE")) {
+            if (name == "CARTE_VIOLETTE") {
                 dessin = 20;
             }
-            if (Objects.equals(name, "LASER")) {
+            if (name == "LASER") {
                 dessin = 21;
             }
 
@@ -946,13 +975,18 @@ public class Affichage extends JFrame implements Interface {
 
         public Victoire(LogiqueDeJeu logiqueDeJeu) {
             this.logiqueDeJeu = logiqueDeJeu;
-
+           
         }
 
         public void paintComponent(Graphics g) {
             g.drawImage(img[25], 0, 0, this);
-            g.drawString(noms[logiqueDeJeu.getNombreJoueursGagne()], 50, 50);
-
+            g.setFont(new Font("Anton Bold DB", Font.PLAIN, 100));
+            g.setColor(Color.LIGHT_GRAY);
+            for(int i=0;i<logiqueDeJeu.getNombreJoueurs();i++) {
+            g.drawString(noms[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 50, 100+200*i);
+            g.drawImage(imgSkins[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 1100,50+200*i,null);
+            g.drawString("place :" + logiqueDeJeu.getJoueurs().get(i).getClassement(),600,100+200*i);
+            }
         }
     }
 
@@ -992,7 +1026,7 @@ public class Affichage extends JFrame implements Interface {
         fenetre.revalidate();
         fenetre.repaint();
         try {
-            Thread.sleep(200);
+            Thread.sleep(300);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

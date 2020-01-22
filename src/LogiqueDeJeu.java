@@ -111,7 +111,7 @@ public class LogiqueDeJeu {
                 this.getJoueurs().get(1).getTortue().setPosition(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
                 this.getJoueurs().get(1).getTortue().setPositionDepart(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
 
-                // Créer les joyaux et définir leur position
+                // CrÃ©er les joyaux et dÃ©finir leur position
                 this.getJoyaux().add(new Joyau());
                 this.getJoyaux().get(0).setPosition(7, 3, null);
                 break;
@@ -134,7 +134,7 @@ public class LogiqueDeJeu {
                 this.getJoueurs().get(2).getTortue().setPosition(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
                 this.getJoueurs().get(2).getTortue().setPositionDepart(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
 
-                // Créer les joyaux et définir leur position
+                // CrÃ©er les joyaux et dÃ©finir leur position
                 for (int i = 0; i < 3; i++) {
                     this.getJoyaux().add(new Joyau());
                 }
@@ -166,7 +166,7 @@ public class LogiqueDeJeu {
                 this.getJoueurs().get(3).getTortue().setPosition(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
                 this.getJoueurs().get(3).getTortue().setPositionDepart(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
 
-                // Créer les joyaux et définir leur position
+                // CrÃ©er les joyaux et dÃ©finir leur position
                 for (int i = 0; i < 2; i++) {
                     this.getJoyaux().add(new Joyau());
                 }
@@ -175,7 +175,7 @@ public class LogiqueDeJeu {
                 break;
         }
 
-        // Initialisation du plateau à partir des objets créés précédemment
+        // Initialisation du plateau Ã  partir des objets crÃ©Ã©s prÃ©cÃ©demment
         this.setPlateau(new Plateau());
         this.getPlateau().initPlateau(this);
 
@@ -202,7 +202,7 @@ public class LogiqueDeJeu {
         this.setModeJeu(parametres.getModeJeu());
         this.setModeBug(parametres.getModeBug());
 
-        // Création du nombre adéquat de joueurs et initialisation pour chaque joueur de ses obstacles disponibles et de ses cartesMain initiales
+        // CrÃ©ation du nombre adÃ©quat de joueurs et initialisation pour chaque joueur de ses obstacles disponibles et de ses cartesMain initiales
         for (int i = 0; i < this.nombreJoueurs; i++) {
             this.getJoueurs().add(new Joueur(this));
             this.getJoueurs().get(i).setNumeroJoueur(i);
@@ -214,7 +214,7 @@ public class LogiqueDeJeu {
     }
 
     private void genererOrdrePassageJoueurs() {
-        // Génération de l'ordre de passage des joueurs
+        // GÃ©nÃ©ration de l'ordre de passage des joueurs
         int focusJoueur = this.initFocusJoueur();  // Choisit au hasard le joueur qui jouera en premier
         this.ordreJoueurs = new ArrayList();
         this.ordreJoueurs.add(focusJoueur);
@@ -223,13 +223,13 @@ public class LogiqueDeJeu {
     }
 
     private void reInitialiserPartie() {
-        // On refait uniquement les initialisations nécessaires pour lancer une nouvelle manche
+        // On refait uniquement les initialisations nÃ©cessaires pour lancer une nouvelle manche
         this.genererOrdrePassageJoueurs();
         this.setNombreJoueursGagne(0);
         this.setGameOver(false);
         this.initialiserPositionsPlateauOrdrepassage();
 
-        // Réinitialisation attributs (cartes, obstacles) de chaque joueur
+        // RÃ©initialisation attributs (cartes, obstacles) de chaque joueur
         for (int i = 0; i < this.nombreJoueurs; i++) {
             this.initialiserAttributsJoueurs(i);
         }
@@ -245,7 +245,7 @@ public class LogiqueDeJeu {
                 this.getMonInterface().afficherPlateau(this);
                 getJoueurCourant().setAction(this.getMonInterface().demanderAction(this));
                 switch (getJoueurCourant().getAction()) {
-                    case "P":  // Compléter le programme
+                    case "P":  // ComplÃ©ter le programme
                         this.getMonInterface().afficherCartesMain("completer le programme", this);
                         boolean continuerAjouterCartes = true;
                         while (continuerAjouterCartes) {
@@ -296,7 +296,7 @@ public class LogiqueDeJeu {
                         } while (!murPlaceOk);
                         break;
 
-                    case "E":  // Exécuter le programme
+                    case "E":  // ExÃ©cuter le programme
 
                         this.getJoueurCourant().executerPrgm(this);
                         break;
@@ -304,10 +304,10 @@ public class LogiqueDeJeu {
                     case "B":  // Utiliser sa carte bug
                         int numeroJoueurCibleBug = this.getMonInterface().demanderCibleCarteBug(this);
                         if (!getJoueurCourant().isCarteBug())
-                            this.getMonInterface().afficherMessage("Refusé: vous n'avez plus de carte bug");
+                            this.getMonInterface().afficherMessage("RefusÃ©: vous n'avez plus de carte bug");
                         else {
-                            getJoueurCourant().setCarteBug(false);  // Le joueur courant a consommé sa carte bug
-                            this.getJoueurs().get(numeroJoueurCibleBug).subirBug();  // Le joueur cible subit les effets de la carte bug ajoutée à son programme
+                            getJoueurCourant().setCarteBug(false);  // Le joueur courant a consommÃ© sa carte bug
+                            this.getJoueurs().get(numeroJoueurCibleBug).subirBug();  // Le joueur cible subit les effets de la carte bug ajoutÃ©e Ã  son programme
                         }
                         break;
                 }
@@ -376,7 +376,7 @@ public class LogiqueDeJeu {
                     this.reInitialiserPartie();
                     if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println("abcdRESET");
                 }
-                // Calcul du classement de chaque joueur en fonction de son nombre de points gagné durant les 3 manches
+                // Calcul du classement de chaque joueur en fonction de son nombre de points gagnÃ© durant les 3 manches
                 this.getJoueurs().sort(Comparator.comparing(Joueur::getScore));
                 for (int i = 0; i < this.nombreJoueurs; i++) {
                     this.getJoueurs().get(i).setClassement(this.nombreJoueurs - i);
