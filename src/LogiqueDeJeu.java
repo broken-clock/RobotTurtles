@@ -118,8 +118,8 @@ public class LogiqueDeJeu {
 
             case 3:
                 // Initialiser les positions des tortues
-                this.positionsInitialesJoueurs.add(new Position(6, 0, Orientations.DOWN));
-                this.positionsInitialesJoueurs.add(new Position(6, 3, Orientations.DOWN));
+                this.positionsInitialesJoueurs.add(new Position(0, 0, Orientations.DOWN));
+                this.positionsInitialesJoueurs.add(new Position(0, 3, Orientations.DOWN));
                 this.positionsInitialesJoueurs.add(new Position(0, 6, Orientations.DOWN));
 
                 positionDepart = this.positionsInitialesJoueurs.get(0);
@@ -197,6 +197,7 @@ public class LogiqueDeJeu {
         // Choix du type d'interface
         this.setMonInterface(new Affichage());
         Parametres parametres = this.getMonInterface().parametresMenu();
+        System.out.println("modejeu: " + parametres.gameMode);
         this.nombreJoueurs = parametres.getNbJoueurs();
         this.setModeJeu(parametres.getModeJeu());
         this.setModeBug(parametres.getModeBug());
