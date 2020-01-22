@@ -10,31 +10,16 @@ menu :
 7)ajouter l'option bug (moyen)
 8) réparer l'option mur (j'en sais rien)
 9)indiquer qui doit jouer(facile/moyen)										FAIT
-10)styles des cartes (facile/moyen)
+10)styles des cartes (facile/moyen)										FAIT
 11)styles boutons (facile)
 12)gérer l'animation pour les déplacements (facile (pour décomposer action par action))				FAIT
 13)animation laser (j'en sais rien)
 14) bug tp personnage (dur)
 =======
-1) gérer nombres de joueurs (difficulté facile/moyen)
-2) ajouter le choix du gamemode/bug (facile)
-3) fixer le design du choix gamemode/bug (moyen/dur (je sais pas faire))
-4) design du bouton valider (facile)
-
-menu : 
-5)fixer affichage personnages (moyen/dur)
-6)mettre le bon nom au bon perso (facile)
-7)ajouter l'option bug (moyen)
-8) réparer l'option mur (j'en sais rien)
-9)indiquer qui doit jouer(facile/moyen)
-10)styles des cartes (facile/moyen)
-11)styles boutons (facile)
-12)gérer l'animation pour les déplacements (facile (pour décomposer action par action))
-13)animation laser (j'en sais rien)
-
->>>>>>> b3a229f1b70e82fb484a5ee59e52661b6c5f0463
-14)écran victoire manche/partie (moyen)
-
-
-
-bug orientation
+1) gérer nombres de joueurs (difficulté facile/moyen) 50%
+7)ajouter l'option bug (moyen)				50%
+8) réparer l'option mur (j'en sais rien)		Armand
+9)indiquer qui doit jouer(facile/moyen)			osef au pire
+11)styles boutons (facile)				3/4 boutons Alban ?
+13)animation laser (j'en sais rien)			osef au pire
+14)écran victoire manche/partie (moyen)			vite fait/osef

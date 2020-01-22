@@ -41,11 +41,12 @@ public class Affichage extends JFrame implements Interface {
 	public String action = "";
 	public Carte carteSelectionnee = null;
 	public Obstacle ObstacleSelectionne = null;
+	public int cible = 10;
 
 	public Affichage fenetre = this;
 	String joueur1;
 	String joueur2;
-	Image[] img = new Image[25];
+	Image[] img = new Image[35];
 	Image[] imgSkins = new Image[4];
 	public String[] noms = new String[4];
 	String[] personnage = {"Non","Pieuvre", "Requin", "Grenouille","Tortue"};
@@ -59,6 +60,8 @@ public class Affichage extends JFrame implements Interface {
 	public static final int CELL_SIZE =70;
 	public JPanel ecran;
 	public Menu menu;
+	public JFrame fenetreBug = new JFrame();
+
 
 	public String[] choix = new String[4];
 	  public Affichage() {
@@ -88,6 +91,7 @@ public class Affichage extends JFrame implements Interface {
 			img[22] = (new ImageIcon("src/images/designToggleButtonON.png")).getImage();
 			img[23] = (new ImageIcon("src/images/designToggleButtonOFF.png")).getImage();
 			img[24] = (new ImageIcon("src/images/boutonValider.png")).getImage();
+			img[25] = (new ImageIcon("src/images/victoire.png")).getImage();
 
 
 
@@ -262,7 +266,7 @@ public class Affichage extends JFrame implements Interface {
 				    this.addItem(str[i]);
 				    this.setSelectedIndex(0);
 				    addActionListener(this);
-
+				    this.setUI(ui);
 			}
 			  public void paintComponent(Graphics g){
 				  	
@@ -272,10 +276,11 @@ public class Affichage extends JFrame implements Interface {
 				
 				  }
 			    public void actionPerformed(ActionEvent e) {
+			       	fenetre.repaint();
 			        String personnage = (String)this.getSelectedItem();
 			        System.out.println(personnage);
 			        choix[compteur] = personnage;
-			       	repaint();
+
 	  
 	    
 	  }
@@ -331,7 +336,7 @@ public class Affichage extends JFrame implements Interface {
 	  }
 	  
 	  public void afficherPlateau(LogiqueDeJeu etatDuJeu) {
-		ecran = new Jeu(etatDuJeu.getPlateau(),etatDuJeu.getJoueurs(),etatDuJeu.getJoueurCourant(),etatDuJeu.getModeJeu(),etatDuJeu.getNombreJoueurs(),etatDuJeu.getJoyaux());
+		ecran = new Jeu(etatDuJeu.isModeBug(),etatDuJeu.getPlateau(),etatDuJeu.getJoueurs(),etatDuJeu.getJoueurCourant(),etatDuJeu.getModeJeu(),etatDuJeu.getNombreJoueurs(),etatDuJeu.getJoyaux());
 
 		fenetre.setContentPane(ecran);
 		fenetre.revalidate();
@@ -358,18 +363,20 @@ public class Affichage extends JFrame implements Interface {
 		  Joueur joueurCourant;
 		  String modeJeu;
 		  int nbJoueurs;
+		  boolean bug;
 		  ArrayList<Joyau> joyaux = new ArrayList();
 
 		  
-		  public Jeu(Plateau plateau,ArrayList<Joueur> joueurs,Joueur joueurCourant,String modeJeu,int nbJoueurs,ArrayList<Joyau> joyaux) {
+		  public Jeu(boolean bug,Plateau plateau,ArrayList<Joueur> joueurs,Joueur joueurCourant,String modeJeu,int nbJoueurs,ArrayList<Joyau> joyaux) {
 			  this.plateau =plateau;
 			  this.joueurs = joueurs;
 			  this.joueurCourant = joueurCourant;
 			  this.modeJeu = modeJeu;
 			  this.nbJoueurs = nbJoueurs;
 			  this.joyaux = joyaux;
+			  this.bug = bug;
 			  //On ajoute les boutons de controle
-			  if (modeJeu == "3 a la suite") {
+			  if (bug) {
 				  Bouton boutonBug = new Bouton("Bug",285,120,710,680,new Color(255,36,25));
 					Bouton boutonC = new Bouton("Completer",285,120,995,560,new Color(255,36,25));
 					Bouton boutonE = new Bouton("Executer",285,120,995,680,new Color(233,76,54));
@@ -745,31 +752,22 @@ public class Affichage extends JFrame implements Interface {
 	  	 }
 	  	 
 			public int demanderCibleCarteBug(LogiqueDeJeu logiqueDeJeu) {
-				int cible = 2;
-				JFrame fenetreBloquer = new JFrame();
-		  		fenetreBloquer.setVisible(true);
-		        fenetreBloquer.setResizable(true);
-		        fenetreBloquer.setSize(800, 600);
-		        fenetreBloquer.setTitle("Cible de la carte Bug");
-		        fenetreBloquer.setLocationRelativeTo(null);
-		        fenetreBloquer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		        ArrayList<JButton> boutonCible = new ArrayList<JButton>();
+				cible = 10;
+		  		fenetreBug.setVisible(true);
+		        fenetreBug.setResizable(true);
+		        fenetreBug.setSize(300*(logiqueDeJeu.getNombreJoueurs()-1), 300);
+		        fenetreBug.setTitle("Cible de la carte Bug");
+		        fenetreBug.setLocationRelativeTo(null);
+		        fenetreBug.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		        fenetreBug.setLayout(new FlowLayout());
 	        	int j=0;
 		        for(int i=0; i<logiqueDeJeu.getNombreJoueurs();i++) {
 		        	if(i != logiqueDeJeu.getJoueurCourant().getNumeroJoueur()) {
-		        	boutonCible.add(new JButton(noms[i]));
-		        	boutonCible.get(j).addActionListener(new ActionListener(){
-		        		
-		        		@Override
-		    			public void actionPerformed(ActionEvent arg0)  {
-		        		int cible = 2;
-		        	}
-		        	});
-		        	fenetreBloquer.add(boutonCible.get(j));
+		        	fenetreBug.add(new BoutonBug(j*300,logiqueDeJeu.getNombreJoueurs(),j,noms[j]));
 		        	j++;
 		        }
 			}
-				  while(cible == 2) {						
+				  while(cible == 10) {						
 					  try {									//sans mettre d'instructions dans le while ça fonctionne pas 
 						Thread.sleep(50);
 					} catch (InterruptedException e) {
@@ -780,8 +778,70 @@ public class Affichage extends JFrame implements Interface {
 		        }
 
 
+			private class BoutonBug extends JButton implements MouseListener {
+			  	 private String name;
+			  	 private int idJoueur;
+			  	 private int nbJoueurs;
+			  	 int posx;
+			  	 
+			  	 public BoutonBug(int posx,int nbJoueurs,int id,String name) {
+			  		 System.out.println(name);
+			  		 this.posx=posx;
+			  		 this.nbJoueurs = nbJoueurs;
+			  		 this.name = name;
+			  		 this.idJoueur = id;
+			  		 addMouseListener(this);
+			  	 }
+			  	 public void paintComponent(Graphics g) {
+			  		 this.setSize(280,280);
+			  		 this.setLocation(posx, 10);
+			  		 if(name == "Tortue") {
+			  			 g.drawImage(img[3],posx,10,null);
+			  		 }
+			  		 else if(name == "Pieuvre") {
+			  			 g.drawImage(img[0],posx,10,null);
+			  		 }
+			  		 else if(name == "Requin") {
+			  			 g.drawImage(img[1],posx,10,null);
+			  		 }
+			  		 else if(name == "Grenouille") {
+			  			 g.drawImage(img[2],posx,10,null);
+			  		 }
+			  	 }
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					System.out.println(cible);
+					cible = getIdJoueur();
+					System.out.println(cible);
+					fenetreBug.setVisible(false);
+				}
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					System.out.println(this.name);
+					fenetreBug.repaint();
+					// TODO Auto-generated method stub
+					
+				}
+				@Override
+				public void mouseExited(MouseEvent e) {
+					fenetreBug.repaint();
+					
+				}
+				@Override
+				public void mousePressed(MouseEvent e) {
+					fenetreBug.repaint();
+					
+				}
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					fenetreBug.repaint();
+					
+				}
+				public int getIdJoueur() {
+					return idJoueur;
+				}
+			}
 
-	  	 
 		  //Classe responsable de la création des boutons de choix d'action
 	  	 private class BoutonCompleter extends JButton implements MouseListener {
 	  	 BoutonCompleter ceBouton;
@@ -860,26 +920,31 @@ public class Affichage extends JFrame implements Interface {
 	  	}
 	  	 }
 	  	 
-	  	public void afficherFinManche(LogiqueDeJeu a,int i) {
-	  		ecran.removeAll();
-	  		ecran = new Victoire(a.getJoueurCourant(),i);
+	  	public void afficherFinManche(LogiqueDeJeu logiqueDeJeu) {
+	  		Victoire ecranVictoire = new Victoire(logiqueDeJeu);
+	  		fenetre.setContentPane(ecranVictoire);
 	  	}
 	  	
 	  	 public class Victoire extends JPanel {
-	  		 
-	  		 public Victoire(Joueur joueur,int i) {
-	  			 
+	  		LogiqueDeJeu logiqueDeJeu;
+	  		 public Victoire(LogiqueDeJeu logiqueDeJeu) {
+	  			 this.logiqueDeJeu = logiqueDeJeu;
 	  			 
 	  		 }
 	  		public void paintComponent(Graphics g) {
-				  g.drawImage(img[11],0,0,this);
+				  g.drawImage(img[25],0,0,this); 
+				  g.drawString(noms[logiqueDeJeu.getNombreJoueursGagne()], 50, 50);
 
 	  		}
 	  	 }
 	  	 
 	  	public void afficherResultats(LogiqueDeJeu a) {
 	 // 		ecran.removeAll();
-	  		ecran = new Victoire(a.getJoueurCourant(),4);
+	  		Victoire ecranVictoire = new Victoire(a);
+			fenetre.setContentPane(ecranVictoire);
+			fenetre.revalidate();
+			fenetre.repaint();
+
 	  	}
 	  	
 	  	public void afficherMessage(String str) {
@@ -916,6 +981,11 @@ public class Affichage extends JFrame implements Interface {
 				e.printStackTrace();
 			}
 			return;
+		}
+		@Override
+		public void afficherFinManche(LogiqueDeJeu logiqueDeJeu, int i) {
+			// TODO Auto-generated method stub
+			
 		}
 }
 
