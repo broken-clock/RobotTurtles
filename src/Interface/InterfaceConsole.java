@@ -96,9 +96,9 @@ public class InterfaceConsole implements Interface {
     public String demanderCarteAAjouterAProgramme() {
         String carteStr;
         do {
-            System.out.println("Indiquer carte (B/J/V/L/none) à ajouter à votre programme");
+            System.out.println("Indiquer carte (CARTE_BLEUE/CARTE_JAUNE/CARTE_VIOLETTE/LASER/NOT_A_CARD) à ajouter à votre programme");
             carteStr = scanner.nextLine();
-        } while (!carteStr.equals("B") && !carteStr.equals("J") && !carteStr.equals("V") && !carteStr.equals("L") && !carteStr.equals("none"));
+        } while (!carteStr.equals("CARTE_BLEUE") && !carteStr.equals("CARTE_JAUNE") && !carteStr.equals("CARTE_VIOLETTE") && !carteStr.equals("LASER") && !carteStr.equals("NOT_A_CARD"));
 
         return carteStr;
     }
@@ -132,9 +132,9 @@ public class InterfaceConsole implements Interface {
     public String demanderChoixDefausse() {
         String choixCarteADefausser;
         do {
-            System.out.println("Indiquer carte (B/J/V/L/none) à défausser de votre main");
+            System.out.println("Indiquer carte (CARTE_BLEUE/CARTE_JAUNE/CARTE_VIOLETTE/LASER/NOT_A_CARD) à défausser de votre main");
             choixCarteADefausser = scanner.nextLine();
-        } while (!choixCarteADefausser.equals("B") && !choixCarteADefausser.equals("J") && !choixCarteADefausser.equals("V") && !choixCarteADefausser.equals("L") && !choixCarteADefausser.equals("none"));
+        } while (!choixCarteADefausser.equals("CARTE_BLEUE") && !choixCarteADefausser.equals("CARTE_JAUNE") && !choixCarteADefausser.equals("CARTE_VIOLETTE") && !choixCarteADefausser.equals("LASER") && !choixCarteADefausser.equals("NOT_A_CARD"));
 
         return choixCarteADefausser;
     }

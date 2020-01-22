@@ -203,7 +203,7 @@ public class LogiqueDeJeu {
 
     void initialiserPartie() {
         // Choix du type d'interface
-        this.setMonInterface(new InterfaceConsole());
+        this.setMonInterface(new Affichage());
         Parametres parametres = this.getMonInterface().parametresMenu();
         this.nombreJoueurs = parametres.getNbJoueurs();
         this.setModeJeu(parametres.getModeJeu());
@@ -259,26 +259,26 @@ public class LogiqueDeJeu {
                             String carteStr = this.getMonInterface().demanderCarteAAjouterAProgramme();
                             TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
                             switch (carteStr) {
-                                case "B":
+                                case "CARTE_BLEUE":
                                     typeCarte = TypeCarte.CARTE_BLEUE;
                                     if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(1);
                                     break;
-                                case "J":
+                                case "CARTE_JAUNE":
                                     typeCarte = TypeCarte.CARTE_JAUNE;
                                     if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(2);
 
                                     break;
-                                case "V":
+                                case "CARTE_VIOLETTE":
                                     typeCarte = TypeCarte.CARTE_VIOLETTE;
                                     if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(3);
 
                                     break;
-                                case "L":
+                                case "LASER":
                                     typeCarte = TypeCarte.LASER;
                                     if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(4);
 
                                     break;
-                                case "none":
+                                case "NOT_A_CARD":
                                     if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(5);
                                     continuerAjouterCartes = false;
                             }
@@ -326,19 +326,19 @@ public class LogiqueDeJeu {
                     String carteStr = this.getMonInterface().demanderChoixDefausse();
                     TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
                     switch (carteStr) {
-                        case "B":
+                        case "CARTE_BLEUE":
                             typeCarte = TypeCarte.CARTE_BLEUE;
                             break;
-                        case "J":
+                        case "CARTE_JAUNE":
                             typeCarte = TypeCarte.CARTE_JAUNE;
                             break;
-                        case "V":
+                        case "CARTE_VIOLETTE":
                             typeCarte = TypeCarte.CARTE_VIOLETTE;
                             break;
-                        case "L":
+                        case "LASER":
                             typeCarte = TypeCarte.LASER;
                             break;
-                        case "none":
+                        case "NOT_A_CARD":
                             continuerDefausserCartes = false;
                     }
 

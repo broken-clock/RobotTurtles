@@ -648,7 +648,7 @@ public class Affichage extends JFrame implements Interface {
 
     }
 
-    //La fonction qui se lance quand on appuie sur compl�ter
+    //La fonction qui se lance quand on appuie sur completer
     public void afficherCartesMain(String title, LogiqueDeJeu logiqueDeJeu) {
         ArrayList<Carte> cartesMain = logiqueDeJeu.getJoueurCourant().getCartesMain().getCartesMain();
         JFrame fenetreCompleter = new JFrame();
@@ -681,7 +681,7 @@ public class Affichage extends JFrame implements Interface {
 
     public String selectionnerCarte() {
         while (carteSelectionnee == null) {
-            try {                                    //sans mettre d'instructions dans le while �a fonctionne pas donc je met un thread sleep
+            try {                                    //sans mettre d'instructions dans le while sa fonctionne pas donc je met un thread sleep
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -698,7 +698,7 @@ public class Affichage extends JFrame implements Interface {
         fenetreBloquer.setVisible(true);
         fenetreBloquer.setResizable(true);
         fenetreBloquer.setSize(800, 200);
-        fenetreBloquer.setTitle("Compl�ter le programme");
+        fenetreBloquer.setTitle("Completer le programme");
         fenetreBloquer.setLocationRelativeTo(null);
         fenetreBloquer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         fenetreBloquer.setLayout(new FlowLayout());
@@ -854,7 +854,7 @@ public class Affichage extends JFrame implements Interface {
         }
     }
 
-    //Classe responsable de la cr�ation des boutons de choix d'action
+    //Classe responsable de la creation des boutons de choix d'action
     private class BoutonCompleter extends JButton implements MouseListener {
         BoutonCompleter ceBouton;
         Carte carte;
