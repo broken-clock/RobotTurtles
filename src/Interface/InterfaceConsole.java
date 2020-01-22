@@ -53,7 +53,7 @@ public class InterfaceConsole implements Interface {
         } while (!modeJeu.equals("normal") && !modeJeu.equals("3alasuite"));
 
         String modeCarteBug;
-        System.out.println("Jouer avec les cartes Bug ? (o/N): ");  // Valeur par défaut = "N"
+        System.out.println("Jouer avec les cartes Bug ? (o/N): ");  // Valeur par defaut = "N"
         modeCarteBug = scanner.nextLine();
 
         return new Parametres(nombreJoueurs, modeJeu, modeCarteBug.equals("o"));
@@ -64,12 +64,12 @@ public class InterfaceConsole implements Interface {
         String action;
         if (!logiqueDeJeu.isModeBug()) {
             do {
-                System.out.println("Action ? (P/M/E (compléter prgm/mur/exécuter prgm): ");
+                System.out.println("Action ? (P/M/E (completer prgm/mur/executer prgm): ");
                 action = scanner.nextLine();
             } while (!action.equals("P") && !action.equals("M") && !action.equals("E"));
         } else {
             do {
-                System.out.println("Action ? (P/M/E/B (compléter prgm/mur/exécuter prgm/utiliser carte bug): ");
+                System.out.println("Action ? (P/M/E/B (completer prgm/mur/executer prgm/utiliser carte bug): ");
                 action = scanner.nextLine();
             } while (!action.equals("P") && !action.equals("M") && !action.equals("E") && !action.equals("B"));
         }
@@ -96,7 +96,7 @@ public class InterfaceConsole implements Interface {
     public String demanderCarteAAjouterAProgramme() {
         String carteStr;
         do {
-            System.out.println("Indiquer carte (CARTE_BLEUE/CARTE_JAUNE/CARTE_VIOLETTE/LASER/NOT_A_CARD) à ajouter à votre programme");
+            System.out.println("Indiquer carte (CARTE_BLEUE/CARTE_JAUNE/CARTE_VIOLETTE/LASER/NOT_A_CARD) a ajouter a votre programme");
             carteStr = scanner.nextLine();
         } while (!carteStr.equals("CARTE_BLEUE") && !carteStr.equals("CARTE_JAUNE") && !carteStr.equals("CARTE_VIOLETTE") && !carteStr.equals("LASER") && !carteStr.equals("NOT_A_CARD"));
 
@@ -112,7 +112,7 @@ public class InterfaceConsole implements Interface {
         } while (!typeObstacle.equals("g") && !typeObstacle.equals("p"));
 
         int[] coordsObstacle = new int[2];
-        System.out.println("A quelles coordonées ?");
+        System.out.println("A quelles coordonees ?");
         coordsObstacle[0] = Integer.parseInt(scanner.nextLine().trim());
         coordsObstacle[1] = Integer.parseInt(scanner.nextLine().trim());
         return new Obstacle(typeObstacle, coordsObstacle);
@@ -122,7 +122,7 @@ public class InterfaceConsole implements Interface {
     public int demanderCibleCarteBug(LogiqueDeJeu logiqueDeJeu) {
         int cibleCarteBug;
         do {
-            System.out.println("Entrez le numéro du joueur à qui vous voulez poser votre carte bug:");
+            System.out.println("Entrez le numero du joueur a qui vous voulez poser votre carte bug:");
             cibleCarteBug = Integer.parseInt(scanner.nextLine().trim());
         } while (cibleCarteBug < 0 || cibleCarteBug > logiqueDeJeu.getNombreJoueurs() - 1 || cibleCarteBug == logiqueDeJeu.getJoueurCourant().getNumeroJoueur());
         return cibleCarteBug;
@@ -132,7 +132,7 @@ public class InterfaceConsole implements Interface {
     public String demanderChoixDefausse() {
         String choixCarteADefausser;
         do {
-            System.out.println("Indiquer carte (CARTE_BLEUE/CARTE_JAUNE/CARTE_VIOLETTE/LASER/NOT_A_CARD) à défausser de votre main");
+            System.out.println("Indiquer carte (CARTE_BLEUE/CARTE_JAUNE/CARTE_VIOLETTE/LASER/NOT_A_CARD) a defausser de votre main");
             choixCarteADefausser = scanner.nextLine();
         } while (!choixCarteADefausser.equals("CARTE_BLEUE") && !choixCarteADefausser.equals("CARTE_JAUNE") && !choixCarteADefausser.equals("CARTE_VIOLETTE") && !choixCarteADefausser.equals("LASER") && !choixCarteADefausser.equals("NOT_A_CARD"));
 

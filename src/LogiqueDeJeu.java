@@ -5,6 +5,9 @@ import src.Cartes.TypeCarte;
 import src.Interface.*;
 import src.Tuiles.*;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -24,6 +27,30 @@ public class LogiqueDeJeu {
     private Joueur joueurCourant;
     private boolean gameOver;
     private Iterator<Integer> iterateurJoueurs;
+
+    void initialiserPartie() {
+        // Choix du type d'interface
+        this.setMonInterface(new Affichage());
+
+        // Musique de fond
+        if (this.getMonInterface().getTypeInterface().equals("Affichage")) this.playSound("sound.wav");
+
+        Parametres parametres = this.getMonInterface().parametresMenu();
+        System.out.println("modejeu: " + parametres.gameMode);
+        this.nombreJoueurs = parametres.getNbJoueurs();
+        this.setModeJeu(parametres.getModeJeu());
+        this.setModeBug(parametres.getModeBug());
+
+        // Création du nombre adéquat de joueurs et initialisation pour chaque joueur de ses obstacles disponibles et de ses cartesMain initiales
+        for (int i = 0; i < this.nombreJoueurs; i++) {
+            this.getJoueurs().add(new Joueur(this));
+            this.getJoueurs().get(i).setNumeroJoueur(i);
+            this.getJoueurs().get(i).getTortue().setNumeroJoueur(this.getJoueurs().get(i).getNumeroJoueur());
+            this.initialiserAttributsJoueurs(i);
+
+        }
+        this.initialiserPositionsPlateauOrdrepassage();
+    }
 
     public int getNombreJoueurs() {
         return this.nombreJoueurs;
@@ -193,26 +220,6 @@ public class LogiqueDeJeu {
         this.getJoueurs().get(i).setSubiBug(false);
     }
 
-    void initialiserPartie() {
-        // Choix du type d'interface
-        this.setMonInterface(new InterfaceConsole());
-        Parametres parametres = this.getMonInterface().parametresMenu();
-        System.out.println("modejeu: " + parametres.gameMode);
-        this.nombreJoueurs = parametres.getNbJoueurs();
-        this.setModeJeu(parametres.getModeJeu());
-        this.setModeBug(parametres.getModeBug());
-
-        // Création du nombre adéquat de joueurs et initialisation pour chaque joueur de ses obstacles disponibles et de ses cartesMain initiales
-        for (int i = 0; i < this.nombreJoueurs; i++) {
-            this.getJoueurs().add(new Joueur(this));
-            this.getJoueurs().get(i).setNumeroJoueur(i);
-            this.getJoueurs().get(i).getTortue().setNumeroJoueur(this.getJoueurs().get(i).getNumeroJoueur());
-            this.initialiserAttributsJoueurs(i);
-
-        }
-        this.initialiserPositionsPlateauOrdrepassage();
-    }
-
     private void genererOrdrePassageJoueurs() {
         // Génération de l'ordre de passage des joueurs
         int focusJoueur = this.initFocusJoueur();  // Choisit au hasard le joueur qui jouera en premier
@@ -237,7 +244,7 @@ public class LogiqueDeJeu {
 
     private void jouerManche() {
         while (!this.isGameOver()) {
-            for (this.iterateurJoueurs = this.ordreJoueurs.iterator(); this.iterateurJoueurs.hasNext();) {
+            for (this.iterateurJoueurs = this.ordreJoueurs.iterator(); this.iterateurJoueurs.hasNext(); ) {
                 Integer focusJoueur = this.iterateurJoueurs.next();
                 if (this.isGameOver()) break;
                 System.out.println("focusJoueur: " + focusJoueur);
@@ -254,25 +261,30 @@ public class LogiqueDeJeu {
                             switch (carteStr) {
                                 case "CARTE_BLEUE":
                                     typeCarte = TypeCarte.CARTE_BLEUE;
-                                    if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(1);
+                                    if (this.getMonInterface().getTypeInterface().equals("Affichage"))
+                                        System.out.println(1);
                                     break;
                                 case "CARTE_JAUNE":
                                     typeCarte = TypeCarte.CARTE_JAUNE;
-                                    if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(2);
+                                    if (this.getMonInterface().getTypeInterface().equals("Affichage"))
+                                        System.out.println(2);
 
                                     break;
                                 case "CARTE_VIOLETTE":
                                     typeCarte = TypeCarte.CARTE_VIOLETTE;
-                                    if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(3);
+                                    if (this.getMonInterface().getTypeInterface().equals("Affichage"))
+                                        System.out.println(3);
 
                                     break;
                                 case "LASER":
                                     typeCarte = TypeCarte.LASER;
-                                    if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(4);
+                                    if (this.getMonInterface().getTypeInterface().equals("Affichage"))
+                                        System.out.println(4);
 
                                     break;
                                 case "NOT_A_CARD":
-                                    if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println(5);
+                                    if (this.getMonInterface().getTypeInterface().equals("Affichage"))
+                                        System.out.println(5);
                                     continuerAjouterCartes = false;
                             }
 
@@ -297,7 +309,6 @@ public class LogiqueDeJeu {
                         break;
 
                     case "E":  // Exécuter le programme
-
                         this.getJoueurCourant().executerPrgm(this);
                         break;
 
@@ -314,33 +325,35 @@ public class LogiqueDeJeu {
                 if (this.isGameOver()) break;
                 if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println("abcdfinsess");
 
-                boolean continuerDefausserCartes = true;
-                this.getMonInterface().afficherCartesMain("choissisez les cartes a defausser", this);
-                while (continuerDefausserCartes) {
-                    String carteStr = this.getMonInterface().demanderChoixDefausse();
-                    TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
-                    switch (carteStr) {
-                        case "CARTE_BLEUE":
-                            typeCarte = TypeCarte.CARTE_BLEUE;
-                            break;
-                        case "CARTE_JAUNE":
-                            typeCarte = TypeCarte.CARTE_JAUNE;
-                            break;
-                        case "CARTE_VIOLETTE":
-                            typeCarte = TypeCarte.CARTE_VIOLETTE;
-                            break;
-                        case "LASER":
-                            typeCarte = TypeCarte.LASER;
-                            break;
-                        case "NOT_A_CARD":
-                            continuerDefausserCartes = false;
-                    }
+                if (!this.joueurCourant.isFini() && !this.joueurCourant.getCartesMain().empty()) {
+                    boolean continuerDefausserCartes = true;
+                    this.getMonInterface().afficherCartesMain("choissisez les cartes a defausser", this);
+                    while (continuerDefausserCartes) {
+                        String carteStr = this.getMonInterface().demanderChoixDefausse();
+                        TypeCarte typeCarte = TypeCarte.LASER;  // Placeholder
+                        switch (carteStr) {
+                            case "CARTE_BLEUE":
+                                typeCarte = TypeCarte.CARTE_BLEUE;
+                                break;
+                            case "CARTE_JAUNE":
+                                typeCarte = TypeCarte.CARTE_JAUNE;
+                                break;
+                            case "CARTE_VIOLETTE":
+                                typeCarte = TypeCarte.CARTE_VIOLETTE;
+                                break;
+                            case "LASER":
+                                typeCarte = TypeCarte.LASER;
+                                break;
+                            case "NOT_A_CARD":
+                                continuerDefausserCartes = false;
+                        }
 
-                    if (continuerDefausserCartes) {
-                        Carte carte = getJoueurCourant().getCartesMain().retirerCarte(typeCarte);
-                        //          if (carte.getTypeCarte() == TypeCarte.NOT_A_CARD) {
-                        //                  this.monInterface.afficherMessage("Refuse: vous ne possedez pas de telle carte");
-                        //           }
+                        if (continuerDefausserCartes) {
+                            Carte carte = getJoueurCourant().getCartesMain().retirerCarte(typeCarte);
+                            //          if (carte.getTypeCarte() == TypeCarte.NOT_A_CARD) {
+                            //                  this.monInterface.afficherMessage("Refuse: vous ne possedez pas de telle carte");
+                            //           }
+                        }
                     }
                 }
 
@@ -389,5 +402,25 @@ public class LogiqueDeJeu {
 
     private int initFocusJoueur() {
         return ThreadLocalRandom.current().nextInt(0, this.nombreJoueurs);
+    }
+
+    public synchronized void playSound(final String url) {
+        new Thread(new Runnable() {
+            // The wrapper thread is unnecessary, unless it blocks on the
+            // Clip finishing; see comments.
+            public void run() {
+                try {
+                    Clip clip = AudioSystem.getClip();
+                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                            Main.class.getResourceAsStream("music/" + url));
+                    clip.open(inputStream);
+                    clip.loop(10000);
+                    clip.getMicrosecondLength();// TODO
+                    clip.start();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }).start();
     }
 }

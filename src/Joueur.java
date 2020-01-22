@@ -1,6 +1,7 @@
 package src;
 
 import src.Cartes.*;
+import src.Interface.InterfaceConsole;
 import src.Tuiles.*;
 
 public class Joueur {
@@ -171,7 +172,7 @@ public class Joueur {
 
     void executerPrgm(LogiqueDeJeu logiqueDeJeu) {
         Carte carte;
-        while (!this.getProgramme().empty()) {
+        while (!this.getProgramme().empty() && !this.isFini()) {
             carte = this.getProgramme().defilerCarte(this.isSubiBug());
             System.out.print("On execute l'instruction: ");
             System.out.println(carte.getTypeCarte());
@@ -191,6 +192,7 @@ public class Joueur {
             }
             if (logiqueDeJeu.getMonInterface().getTypeInterface().equals("Affichage")) logiqueDeJeu.getMonInterface().actualiser();
         }
+        logiqueDeJeu.getMonInterface().afficherPlateau(logiqueDeJeu);
     }
 
     void subirBug() {
@@ -199,7 +201,7 @@ public class Joueur {
     }
 
     void terminerTour() {
-        // Si besoin, remplir cartesMain jusqu'Ã  avoir 5 cartes
+        // Si besoin, remplir cartesMain jusqu'a  avoir 5 cartes
         this.getCartesMain().tirerCartesDuDeck(this, 5 - this.getCartesMain().getCartesMain().size());
     }
 }

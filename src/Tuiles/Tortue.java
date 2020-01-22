@@ -74,10 +74,13 @@ public class Tortue extends Tuile {
                 System.out.print("; ");
                 System.out.println(caseDestination.getY());
 
-                deplacerTortue(logiqueDeJeu, this, new Position(caseDestination.getX(), caseDestination.getY(), this.position.getOrientation()));
+                if (caseDestination.getContenu().equals(".")) {
+                    deplacerTortue(logiqueDeJeu, this, new Position(caseDestination.getX(), caseDestination.getY(), this.position.getOrientation()));
+                }
 
                 // Si la tortue a atteint un joyau
-                if (caseDestination.getContenu().equals("J")) {
+                else if (caseDestination.getContenu().equals("J")) {
+                    this.disparaitre(logiqueDeJeu);
                     logiqueDeJeu.setNombreJoueursGagne(logiqueDeJeu.getNombreJoueursGagne() + 1);
                     // S'il ne reste plus qu?un joueur qui n'a pas atteint de joyau
                     if (logiqueDeJeu.getNombreJoueursGagne() == logiqueDeJeu.getNombreJoueurs() - 1) {
@@ -85,7 +88,6 @@ public class Tortue extends Tuile {
                     }
 
                     // Ce joueur doit ne plus jouer jusqu'à la prochaine manche / jusqu'à la fin
-                    System.out.println("suppr: " + this.numeroJoueur);
                     logiqueDeJeu.getJoueurs().get(this.numeroJoueur).setFini(true);
 
                     if (logiqueDeJeu.getModeJeu().equals("normal")) {
@@ -110,6 +112,11 @@ public class Tortue extends Tuile {
                 }
                 break;
         }
+    }
+
+    private void disparaitre(LogiqueDeJeu logiqueDeJeu) {
+        // On vide la case couramment occupée par la tortue
+        logiqueDeJeu.getPlateau().setCase(this.position.getX(), this.position.getY(), ".");
     }
 
     public void tournerHoraire(LogiqueDeJeu logiqueDeJeu) {

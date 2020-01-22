@@ -220,7 +220,7 @@ public class Affichage extends JFrame implements Interface {
                     state = itemEvent.getStateChange();
                     if (state == ItemEvent.SELECTED) {
                         if (texte == "Mode trois � la suite") {
-                            menu.setModeDeJeu("3 a la suite");
+                            menu.setModeDeJeu("3alasuite");
                             System.out.println("3ala");
                         } else {
                             menu.setCarteBug(true);
@@ -528,7 +528,7 @@ public class Affichage extends JFrame implements Interface {
             //Rectangle de gauche affichant l'état de la partie
             g.setColor(Color.black);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 16));
-            if (modeJeu == "3 a la suite") {
+            if (modeJeu == "3alasuite") {
                 g.drawString("Mode de jeu : Trois a la suite - Partie 1/3", 10, 20);
             } else {
                 g.drawString("Mode de jeu : Partie normale", 10, 20);
@@ -547,7 +547,7 @@ public class Affichage extends JFrame implements Interface {
                     g.drawString("x" + joueurs.get(i).getMursDePierre(), 170, 110 + j * 200);        //le nombre de murs de pierre
                     g.drawImage(img[10], 210, 75 + j * 200, this); //l'instruction
                     g.drawString("x" + joueurs.get(i).getProgramme().getProgramme().size(), 265, 110 + j * 200);        //le nombre d'instructions
-                    if (modeJeu == "3 a la suite") {
+                    if (modeJeu == "3alasuite") {
                         g.drawImage(img[9], 10, 140 + j * 200, this); //Joyau
                         g.drawString(joueurs.get(i).getScore() + "points", 65, 175 + j * 200);        //le nombre de murs de pierre
                     }
@@ -562,7 +562,7 @@ public class Affichage extends JFrame implements Interface {
                     g.drawString("x" + joueurCourant.getMursDePierre(), 1025, 235);        //le nombre de murs de pierre
                     g.drawImage(img[10], 950, 300, this); //Instruction
                     g.drawString("x" + joueurCourant.getProgramme().getProgramme().size(), 1025, 335);        //Le nombre d'instructions
-                    if (modeJeu == "3 a la suite") {
+                    if (modeJeu == "3alasuite") {
                         g.drawImage(img[9], 950, 400, this); //joyau
                         g.drawString(joueurs.get(j).getScore() + "points", 1025, 435);        //Le nombre de points
 
