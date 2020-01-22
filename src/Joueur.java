@@ -16,8 +16,10 @@ public class Joueur {
     private int mursDePierre;
     private int mursDeGlace;
     private String action;  // Action demandée par le joueur à chaque tour de jeu
+    private boolean fini;
 
     public Joueur(LogiqueDeJeu logiqueDeJeu) {
+        this.fini = false;
         this.setClassement(logiqueDeJeu.getNombreJoueurs());  // Classement du dernier joueur. Si ce joueur ne finit pas en dernier, on mettra à jour cet attribut
     }
 
@@ -113,6 +115,14 @@ public class Joueur {
         this.action = action;
     }
 
+    public boolean isFini() {
+        return fini;
+    }
+
+    public void setFini(boolean fini) {
+        this.fini = fini;
+    }
+
     void reInitCartes() {
         this.setDeck(new Deck());
         this.setCartesMain(new CartesMain());
@@ -164,7 +174,7 @@ public class Joueur {
         Carte carte;
         while (!this.getProgramme().empty()) {
             carte = this.getProgramme().defilerCarte(this.isSubiBug());
-            System.out.print("On exécute l'instruction: ");
+            System.out.print("On execute l'instruction: ");
             System.out.println(carte.getTypeCarte());
             switch (carte.getTypeCarte()) {
                 case CARTE_BLEUE:
@@ -180,7 +190,7 @@ public class Joueur {
                     this.getTortue().lancerLaser(logiqueDeJeu);
                     break;
             }
-            logiqueDeJeu.getMonInterface().actualiser();
+            if (logiqueDeJeu.getMonInterface().getTypeInterface().equals("Affichage")) logiqueDeJeu.getMonInterface().actualiser();
         }
     }
 

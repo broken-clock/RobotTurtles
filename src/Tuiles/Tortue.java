@@ -12,10 +12,10 @@ public class Tortue extends Tuile {
 
     // Initialisation (exécuté dès le chargement de Tortue en mémoire)
     static {
-        reprTortues.put(Orientations.UP, "T");
-        reprTortues.put(Orientations.DOWN, "⊥");
-        reprTortues.put(Orientations.LEFT, "├");
-        reprTortues.put(Orientations.RIGHT, "┤");
+        reprTortues.put(Orientations.UP, "^");
+        reprTortues.put(Orientations.DOWN, "V");
+        reprTortues.put(Orientations.LEFT, "<");
+        reprTortues.put(Orientations.RIGHT, ">");
     }
 
     // Permet de déterminer si le contenu d'une case du plateau correspond à la représentation d'une tortue
@@ -69,7 +69,7 @@ public class Tortue extends Tuile {
 
             case ".":  // Si la case est vide
             case "J":
-                System.out.print("On déplace la tortue: ");
+                System.out.print("On deplace la tortue: ");
                 System.out.print(caseDestination.getX());
                 System.out.print("; ");
                 System.out.println(caseDestination.getY());
@@ -79,15 +79,19 @@ public class Tortue extends Tuile {
                 // Si la tortue a atteint un joyau
                 if (caseDestination.getContenu().equals("J")) {
                     logiqueDeJeu.setNombreJoueursGagne(logiqueDeJeu.getNombreJoueursGagne() + 1);
-                    // S'il ne reste plus qu’un joueur qui n'a pas atteint de joyau
+                    // S'il ne reste plus qu?un joueur qui n'a pas atteint de joyau
                     if (logiqueDeJeu.getNombreJoueursGagne() == logiqueDeJeu.getNombreJoueurs() - 1) {
                         logiqueDeJeu.setGameOver(true);
                     }
 
+                    // Ce joueur doit ne plus jouer jusqu'à la prochaine manche / jusqu'à la fin
+                    System.out.println("suppr: " + this.numeroJoueur);
+                    logiqueDeJeu.getJoueurs().get(this.numeroJoueur).setFini(true);
+
                     if (logiqueDeJeu.getModeJeu().equals("normal")) {
                         // On donne son classement au joueur
                         logiqueDeJeu.getJoueurs().get(this.numeroJoueur).setClassement(logiqueDeJeu.getNombreJoueursGagne());
-                    } else if (logiqueDeJeu.getModeJeu().equals("3àlasuite")) {
+                    } else if (logiqueDeJeu.getModeJeu().equals("3alasuite")) {
                         // On met à jour le score du joueur
                         logiqueDeJeu.getJoueurs().get(this.numeroJoueur).increaseScore(logiqueDeJeu.getNombreJoueurs() - logiqueDeJeu.getNombreJoueursGagne());
                     }

@@ -3,11 +3,23 @@ package src.Interface;
 import src.Cartes.Carte;
 import src.Joueur;
 import src.LogiqueDeJeu;
+import src.Parametres;
+import src.Tuiles.Obstacle;
 
 import java.util.Scanner;
 
 public class InterfaceConsole implements Interface {
     private Scanner scanner = new Scanner(System.in);
+
+    @Override
+    public void actualiser() {
+
+    }
+
+    @Override
+    public String getTypeInterface() {
+        return "Console";
+    }
 
     @Override
     public void afficherMessage(String message) {
@@ -27,31 +39,24 @@ public class InterfaceConsole implements Interface {
     }
 
     @Override
-    public int demanderNombreJoueurs() {
+    public Parametres parametresMenu() {
         int nombreJoueurs;
         do {
             System.out.println("Combien de joueurs ? (entre 2 et 4): ");
             nombreJoueurs = scanner.nextInt();
         } while (nombreJoueurs < 2 || nombreJoueurs > 4);
-        return nombreJoueurs;
-    }
 
-    @Override
-    public String demanderModeJeu() {
         String modeJeu;
         do {
-            System.out.println("Quel mode de jeu ? ('normal' / '3Ã lasuite'): ");
+            System.out.println("Quel mode de jeu ? ('normal' / '3alasuite'): ");
             modeJeu = scanner.nextLine();
-        } while (!modeJeu.equals("normal") && !modeJeu.equals("3Ã lasuite"));
-        return modeJeu;
-    }
+        } while (!modeJeu.equals("normal") && !modeJeu.equals("3alasuite"));
 
-    @Override
-    public boolean demanderModeCarteBug() {
         String modeCarteBug;
-        System.out.println("Jouer avec les cartes Bug ? (o/N): ");  // Valeur par dÃ©faut = "N"
+        System.out.println("Jouer avec les cartes Bug ? (o/N): ");  // Valeur par défaut = "N"
         modeCarteBug = scanner.nextLine();
-        return modeCarteBug.equals("o");
+
+        return new Parametres(nombreJoueurs, modeJeu, modeCarteBug.equals("o"));
     }
 
     @Override
@@ -59,12 +64,12 @@ public class InterfaceConsole implements Interface {
         String action;
         if (!logiqueDeJeu.isModeBug()) {
             do {
-                System.out.println("Action ? (P/M/E (complÃ©ter prgm/mur/exÃ©cuter prgm): ");
+                System.out.println("Action ? (P/M/E (compléter prgm/mur/exécuter prgm): ");
                 action = scanner.nextLine();
             } while (!action.equals("P") && !action.equals("M") && !action.equals("E"));
         } else {
             do {
-                System.out.println("Action ? (P/M/E/B (complÃ©ter prgm/mur/exÃ©cuter prgm/utiliser carte bug): ");
+                System.out.println("Action ? (P/M/E/B (compléter prgm/mur/exécuter prgm/utiliser carte bug): ");
                 action = scanner.nextLine();
             } while (!action.equals("P") && !action.equals("M") && !action.equals("E") && !action.equals("B"));
         }
@@ -72,7 +77,7 @@ public class InterfaceConsole implements Interface {
     }
 
     @Override
-    public void afficherCartesMain(String str, LogiqueDeJeu logiqueDeJeu) {
+    public void afficherCartesMain(String str_, LogiqueDeJeu logiqueDeJeu) {
         System.out.println("Cartes dans votre main:");
         for (Carte carteMain : logiqueDeJeu.getJoueurCourant().getCartesMain().getCartesMain()) {
             System.out.println(carteMain.getTypeCarte());
@@ -91,7 +96,7 @@ public class InterfaceConsole implements Interface {
     public String demanderCarteAAjouterAProgramme() {
         String carteStr;
         do {
-            System.out.println("Indiquer carte (B/J/V/L/none) Ã  ajouter Ã  votre programme");
+            System.out.println("Indiquer carte (B/J/V/L/none) à ajouter à votre programme");
             carteStr = scanner.nextLine();
         } while (!carteStr.equals("B") && !carteStr.equals("J") && !carteStr.equals("V") && !carteStr.equals("L") && !carteStr.equals("none"));
 
@@ -99,29 +104,25 @@ public class InterfaceConsole implements Interface {
     }
 
     @Override
-    public String demanderTypeObstacleAPlacer() {
+    public Obstacle demanderObstacleAPlacer() {
         String typeObstacle;
         do {
             System.out.println("Quel type d'obstacle voulez-vous placer ? (G/P)");
             typeObstacle = scanner.nextLine();
         } while (!typeObstacle.equals("G") && !typeObstacle.equals("P"));
-        return typeObstacle;
-    }
 
-    @Override
-    public int[] demanderCoordsObstacleAPlacer() {
         int[] coordsObstacle = new int[2];
-        System.out.println("A quelles coordonÃ©es ?");
+        System.out.println("A quelles coordonées ?");
         coordsObstacle[0] = scanner.nextInt();
         coordsObstacle[1] = scanner.nextInt();
-        return coordsObstacle;
+        return new Obstacle(typeObstacle, coordsObstacle);
     }
 
     @Override
     public int demanderCibleCarteBug(LogiqueDeJeu logiqueDeJeu) {
         int cibleCarteBug;
         do {
-            System.out.println("Entrez le numÃ©ro du joueur Ã  qui vous voulez poser votre carte bug:");
+            System.out.println("Entrez le numéro du joueur à qui vous voulez poser votre carte bug:");
             cibleCarteBug = scanner.nextInt();
         } while (cibleCarteBug < 0 || cibleCarteBug > logiqueDeJeu.getNombreJoueurs() - 1 || cibleCarteBug == logiqueDeJeu.getJoueurCourant().getNumeroJoueur());
         return cibleCarteBug;
@@ -131,7 +132,7 @@ public class InterfaceConsole implements Interface {
     public String demanderChoixDefausse() {
         String choixCarteADefausser;
         do {
-            System.out.println("Indiquer carte (B/J/V/L/none) Ã  dÃ©fausser de votre main");
+            System.out.println("Indiquer carte (B/J/V/L/none) à défausser de votre main");
             choixCarteADefausser = scanner.nextLine();
         } while (!choixCarteADefausser.equals("B") && !choixCarteADefausser.equals("J") && !choixCarteADefausser.equals("V") && !choixCarteADefausser.equals("L") && !choixCarteADefausser.equals("none"));
 
@@ -144,12 +145,12 @@ public class InterfaceConsole implements Interface {
         System.out.println("TERMINE, voici le classement");
         for (Joueur joueur : logiqueDeJeu.getJoueurs()) {
             System.out.print("Joueur " + joueur.getNumeroJoueur() + ": ");
-            System.out.print(joueur.getClassement() + "Â°");
+            System.out.print(joueur.getClassement() + "°");
             switch (logiqueDeJeu.getModeJeu()) {
                 case "normal":
                     System.out.println();
                     break;
-                case "3Ã lasuite":
+                case "3alasuite":
                     System.out.println(" avec " + joueur.getScore() + " points");
                     break;
             }
