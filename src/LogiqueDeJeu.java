@@ -22,7 +22,7 @@ public class LogiqueDeJeu {
     private int nombreJoueursGagne = 0;
     private ArrayList<Joueur> joueurs = new ArrayList();
     private ArrayList<Position> positionsInitialesJoueurs = new ArrayList();
-    private ArrayList<Joyau> joyaux;
+    private ArrayList<Joyau> joyaux = new ArrayList();
     private Plateau plateau = new Plateau();
     private Joueur joueurCourant;
     private boolean gameOver;
@@ -417,7 +417,7 @@ public class LogiqueDeJeu {
                             Main.class.getResourceAsStream("music/" + url));
                     clip.open(inputStream);
                     clip.loop(10000);
-                    clip.getMicrosecondLength();// TODO
+                    clip.getMicrosecondLength();
                     clip.start();
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
