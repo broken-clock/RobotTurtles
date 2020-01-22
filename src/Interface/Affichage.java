@@ -54,13 +54,12 @@ public class Affichage extends JFrame implements Interface {
     menuDeroulant liste2 = new menuDeroulant(personnage, 305, 380, 1);
     menuDeroulant liste3 = new menuDeroulant(personnage, 610, 380, 2);
     menuDeroulant liste4 = new menuDeroulant(personnage, 915, 380, 3);
-    toggleButton toggleButtonTroisALaSuite = new toggleButton("Mode trois � la suite", 85, 660);
+    toggleButton toggleButtonTroisALaSuite = new toggleButton("Mode trois a la suite", 85, 660);
     toggleButton toggleButtonCarteBug = new toggleButton("     Carte Bug", 570, 660);
     public int cell;
     public static final int CELL_SIZE = 70;
     public JPanel ecran;
     public Menu menu;
-    public JFrame fenetreBug = new JFrame();
 
 
     @Override
@@ -102,6 +101,8 @@ public class Affichage extends JFrame implements Interface {
         img[28] = (new ImageIcon("src/images/poissonExecuter.png")).getImage();
         img[29] = (new ImageIcon("src/images/poissonCompleter.png")).getImage();
         img[30] = (new ImageIcon("src/images/poissonBloquer.png")).getImage();
+        img[31] = (new ImageIcon("src/images/murPlateau.png")).getImage();
+        img[32] = (new ImageIcon("src/images/murGlacePlateau.png")).getImage();
 
 
 
@@ -219,7 +220,7 @@ public class Affichage extends JFrame implements Interface {
                 public void itemStateChanged(ItemEvent itemEvent) {
                     state = itemEvent.getStateChange();
                     if (state == ItemEvent.SELECTED) {
-                        if (texte == "Mode trois � la suite") {
+                        if (texte == "Mode trois a la suite") {
                             menu.setModeDeJeu("3alasuite");
                             System.out.println("3ala");
                         } else {
@@ -344,6 +345,10 @@ public class Affichage extends JFrame implements Interface {
             i++;
             nbJoueurs++;
         }
+        if (nbJoueurs <2) {
+            JOptionPane.showMessageDialog(null,"Vous ne pouvez pas lancer une partie avec moins de 2 joueurs", "Alerte", JOptionPane.ERROR_MESSAGE);
+            System.exit(2);
+        }
         i = 0;
         Parametres parametres = new Parametres(nbJoueurs, menu.getModeDeJeu(), menu.getCarteBug());
         menu.removeAll();
@@ -462,9 +467,9 @@ public class Affichage extends JFrame implements Interface {
                 for (int j = 0; j < 8; j++) {
                     String valeurCase = plateau.getCase(i, j);
                     if (valeurCase == "p") {    //p correspond au mur de pierre
-                        cell = 8;
+                        cell = 31;
                     } else if (valeurCase == "g") { //g correspond au mur de glace
-                        cell = 7;
+                        cell = 32;
                     } else {
                         cell = 16;
                     }
@@ -475,7 +480,7 @@ public class Affichage extends JFrame implements Interface {
 
             }
             for (int i = 0; i < nbJoueurs; i++) {
-
+            	if(!joueurs.get(i).isFini() ) {
                 int positionX = joueurs.get(i).getTortue().getPosition().getX();
                 int positionY = joueurs.get(i).getTortue().getPosition().getY();
                 System.out.println(positionX);
@@ -494,6 +499,7 @@ public class Affichage extends JFrame implements Interface {
                 rotation.translate(360 + (CELL_SIZE * positionY), CELL_SIZE * positionX);
                 rotation.rotate(orientation, CELL_SIZE / 2, CELL_SIZE / 2);
                 g2d.drawImage(imgSkins[i], rotation, null);
+            	}
 
                 //rotation.rotate(-orientation, (360 + CELL_SIZE * positionY+70)/2, (CELL_SIZE*positionX+70)/2);
                 //	rotation.translate(-(360 + CELL_SIZE * positionY),-( CELL_SIZE*positionX));
@@ -596,20 +602,32 @@ public class Affichage extends JFrame implements Interface {
         }
 
         public void paintComponent(Graphics g) {
+        	// refaire cette fonction correctement
             this.setSize(sizex, sizey);
             this.setLocation(posx, posy);
             g.setColor(color);
             if (this.name == "valider") {
                 this.setBorderPainted(false);
                 g.drawImage(img[24], 0, 0, null);
-
-            } else {
+            }
+             if (sizex ==285) {
+                 if (this.name == "Bloquer") {
+                    g.drawImage(img[30],0,0,null);
+                 } else if (this.name == "Executer") {
+                     g.drawImage(img[29],0,0,null);
+                 } else if (this.name == "Completer") {
+                     g.drawImage(img[28],0,0,null);
+                 } else if (this.name == "Bug") {
+                     g.drawImage(img[26],0,0,null);
+                 } 
+             } else if(sizex==190) {
                 g.setColor(color);
                 g.fillRect(0, 0, this.getWidth(), this.getHeight());
                 g.setColor(Color.BLACK);
                 g.drawString(this.name, (this.getWidth() / 2) - 25, (this.getHeight() / 2) + 5);
             }
         }
+        
 
         @Override
         public void mouseClicked(MouseEvent arg0) {
@@ -624,6 +642,7 @@ public class Affichage extends JFrame implements Interface {
             } else if (this.name == "valider") {
                 menu.setValidation(true);
             }
+            fenetre.repaint();
         }
 
         // TODO Auto-generated method stub
@@ -644,12 +663,14 @@ public class Affichage extends JFrame implements Interface {
         @Override
         public void mousePressed(MouseEvent arg0) {
             // TODO Auto-generated method stub
+            fenetre.repaint();
 
         }
 
         @Override
         public void mouseReleased(MouseEvent arg0) {
             // TODO Auto-generated method stub
+            fenetre.repaint();
 
         }
 
@@ -768,9 +789,10 @@ public class Affichage extends JFrame implements Interface {
 
     public int demanderCibleCarteBug(LogiqueDeJeu logiqueDeJeu) {
         cible = 10;
+        JFrame fenetreBug = new JFrame();
         fenetreBug.setVisible(true);
         fenetreBug.setResizable(true);
-        fenetreBug.setSize(300 * (logiqueDeJeu.getNombreJoueurs() - 1), 300);
+        fenetreBug.setSize(85 * (logiqueDeJeu.getNombreJoueurs() - 1), 150);
         fenetreBug.setTitle("Cible de la carte Bug");
         fenetreBug.setLocationRelativeTo(null);
         fenetreBug.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -778,7 +800,7 @@ public class Affichage extends JFrame implements Interface {
         int j = 0;
         for (int i = 0; i < logiqueDeJeu.getNombreJoueurs(); i++) {
             if (i != logiqueDeJeu.getJoueurCourant().getNumeroJoueur()) {
-                fenetreBug.add(new BoutonBug(j * 300, logiqueDeJeu.getNombreJoueurs(), i, noms[i]));
+                fenetreBug.add(new BoutonBug(fenetreBug,j * 75, logiqueDeJeu.getNombreJoueurs(), i, noms[i]));
                 j++;
             }
         }
@@ -813,28 +835,24 @@ public class Affichage extends JFrame implements Interface {
         private int idJoueur;
         private int nbJoueurs;
         int posx;
+        private JFrame fenetreBug;
 
-        public BoutonBug(int posx, int nbJoueurs, int id, String name) {
+        public BoutonBug(JFrame fenetreBug,int posx, int nbJoueurs, int id, String name) {
             System.out.println(name);
             this.posx = posx;
             this.nbJoueurs = nbJoueurs;
             this.name = name;
             this.idJoueur = id;
+            this.fenetreBug = fenetreBug;
             addMouseListener(this);
         }
 
         public void paintComponent(Graphics g) {
-            this.setSize(280, 280);
+            this.setSize(70, 70);
             this.setLocation(posx, 10);
-            if (name == "Tortue") {
-                g.drawImage(img[3], posx, 10, null);
-            } else if (name == "Pieuvre") {
-                g.drawImage(img[0], posx, 10, null);
-            } else if (name == "Requin") {
-                g.drawImage(img[1], posx, 10, null);
-            } else if (name == "Grenouille") {
-                g.drawImage(img[2], posx, 10, null);
-            }
+            this.setName(name);
+            g.drawImage(imgSkins[idJoueur],0,0,null);
+            this.setBorderPainted(false);
         }
 
         @Override
@@ -850,7 +868,6 @@ public class Affichage extends JFrame implements Interface {
             System.out.println(this.name);
             fenetreBug.repaint();
             // TODO Auto-generated method stub
-
         }
 
         @Override
@@ -862,7 +879,6 @@ public class Affichage extends JFrame implements Interface {
         @Override
         public void mousePressed(MouseEvent e) {
             fenetreBug.repaint();
-
         }
 
         @Override
