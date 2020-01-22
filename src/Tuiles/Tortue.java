@@ -69,12 +69,11 @@ public class Tortue extends Tuile {
 
             case ".":  // Si la case est vide
             case "J":
-                System.out.print("On deplace la tortue: ");
-                System.out.print(caseDestination.getX());
-                System.out.print("; ");
-                System.out.println(caseDestination.getY());
-
                 if (caseDestination.getContenu().equals(".")) {
+                    System.out.print("On deplace la tortue: ");
+                    System.out.print(caseDestination.getX());
+                    System.out.print("; ");
+                    System.out.println(caseDestination.getY());
                     deplacerTortue(logiqueDeJeu, this, new Position(caseDestination.getX(), caseDestination.getY(), this.position.getOrientation()));
                 }
 

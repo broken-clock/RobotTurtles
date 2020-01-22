@@ -22,7 +22,7 @@ public class LogiqueDeJeu {
     private int nombreJoueursGagne = 0;
     private ArrayList<Joueur> joueurs = new ArrayList();
     private ArrayList<Position> positionsInitialesJoueurs = new ArrayList();
-    private ArrayList<Joyau> joyaux = new ArrayList();
+    private ArrayList<Joyau> joyaux;
     private Plateau plateau = new Plateau();
     private Joueur joueurCourant;
     private boolean gameOver;
@@ -139,6 +139,7 @@ public class LogiqueDeJeu {
                 this.getJoueurs().get(1).getTortue().setPositionDepart(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
 
                 // Créer les joyaux et définir leur position
+                this.joyaux = new ArrayList();
                 this.getJoyaux().add(new Joyau());
                 this.getJoyaux().get(0).setPosition(7, 3, null);
                 break;
@@ -325,6 +326,7 @@ public class LogiqueDeJeu {
                 if (this.isGameOver()) break;
                 if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println("abcdfinsess");
 
+                // Defausse des cartes
                 if (!this.joueurCourant.isFini() && !this.joueurCourant.getCartesMain().empty()) {
                     boolean continuerDefausserCartes = true;
                     this.getMonInterface().afficherCartesMain("choissisez les cartes a defausser", this);
