@@ -130,9 +130,7 @@ public class Joueur {
     }
 
     boolean placerMur(LogiqueDeJeu logiqueDeJeu, Obstacle obstacle) {
-        String messagePossedePasObstacle = "Refusé: vous ne disposez pas d'un tel obstacle";
-        System.out.println(obstacle.getCoordsObstacle()[0]);
-        System.out.println(obstacle.getCoordsObstacle()[1]);
+        String messagePossedePasObstacle = "Refuse: vous ne disposez pas d'un tel obstacle";
         if (obstacle.getTypeObstacle().equals("P")) {
             if (this.getMursDePierre() <= 0) {
                 logiqueDeJeu.getMonInterface().afficherMessage(messagePossedePasObstacle);
@@ -146,20 +144,21 @@ public class Joueur {
         }
 
         if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandée est déjà occupée
-            logiqueDeJeu.getMonInterface().afficherMessage("Refus�: la case demandée est déjà occupée");
+            logiqueDeJeu.getMonInterface().afficherMessage("Refuse: la case demandee est deja� occupee");
             return false;
         }
-        // Les murs de glace sont destructibles donc ne peuvent pas bloquer l'accès à un joyau
+        // Les murs de glace sont destructibles donc ne peuvent pas bloquer l'acces a un joyau
         else if (!obstacle.getTypeObstacle().equals("G") && logiqueDeJeu.getPlateau().placementBloquant(logiqueDeJeu, obstacle.getCoordsObstacle())) {
-            logiqueDeJeu.getMonInterface().afficherMessage("Refus�: placer un obstacle ici bloquerait l'accès à un joyau");
+            logiqueDeJeu.getMonInterface().afficherMessage("Refuse: placer un obstacle ici bloquerait l'acces a un joyau");
             return false;
         }
 
-        // Le placement du mur demandé est valide
-        if (obstacle.getTypeObstacle().equals("P")) {
+        // Le placement du mur demande est valide
+        System.out.println("type obs: " + obstacle.getTypeObstacle());
+        if (obstacle.getTypeObstacle().equals("p")) {
             logiqueDeJeu.getPlateau().setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "p");
             this.setMursDePierre(this.getMursDePierre() - 1);
-        } else if (obstacle.getTypeObstacle().equals("G")) {
+        } else if (obstacle.getTypeObstacle().equals("g")) {
             logiqueDeJeu.getPlateau().setCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1], "g");
             this.setMursDeGlace(this.getMursDeGlace() - 1);
         }

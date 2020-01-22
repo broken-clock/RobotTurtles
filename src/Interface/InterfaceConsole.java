@@ -107,9 +107,9 @@ public class InterfaceConsole implements Interface {
     public Obstacle demanderObstacleAPlacer() {
         String typeObstacle;
         do {
-            System.out.println("Quel type d'obstacle voulez-vous placer ? (G/P)");
+            System.out.println("Quel type d'obstacle voulez-vous placer ? (g/p)");
             typeObstacle = scanner.nextLine();
-        } while (!typeObstacle.equals("G") && !typeObstacle.equals("P"));
+        } while (!typeObstacle.equals("g") && !typeObstacle.equals("p"));
 
         int[] coordsObstacle = new int[2];
         System.out.println("A quelles coordonées ?");

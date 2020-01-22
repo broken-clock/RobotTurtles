@@ -29,10 +29,6 @@ public class LogiqueDeJeu {
         return this.nombreJoueurs;
     }
 
-    public ArrayList<Integer> getOrdreJoueurs() {
-        return ordreJoueurs;
-    }
-
     public String getModeJeu() {
         return modeJeu;
     }
@@ -95,10 +91,6 @@ public class LogiqueDeJeu {
 
     public void setMonInterface(Interface interfacee) {
         this.monInterface = interfacee;
-    }
-
-    public Iterator<Integer> getIterateurJoueurs() {
-        return iterateurJoueurs;
     }
 
     private void initialiserPositionsPlateauOrdrepassage() {
@@ -296,9 +288,10 @@ public class LogiqueDeJeu {
                         boolean murPlaceOk;
                         do {
                             obstacle = this.getMonInterface().demanderObstacleAPlacer();
-                            System.out.println(obstacle.getCoordsObstacle()[0] + obstacle.getCoordsObstacle()[1]);
+                            System.out.println("x:" + obstacle.getCoordsObstacle()[0] + ", y:" + obstacle.getCoordsObstacle()[1]);
 
                             murPlaceOk = getJoueurCourant().placerMur(this, obstacle);
+                            System.out.println("statut mur: " + murPlaceOk);
                         } while (!murPlaceOk);
                         break;
 
