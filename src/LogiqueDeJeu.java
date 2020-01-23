@@ -23,7 +23,7 @@ public class LogiqueDeJeu {
     private int nombreJoueursGagne = 0;
     private ArrayList<Joueur> joueurs = new ArrayList();
     private ArrayList<Position> positionsInitialesJoueurs = new ArrayList();
-    private ArrayList<Joyau> joyaux = new ArrayList();
+    private ArrayList<Joyau> joyaux;
     private Plateau plateau = new Plateau();
     private Joueur joueurCourant;
     private boolean gameOver;
@@ -33,7 +33,7 @@ public class LogiqueDeJeu {
 
     void initialiserPartie() {
         // Choix du type d'interface
-        this.setMonInterface(new InterfaceConsole());
+        this.setMonInterface(new Affichage());
 
         // Musique de fond
         if (this.getMonInterface().getTypeInterface().equals("Affichage")) this.playSound("sound.wav");
@@ -140,6 +140,9 @@ public class LogiqueDeJeu {
     }
 
     private void initialiserPositionsPlateauOrdrepassage() {
+        // Créer les joyaux
+        this.joyaux = new ArrayList();
+
         // En fonction du nombre de joueurs, initialiser les positions des tortues et les joyaux
         Position positionDepart;
         switch (this.nombreJoueurs) {
@@ -161,8 +164,7 @@ public class LogiqueDeJeu {
                 this.getJoueurs().get(1).getTortue().setPosition(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
                 this.getJoueurs().get(1).getTortue().setPositionDepart(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
 
-                // Créer les joyaux et définir leur position
-                this.joyaux = new ArrayList();
+                // Definir la position des joyaux
                 this.getJoyaux().add(new Joyau());
                 this.getJoyaux().get(0).setPosition(7, 3, null);
                 break;
@@ -171,7 +173,7 @@ public class LogiqueDeJeu {
                 // Initialiser les positions des tortues
                 this.positionsInitialesJoueurs.add(new Position(0, 0, Orientations.DOWN));
                 this.positionsInitialesJoueurs.add(new Position(6, 3, Orientations.DOWN));
-                this.positionsInitialesJoueurs.add(new Position(0, 6, Orientations.DOWN));
+                this.positionsInitialesJoueurs.add(new Position(6, 6, Orientations.DOWN));
 
                 positionDepart = this.positionsInitialesJoueurs.get(0);
                 this.getJoueurs().get(0).getTortue().setPosition(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());

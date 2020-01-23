@@ -43,7 +43,7 @@ public class Tortue extends Tuile {
 
     private void deplacerTortue(LogiqueDeJeu logiqueDeJeu, Tortue tortue, Position position) {
         // On vide la case couramment occupée par la tortue
-        logiqueDeJeu.getPlateau().setCase(tortue.position.getX(), tortue.position.getY(), ".");
+        logiqueDeJeu.getPlateau().setCase(tortue.position.getX(), tortue.position.getY(), null);
 
         // On occupe la case suivante par la tortue
         logiqueDeJeu.getPlateau().setCase(position.getX(), position.getY(), getReprTortue(tortue, position.getOrientation()));
@@ -115,7 +115,7 @@ public class Tortue extends Tuile {
 
     private void disparaitre(LogiqueDeJeu logiqueDeJeu) {
         // On vide la case couramment occupée par la tortue
-        logiqueDeJeu.getPlateau().setCase(this.position.getX(), this.position.getY(), ".");
+        logiqueDeJeu.getPlateau().setCase(this.position.getX(), this.position.getY(), null);
     }
 
     public void tournerHoraire(LogiqueDeJeu logiqueDeJeu) {

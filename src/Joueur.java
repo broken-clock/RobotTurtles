@@ -144,7 +144,7 @@ public class Joueur {
             }
         }
 
-        if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandÃ©e est dÃ©jÃ  occupÃ©e
+        if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandee est deja  occupee
             logiqueDeJeu.getMonInterface().afficherMessage("Refuse: la case demandee est deja  occupee");
             return false;
         }
