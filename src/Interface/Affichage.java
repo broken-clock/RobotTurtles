@@ -303,7 +303,7 @@ public class Affichage extends JFrame implements Interface {
             	}
             }
             if (j > 1) {
-                JOptionPane.showMessageDialog(null, "Veuillez prendre des personnages différents", "Alerte", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Veuillez prendre des personnages différents", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
 
@@ -739,7 +739,8 @@ public class Affichage extends JFrame implements Interface {
         fenetreBloquer.setResizable(true);
         fenetreBloquer.setSize(800, 200);
         fenetreBloquer.setTitle("Completer le programme");
-        fenetreBloquer.setLocationRelativeTo(null);
+        fenetreBloquer.setLocationRelativeTo(fenetre);
+        fenetreBloquer.setLocation(900,600);
         fenetreBloquer.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         fenetreBloquer.setLayout(new FlowLayout());
         JToggleButton choixMur = new JToggleButton("Mur de glace");
@@ -785,11 +786,13 @@ public class Affichage extends JFrame implements Interface {
 
         });
         fenetreBloquer.add(valide);
+	        fenetreBloquer.revalidate();
         fenetreBloquer.repaint();
         while (ObstacleSelectionne == null) {
             try {
    				Thread.sleep(10);
    				fenetre.repaint();
+
    			} catch (InterruptedException e) {
    				// TODO Auto-generated catch block
    				e.printStackTrace();
