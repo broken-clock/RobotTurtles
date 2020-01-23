@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LogiqueDeJeu {
+    private int test3alasuite=1;//set 1 pour test 3 a la suite en 2 joueurs
     private Interface monInterface;
     private int nombreJoueurs;
     private ArrayList<Integer> ordreJoueurs;
@@ -145,7 +146,11 @@ public class LogiqueDeJeu {
             case 2:
             default:
                 // Initialiser les positions des tortues
-                this.positionsInitialesJoueurs.add(new Position(6, 3, Orientations.DOWN));
+                if (test3alasuite==1) {
+                    this.positionsInitialesJoueurs.add(new Position(6, 3, Orientations.DOWN));//initialiser J1 a coté du joyau
+                }else if (test3alasuite==0){
+                    this.positionsInitialesJoueurs.add(new Position(0, 1, Orientations.DOWN));//init J1 normal
+                }
                 this.positionsInitialesJoueurs.add(new Position(0, 5, Orientations.DOWN));
 
                 positionDepart = this.positionsInitialesJoueurs.get(0);
