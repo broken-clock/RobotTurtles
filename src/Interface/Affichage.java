@@ -22,7 +22,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -297,19 +296,19 @@ public class Affichage extends JFrame implements Interface {
             System.out.println(personnage);
             choix[compteur] = personnage;
             int j = 0;
-        	if (choix[compteur] != "Non") {
-            for (int i=0;i<4;i++) {
-            	if (choix[compteur] == choix[i]) {
-            		j++;
-            	}
-            }
-            if (j > 1) {
-                JOptionPane.showMessageDialog(null, "Veuillez prendre des personnages différents", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            if (choix[compteur] != "Non") {
+                for (int i = 0; i < 4; i++) {
+                    if (choix[compteur] == choix[i]) {
+                        j++;
+                    }
+                }
+                if (j > 1) {
+                    JOptionPane.showMessageDialog(null, "Veuillez prendre des personnages différents", "Error", JOptionPane.ERROR_MESSAGE);
+                }
 
 
+            }
         }
-    }
     }
 
     private boolean persoDiff(ArrayList<Integer> personnageJeu) {
@@ -333,17 +332,17 @@ public class Affichage extends JFrame implements Interface {
         System.out.println("1");
         while (!menu.getValidation() || !persoDiff(perso)) {
             try {
-   				menu.validation=false;
-   				Thread.sleep(4);
+                menu.validation = false;
+                Thread.sleep(4);
                 perso.set(0, liste1.getSelectedIndex());
                 perso.set(1, liste2.getSelectedIndex());
                 perso.set(2, liste3.getSelectedIndex());
                 perso.set(3, liste4.getSelectedIndex());
-   				fenetre.repaint();
-   			} catch (InterruptedException e) {
-   				// TODO Auto-generated catch block
-   				e.printStackTrace();
-   			}
+                fenetre.repaint();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
         }
         System.out.println("3");
@@ -383,12 +382,13 @@ public class Affichage extends JFrame implements Interface {
     public String demanderAction(LogiqueDeJeu LogiqueDeJeu) {
         while (Objects.equals(action, "")) {
             try {
-   				Thread.sleep(1);
-   				fenetre.repaint();
-   			} catch (InterruptedException e) {
-   				// TODO Auto-generated catch block
-   				e.printStackTrace();
-   			}        }
+                Thread.sleep(1);
+                fenetre.repaint();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         String actionEnvoye = action;
         action = "";
         return actionEnvoye;
@@ -573,7 +573,7 @@ public class Affichage extends JFrame implements Interface {
                     g.drawString("x" + joueurs.get(i).getProgramme().getProgramme().size(), 265, 110 + j * 200);        //le nombre d'instructions
                     if (Objects.equals(modeJeu, "3alasuite")) {
                         g.drawImage(img[9], 10, 140 + j * 200, this); //Joyau
-                        g.drawString(joueurs.get(i).getScore() + " points", 65, 175 + j * 200);        //le nombre de murs de pierre
+                        g.drawString(joueurs.get(i).getScore() + "points", 65, 175 + j * 200);        //le nombre de murs de pierre
                     }
                     j++;
                     //On affiche les donnÃ©es correspondantes au joueur actif
@@ -588,7 +588,7 @@ public class Affichage extends JFrame implements Interface {
                     g.drawString("x" + joueurCourant.getProgramme().getProgramme().size(), 1025, 335);        //Le nombre d'instructions
                     if (Objects.equals(modeJeu, "3alasuite")) {
                         g.drawImage(img[9], 950, 400, this); //joyau
-                        g.drawString(joueurs.get(j).getScore() + " points", 1025, 435);        //Le nombre de points
+                        g.drawString(joueurs.get(j).getScore() + "points", 1025, 435);        //Le nombre de points
 
                     }
                 }
@@ -725,12 +725,13 @@ public class Affichage extends JFrame implements Interface {
     private String selectionnerCarte() {
         while (carteSelectionnee == null) {
             try {
-   				Thread.sleep(5);
-   				fenetre.repaint();
-   			} catch (InterruptedException e) {
-   				// TODO Auto-generated catch block
-   				e.printStackTrace();
-   			}        }
+                Thread.sleep(5);
+                fenetre.repaint();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         String renvoie = carteSelectionnee.getTypeCarte().toString();
         carteSelectionnee = null;
         return renvoie;
@@ -741,8 +742,10 @@ public class Affichage extends JFrame implements Interface {
         JFrame fenetreBloquer = new JFrame();
         fenetreBloquer.setVisible(true);
         fenetreBloquer.setResizable(true);
-        fenetreBloquer.setSize(700, 75);
+        fenetreBloquer.setSize(800, 200);
         fenetreBloquer.setTitle("Completer le programme");
+        fenetreBloquer.setLocationRelativeTo(fenetre);
+        fenetreBloquer.setLocation(900, 600);
         fenetreBloquer.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         fenetreBloquer.setLayout(new FlowLayout());
         JToggleButton choixMur = new JToggleButton("Mur de glace");
@@ -761,17 +764,13 @@ public class Affichage extends JFrame implements Interface {
         };
         choixMur.addItemListener(itemListenerChoixMur);
         choixMur.setSize(200, 200);
+        fenetreBloquer.add(choixMur);
         String[] position = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
         JComboBox<String> positionX = new JComboBox<>(position);
         JComboBox<String> positionY = new JComboBox<>(position);
-        
         positionX.setMaximumSize(new Dimension(300, 150));
-        fenetreBloquer.add(new JLabel("Vous souhaitez placer un"));
-        fenetreBloquer.add(choixMur);
-        fenetreBloquer.add(new JLabel("a la ligne :"));
         fenetreBloquer.add(positionX);
-        fenetreBloquer.add(new JLabel("et a la colonne :"));
         fenetreBloquer.add(positionY);
         JButton valide = new JButton("valider");
         valide.addActionListener(new ActionListener() {
@@ -792,17 +791,18 @@ public class Affichage extends JFrame implements Interface {
 
         });
         fenetreBloquer.add(valide);
-	        fenetreBloquer.revalidate();
+        fenetreBloquer.revalidate();
         fenetreBloquer.repaint();
         while (ObstacleSelectionne == null) {
             try {
-   				Thread.sleep(10);
-   				fenetre.repaint();
+                Thread.sleep(10);
+                fenetre.repaint();
 
-   			} catch (InterruptedException e) {
-   				// TODO Auto-generated catch block
-   				e.printStackTrace();
-   			}        }
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         Obstacle ObstacleRetour = ObstacleSelectionne;
         ObstacleSelectionne = null;
         return ObstacleRetour;
@@ -828,13 +828,13 @@ public class Affichage extends JFrame implements Interface {
         }
         while (cible == 10) {
             try {
-				Thread.sleep(20);
-				fenetre.repaint();
-				fenetreBug.repaint();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                Thread.sleep(20);
+                fenetre.repaint();
+                fenetreBug.repaint();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         fenetreBug.dispose();
         return cible;
@@ -992,30 +992,32 @@ public class Affichage extends JFrame implements Interface {
         @Override
         public void mouseEntered(MouseEvent arg0) {
             // TODO Auto-generated method stub
-        	fenetre.repaint();
+            fenetre.repaint();
         }
 
         @Override
         public void mouseExited(MouseEvent arg0) {
             // TODO Auto-generated method stub
-        	fenetre.repaint();
+            fenetre.repaint();
         }
 
         @Override
         public void mousePressed(MouseEvent arg0) {
             // TODO Auto-generated method stub
-        	fenetre.repaint();
+            fenetre.repaint();
 
         }
 
         @Override
         public void mouseReleased(MouseEvent arg0) {
             // TODO Auto-generated method stub
-        	fenetre.repaint();
+            fenetre.repaint();
         }
     }
 
+    @Override
     public void afficherFinManche(LogiqueDeJeu logiqueDeJeu) {
+//        logiqueDeJeu.getNumeroManche();
         Victoire ecranVictoire = new Victoire(logiqueDeJeu);
         fenetre.setContentPane(ecranVictoire);
     }
@@ -1033,9 +1035,9 @@ public class Affichage extends JFrame implements Interface {
             g.setFont(new Font("Anton Bold DB", Font.PLAIN, 100));
             g.setColor(Color.LIGHT_GRAY);
             for (int i = 0; i < logiqueDeJeu.getNombreJoueurs(); i++) {
-                g.drawString(noms[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 50, 200*logiqueDeJeu.getJoueurs().get(i).getClassement() - 100);
-                g.drawImage(imgSkins[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 1100, 200*logiqueDeJeu.getJoueurs().get(i).getClassement() -150 , null);
-                g.drawString("place :" + logiqueDeJeu.getJoueurs().get(i).getClassement(), 600, 200*logiqueDeJeu.getJoueurs().get(i).getClassement() -100);
+                g.drawString(noms[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 50, 200 * logiqueDeJeu.getJoueurs().get(i).getClassement() - 100);
+                g.drawImage(imgSkins[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 1100, 200 * logiqueDeJeu.getJoueurs().get(i).getClassement() - 150, null);
+                g.drawString("place :" + logiqueDeJeu.getJoueurs().get(i).getClassement(), 600, 200 * logiqueDeJeu.getJoueurs().get(i).getClassement() - 100);
             }
         }
     }
@@ -1081,16 +1083,6 @@ public class Affichage extends JFrame implements Interface {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void afficherFinManche(LogiqueDeJeu logiqueDeJeu) {
-        // TODO Auto-generated method stub
-
-    }
-    
-    public void Animationlaser(LogiqueDeJeu logiqueDeJeu) {
-    	logiqueDeJeu.getJoueurCourant().getTortue().getPosition();
     }
 }
 
