@@ -46,7 +46,7 @@ public class Affichage extends JFrame implements Interface {
     public Affichage fenetre = this;
     String joueur1;
     String joueur2;
-    Image[] img = new Image[35];
+    Image[] img = new Image[36];
     Image[] imgSkins = new Image[4];
     public String[] noms = new String[4];
     String[] personnage = {"Non", "Pieuvre", "Requin", "Grenouille", "Tortue"};
@@ -103,14 +103,16 @@ public class Affichage extends JFrame implements Interface {
         img[30] = (new ImageIcon("src/images/poissonBloquer.png")).getImage();
         img[31] = (new ImageIcon("src/images/murPlateau.png")).getImage();
         img[32] = (new ImageIcon("src/images/murGlacePlateau.png")).getImage();
-
+        img[33] = (new ImageIcon("src/images/poissonExecuterNormal.png")).getImage();
+        img[34] = (new ImageIcon("src/images/poissonCompleterNormal.png")).getImage();
+        img[35] = (new ImageIcon("src/images/poissonBloquerNormal.png")).getImage();
 
 
 
 
         this.setVisible(true);
         this.setResizable(true);
-        this.setSize(1280, 825);
+        this.setSize(1299, 825);
         this.setTitle("Robot Turtles");
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -602,7 +604,7 @@ public class Affichage extends JFrame implements Interface {
         }
 
         public void paintComponent(Graphics g) {
-        	// refaire cette fonction correctement
+            // refaire cette fonction correctement
             this.setSize(sizex, sizey);
             this.setLocation(posx, posy);
             g.setColor(color);
@@ -610,24 +612,31 @@ public class Affichage extends JFrame implements Interface {
                 this.setBorderPainted(false);
                 g.drawImage(img[24], 0, 0, null);
             }
-             if (sizex ==285) {
-                 if (this.name == "Bloquer") {
-                    g.drawImage(img[30],0,0,null);
-                 } else if (this.name == "Executer") {
-                     g.drawImage(img[29],0,0,null);
-                 } else if (this.name == "Completer") {
-                     g.drawImage(img[28],0,0,null);
-                 } else if (this.name == "Bug") {
-                     g.drawImage(img[26],0,0,null);
-                 } 
-             } else if(sizex==190) {
-                g.setColor(color);
-                g.fillRect(0, 0, this.getWidth(), this.getHeight());
-                g.setColor(Color.BLACK);
-                g.drawString(this.name, (this.getWidth() / 2) - 25, (this.getHeight() / 2) + 5);
+            if (sizex == 285) {
+                if (this.name == "Bloquer") {
+                    g.drawImage(img[30], 0, 0, null);
+                } else if (this.name == "Executer") {
+                    g.drawImage(img[29], 0, 0, null);
+                } else if (this.name == "Completer") {
+                    g.drawImage(img[28], 0, 0, null);
+                } else if (this.name == "Bug") {
+                    g.drawImage(img[26], 0, 0, null);
+                }
+            } else if (sizex == 190) {
+                if (this.name == "Bloquer") {
+                    g.drawImage(img[35], 0, 0, null);
+                } else if (this.name == "Executer") {
+                    g.drawImage(img[34], 0, 0, null);
+                } else if (this.name == "Completer") {
+                    g.drawImage(img[33], 0, 0, null);
+                } else {
+                    g.setColor(color);
+                    g.fillRect(0, 0, this.getWidth(), this.getHeight());
+                    g.setColor(Color.BLACK);
+                    g.drawString(this.name, (this.getWidth() / 2) - 25, (this.getHeight() / 2) + 5);
+                }
             }
         }
-        
 
         @Override
         public void mouseClicked(MouseEvent arg0) {
