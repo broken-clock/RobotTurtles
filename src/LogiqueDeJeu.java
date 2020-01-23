@@ -28,10 +28,11 @@ public class LogiqueDeJeu {
     private boolean gameOver;
     private Iterator<Integer> iterateurJoueurs;
     private int numeroManche;
+    private int[] coordsCaseToucheeParLaser;
 
     void initialiserPartie() {
         // Choix du type d'interface
-        this.setMonInterface(new Affichage());
+        this.setMonInterface(new InterfaceConsole());
 
         // Musique de fond
         if (this.getMonInterface().getTypeInterface().equals("Affichage")) this.playSound("sound.wav");
@@ -51,6 +52,14 @@ public class LogiqueDeJeu {
 
         }
         this.initialiserPositionsPlateauOrdrepassage();
+    }
+
+    public int[] getCoordsCaseToucheeParLaser() {
+        return coordsCaseToucheeParLaser;
+    }
+
+    public void setCoordsCaseToucheeParLaser(int x, int y) {
+        this.coordsCaseToucheeParLaser = new int[]{x, y};
     }
 
     public int getNumeroManche() {
@@ -156,7 +165,7 @@ public class LogiqueDeJeu {
             case 3:
                 // Initialiser les positions des tortues
                 this.positionsInitialesJoueurs.add(new Position(0, 0, Orientations.DOWN));
-                this.positionsInitialesJoueurs.add(new Position(0, 3, Orientations.DOWN));
+                this.positionsInitialesJoueurs.add(new Position(6, 3, Orientations.DOWN));
                 this.positionsInitialesJoueurs.add(new Position(0, 6, Orientations.DOWN));
 
                 positionDepart = this.positionsInitialesJoueurs.get(0);

@@ -164,6 +164,7 @@ public class Tortue extends Tuile {
 
         // Agir sur cette case comme il se doit
         // Si caseLueContenu == null, alors le laser n'a rien touché, donc on ne fait rien
+        logiqueDeJeu.setCoordsCaseToucheeParLaser(x, y);  // Pour l'interface graphique
         if (caseLueContenu != null) {
             switch (caseLueContenu) {
                 case "g":
