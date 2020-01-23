@@ -46,7 +46,7 @@ public class Affichage extends JFrame implements Interface {
     private final Affichage fenetre = this;
     String joueur1;
     String joueur2;
-    private final Image[] img = new Image[35];
+    private final Image[] img = new Image[36];
     private final Image[] imgSkins = new Image[4];
     private final String[] noms = new String[4];
     private final String[] personnage = {"Non", "Pieuvre", "Requin", "Grenouille", "Tortue"};
@@ -620,13 +620,15 @@ public class Affichage extends JFrame implements Interface {
                     g.drawImage(img[26], 0, 0, null);
                 }
             } else if (sizex == 190) {
-                g.setColor(color);
-                g.fillRect(0, 0, this.getWidth(), this.getHeight());
-                g.setColor(Color.BLACK);
-                g.drawString(this.name, (this.getWidth() / 2) - 25, (this.getHeight() / 2) + 5);
+                if (Objects.equals(this.name, "Bloquer")) {
+                    g.drawImage(img[35], 0, 0, null);
+                } else if (Objects.equals(this.name, "Executer")) {
+                    g.drawImage(img[33], 0, 0, null);
+                } else if (Objects.equals(this.name, "Completer")) {
+                    g.drawImage(img[34], 0, 0, null);
+                }
             }
         }
-
 
         @Override
         public void mouseClicked(MouseEvent arg0) {
