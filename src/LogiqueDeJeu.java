@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LogiqueDeJeu {
-    private int test3alasuite=1;//set 1 pour test 3 a la suite en 2 joueurs
+    private int test3alasuite=0;//set 1 pour test 3 a la suite en 2 joueurs
     private Interface monInterface;
     private int nombreJoueurs;
     private ArrayList<Integer> ordreJoueurs;
@@ -36,7 +36,7 @@ public class LogiqueDeJeu {
         this.setMonInterface(new Affichage());
 
         // Musique de fond
-        if (this.getMonInterface().getTypeInterface().equals("Affichage")) this.playSound("sound.wav");
+        if (this.getMonInterface().getTypeInterface().equals("Affichage")) this.playSound("sound.wav", true);
 
         Parametres parametres = this.getMonInterface().parametresMenu();
         System.out.println("modejeu: " + parametres.gameMode);
@@ -429,7 +429,7 @@ public class LogiqueDeJeu {
         return ThreadLocalRandom.current().nextInt(0, this.nombreJoueurs);
     }
 
-    public synchronized void playSound(final String url) {
+    public synchronized void playSound(final String url, boolean loop) {
         new Thread(new Runnable() {
             // The wrapper thread is unnecessary, unless it blocks on the
             // Clip finishing; see comments.
@@ -439,7 +439,7 @@ public class LogiqueDeJeu {
                     AudioInputStream inputStream = AudioSystem.getAudioInputStream(
                             Main.class.getResourceAsStream("music/" + url));
                     clip.open(inputStream);
-                    clip.loop(10000);
+                    if (loop) clip.loop(10000);
                     clip.getMicrosecondLength();
                     clip.start();
                 } catch (Exception e) {
