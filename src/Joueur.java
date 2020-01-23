@@ -144,7 +144,7 @@ public class Joueur {
             }
         }
 
-        if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandee est deja  occupee
+        if (logiqueDeJeu.getPlateau().getCase(obstacle.getCoordsObstacle()[0], obstacle.getCoordsObstacle()[1]) != null) {  // Si la case demandÃ©e est dÃ©jÃ  occupÃ©e
             logiqueDeJeu.getMonInterface().afficherMessage("Refuse: la case demandee est deja  occupee");
             return false;
         }
@@ -191,6 +191,7 @@ public class Joueur {
                     break;
             }
             if (logiqueDeJeu.getMonInterface().getTypeInterface().equals("Affichage")) logiqueDeJeu.getMonInterface().actualiser();
+        	logiqueDeJeu.getMonInterface().stopLaser();
         }
         logiqueDeJeu.getMonInterface().afficherPlateau(logiqueDeJeu);
     }
