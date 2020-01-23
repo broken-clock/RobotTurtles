@@ -295,9 +295,20 @@ public class Affichage extends JFrame implements Interface {
             String personnage = (String) this.getSelectedItem();
             System.out.println(personnage);
             choix[compteur] = personnage;
+            int j = 0;
+        	if (choix[compteur] != "Non") {
+            for (int i=0;i<4;i++) {
+            	if (choix[compteur] == choix[i]) {
+            		j++;
+            	}
+            }
+            if (j > 1) {
+                JOptionPane.showMessageDialog(null, "Veuillez prendre des personnages différents", "Alerte", JOptionPane.ERROR_MESSAGE);
+            }
 
 
         }
+    }
     }
 
     private boolean persoDiff(ArrayList<Integer> personnageJeu) {
@@ -320,15 +331,18 @@ public class Affichage extends JFrame implements Interface {
         fenetre.setContentPane(menu);
         System.out.println("1");
         while (!menu.getValidation() || !persoDiff(perso)) {
-            try {                                    //sans mettre d'instructions dans le while ï¿½a fonctionne pas donc je met un thread sleep
-                Thread.sleep(20);
+            try {
+   				Thread.sleep(5);
                 perso.set(0, liste1.getSelectedIndex());
                 perso.set(1, liste2.getSelectedIndex());
                 perso.set(2, liste3.getSelectedIndex());
                 perso.set(3, liste4.getSelectedIndex());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+   				fenetre.repaint();
+   			} catch (InterruptedException e) {
+   				// TODO Auto-generated catch block
+   				e.printStackTrace();
+   			}
+
         }
         System.out.println("3");
 
@@ -364,12 +378,13 @@ public class Affichage extends JFrame implements Interface {
 
     public String demanderAction(LogiqueDeJeu LogiqueDeJeu) {
         while (Objects.equals(action, "")) {
-            try {                                    //sans mettre d'instructions dans le while ï¿½a fonctionne pas
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+            try {
+   				Thread.sleep(1);
+   				fenetre.repaint();
+   			} catch (InterruptedException e) {
+   				// TODO Auto-generated catch block
+   				e.printStackTrace();
+   			}        }
         String actionEnvoye = action;
         action = "";
         return actionEnvoye;
@@ -605,17 +620,17 @@ public class Affichage extends JFrame implements Interface {
             this.setSize(sizex, sizey);
             this.setLocation(posx, posy);
             g.setColor(color);
+            this.setBorderPainted(false);
             if (Objects.equals(this.name, "valider")) {
-                this.setBorderPainted(false);
                 g.drawImage(img[24], 0, 0, null);
             }
             if (sizex == 285) {
                 if (Objects.equals(this.name, "Bloquer")) {
                     g.drawImage(img[30], 0, 0, null);
                 } else if (Objects.equals(this.name, "Executer")) {
-                    g.drawImage(img[29], 0, 0, null);
-                } else if (Objects.equals(this.name, "Completer")) {
                     g.drawImage(img[28], 0, 0, null);
+                } else if (Objects.equals(this.name, "Completer")) {
+                    g.drawImage(img[29], 0, 0, null);
                 } else if (Objects.equals(this.name, "Bug")) {
                     g.drawImage(img[26], 0, 0, null);
                 }
@@ -643,7 +658,6 @@ public class Affichage extends JFrame implements Interface {
             } else if (Objects.equals(this.name, "valider")) {
                 menu.setValidation(true);
             }
-            fenetre.repaint();
         }
 
         // TODO Auto-generated method stub
@@ -652,26 +666,22 @@ public class Affichage extends JFrame implements Interface {
         @Override
         public void mouseEntered(MouseEvent arg0) {
             // TODO Auto-generated method stub
-            fenetre.repaint();
         }
 
         @Override
         public void mouseExited(MouseEvent arg0) {
             // TODO Auto-generated method stub
-            fenetre.repaint();
         }
 
         @Override
         public void mousePressed(MouseEvent arg0) {
             // TODO Auto-generated method stub
-            fenetre.repaint();
 
         }
 
         @Override
         public void mouseReleased(MouseEvent arg0) {
             // TODO Auto-generated method stub
-            fenetre.repaint();
 
         }
 
@@ -686,7 +696,7 @@ public class Affichage extends JFrame implements Interface {
         fenetreCompleter.setSize(800, 300);
         fenetreCompleter.setTitle(title);
         fenetreCompleter.setLocationRelativeTo(null);
-        fenetreCompleter.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        fenetreCompleter.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         fenetreCompleter.setLayout(new FlowLayout());
         ArrayList<BoutonCompleter> boutonsCartes = new ArrayList<>(); //Liste dans laquelle on stock les boutons
 
@@ -710,12 +720,13 @@ public class Affichage extends JFrame implements Interface {
 
     private String selectionnerCarte() {
         while (carteSelectionnee == null) {
-            try {                                    //sans mettre d'instructions dans le while sa fonctionne pas donc je met un thread sleep
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+            try {
+   				Thread.sleep(5);
+   				fenetre.repaint();
+   			} catch (InterruptedException e) {
+   				// TODO Auto-generated catch block
+   				e.printStackTrace();
+   			}        }
         String renvoie = carteSelectionnee.getTypeCarte().toString();
         carteSelectionnee = null;
         return renvoie;
@@ -729,7 +740,7 @@ public class Affichage extends JFrame implements Interface {
         fenetreBloquer.setSize(800, 200);
         fenetreBloquer.setTitle("Completer le programme");
         fenetreBloquer.setLocationRelativeTo(null);
-        fenetreBloquer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        fenetreBloquer.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         fenetreBloquer.setLayout(new FlowLayout());
         JToggleButton choixMur = new JToggleButton("Mur de glace");
         ItemListener itemListenerChoixMur = new ItemListener() {
@@ -776,12 +787,13 @@ public class Affichage extends JFrame implements Interface {
         fenetreBloquer.add(valide);
         fenetreBloquer.repaint();
         while (ObstacleSelectionne == null) {
-            try {                                    //sans mettre d'instructions dans le while ï¿½a fonctionne pas donc je met un thread sleep
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+            try {
+   				Thread.sleep(10);
+   				fenetre.repaint();
+   			} catch (InterruptedException e) {
+   				// TODO Auto-generated catch block
+   				e.printStackTrace();
+   			}        }
         Obstacle ObstacleRetour = ObstacleSelectionne;
         ObstacleSelectionne = null;
         return ObstacleRetour;
@@ -796,7 +808,7 @@ public class Affichage extends JFrame implements Interface {
         fenetreBug.setSize(85 * (logiqueDeJeu.getNombreJoueurs() - 1), 150);
         fenetreBug.setTitle("Cible de la carte Bug");
         fenetreBug.setLocationRelativeTo(null);
-        fenetreBug.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        fenetreBug.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         fenetreBug.setLayout(new FlowLayout());
         int j = 0;
         for (int i = 0; i < logiqueDeJeu.getNombreJoueurs(); i++) {
@@ -806,11 +818,14 @@ public class Affichage extends JFrame implements Interface {
             }
         }
         while (cible == 10) {
-            try {                                    //sans mettre d'instructions dans le while ï¿½a fonctionne pas
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            try {
+				Thread.sleep(20);
+				fenetre.repaint();
+				fenetreBug.repaint();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
         fenetreBug.dispose();
         return cible;
@@ -968,25 +983,26 @@ public class Affichage extends JFrame implements Interface {
         @Override
         public void mouseEntered(MouseEvent arg0) {
             // TODO Auto-generated method stub
-
+        	fenetre.repaint();
         }
 
         @Override
         public void mouseExited(MouseEvent arg0) {
             // TODO Auto-generated method stub
-
+        	fenetre.repaint();
         }
 
         @Override
         public void mousePressed(MouseEvent arg0) {
             // TODO Auto-generated method stub
+        	fenetre.repaint();
 
         }
 
         @Override
         public void mouseReleased(MouseEvent arg0) {
             // TODO Auto-generated method stub
-
+        	fenetre.repaint();
         }
     }
 
@@ -1008,9 +1024,9 @@ public class Affichage extends JFrame implements Interface {
             g.setFont(new Font("Anton Bold DB", Font.PLAIN, 100));
             g.setColor(Color.LIGHT_GRAY);
             for (int i = 0; i < logiqueDeJeu.getNombreJoueurs(); i++) {
-                g.drawString(noms[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 50, 100 + 200 * i);
-                g.drawImage(imgSkins[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 1100, 50 + 200 * i, null);
-                g.drawString("place :" + logiqueDeJeu.getJoueurs().get(i).getClassement(), 600, 100 + 200 * i);
+                g.drawString(noms[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 50, 200*logiqueDeJeu.getJoueurs().get(i).getClassement() - 100);
+                g.drawImage(imgSkins[logiqueDeJeu.getJoueurs().get(i).getNumeroJoueur()], 1100, 200*logiqueDeJeu.getJoueurs().get(i).getClassement() -150 , null);
+                g.drawString("place :" + logiqueDeJeu.getJoueurs().get(i).getClassement(), 600, 200*logiqueDeJeu.getJoueurs().get(i).getClassement() -100);
             }
         }
     }
