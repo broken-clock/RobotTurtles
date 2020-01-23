@@ -158,9 +158,9 @@ public class InterfaceConsole implements Interface {
     }
 
     @Override
-    public void afficherFinManche(LogiqueDeJeu logiqueDeJeu, int i) {
+    public void afficherFinManche(LogiqueDeJeu logiqueDeJeu) {
         System.out.println("\n\\\\\\\\");
-        System.out.println("Fin de la manche " + (i + 1) + " !");
+        System.out.println("Fin de la manche " + (logiqueDeJeu.getNumeroManche() + 1) + " !");
         for (Joueur joueur : logiqueDeJeu.getJoueurs()) {
             System.out.print("Joueur " + joueur.getNumeroJoueur() + ": score courant = ");
             System.out.println(joueur.getScore());

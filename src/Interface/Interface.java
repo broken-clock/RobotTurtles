@@ -34,7 +34,7 @@ public interface Interface {
     // A la fin d'une manche (pour le mode de jeu 3 à la suite) ou du jeu
     void afficherResultats(LogiqueDeJeu logiqueDeJeu);  // A la fin du jeu, afficher le classement des joueurs
 
-    void afficherFinManche(LogiqueDeJeu logiqueDeJeu, int i);  // Pour le mode de jeu 3 à la suite, afficher les scores courants à la fin de chaque manche
+    void afficherFinManche(LogiqueDeJeu logiqueDeJeu);  // Pour le mode de jeu 3 à la suite, afficher les scores courants à la fin de chaque manche
 
     void actualiser();
 }

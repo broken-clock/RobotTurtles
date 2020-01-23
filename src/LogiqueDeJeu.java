@@ -27,6 +27,7 @@ public class LogiqueDeJeu {
     private Joueur joueurCourant;
     private boolean gameOver;
     private Iterator<Integer> iterateurJoueurs;
+    private int numeroManche;
 
     void initialiserPartie() {
         // Choix du type d'interface
@@ -50,6 +51,14 @@ public class LogiqueDeJeu {
 
         }
         this.initialiserPositionsPlateauOrdrepassage();
+    }
+
+    public int getNumeroManche() {
+        return numeroManche;
+    }
+
+    public void setNumeroManche(int numeroManche) {
+        this.numeroManche = numeroManche;
     }
 
     public int getNombreJoueurs() {
@@ -127,7 +136,7 @@ public class LogiqueDeJeu {
             case 2:
             default:
                 // Initialiser les positions des tortues
-                this.positionsInitialesJoueurs.add(new Position(0, 1, Orientations.DOWN));
+                this.positionsInitialesJoueurs.add(new Position(6, 3, Orientations.DOWN));
                 this.positionsInitialesJoueurs.add(new Position(0, 5, Orientations.DOWN));
 
                 positionDepart = this.positionsInitialesJoueurs.get(0);
@@ -381,9 +390,10 @@ public class LogiqueDeJeu {
                 break;
             case "3alasuite":
                 for (int i = 0; i < 3; i++) {
+                    this.setNumeroManche(i);
                     jouerManche();
                     if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println("abcdMANCHE");
-                    this.getMonInterface().afficherFinManche(this, i);
+                    this.getMonInterface().afficherFinManche(this);
                     if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println("abcdFIN");
                     this.reInitialiserPartie();
                     if (this.getMonInterface().getTypeInterface().equals("Affichage")) System.out.println("abcdRESET");
