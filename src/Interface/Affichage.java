@@ -500,9 +500,9 @@ public class Affichage extends JFrame implements Interface {
                 if (!joueurs.get(i).isFini()) {
                     int positionX = joueurs.get(i).getTortue().getPosition().getX();
                     int positionY = joueurs.get(i).getTortue().getPosition().getY();
-                    System.out.println(positionX);
-                    System.out.println(positionY);
-                    System.out.println(noms[i]);
+//                    System.out.println(positionX);
+//                    System.out.println(positionY);
+//                    System.out.println(noms[i]);
                     double orientation = Math.PI;
                     if (joueurs.get(i).getTortue().getPosition().getOrientation() == Orientations.UP) {
                         orientation = 0;
@@ -511,7 +511,7 @@ public class Affichage extends JFrame implements Interface {
                     } else if (joueurs.get(i).getTortue().getPosition().getOrientation() == Orientations.RIGHT) {
                         orientation = (Math.PI) / 2;
                     }
-                    System.out.println(orientation);
+//                    System.out.println(orientation);
                     AffineTransform rotation = new AffineTransform();
                     rotation.translate(360 + (CELL_SIZE * positionY), CELL_SIZE * positionX);
                     rotation.rotate(orientation, CELL_SIZE / 2, CELL_SIZE / 2);

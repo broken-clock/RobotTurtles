@@ -132,12 +132,12 @@ public class Joueur {
 
     boolean placerMur(LogiqueDeJeu logiqueDeJeu, Obstacle obstacle) {
         String messagePossedePasObstacle = "Refuse: vous ne disposez pas d'un tel obstacle";
-        if (obstacle.getTypeObstacle().equals("P")) {
+        if (obstacle.getTypeObstacle().equals("p")) {
             if (this.getMursDePierre() <= 0) {
                 logiqueDeJeu.getMonInterface().afficherMessage(messagePossedePasObstacle);
                 return false;
             }
-        } else if (obstacle.getTypeObstacle().equals("G")) {
+        } else if (obstacle.getTypeObstacle().equals("g")) {
             if (this.getMursDeGlace() <= 0) {
                 logiqueDeJeu.getMonInterface().afficherMessage(messagePossedePasObstacle);
                 return false;
@@ -149,7 +149,7 @@ public class Joueur {
             return false;
         }
         // Les murs de glace sont destructibles donc ne peuvent pas bloquer l'acces a un joyau
-        else if (!obstacle.getTypeObstacle().equals("G") && logiqueDeJeu.getPlateau().placementBloquant(logiqueDeJeu, obstacle.getCoordsObstacle())) {
+        else if (!obstacle.getTypeObstacle().equals("g") && logiqueDeJeu.getPlateau().placementBloquant(logiqueDeJeu, obstacle.getCoordsObstacle())) {
             logiqueDeJeu.getMonInterface().afficherMessage("Refuse: placer un obstacle ici bloquerait l'acces a un joyau");
             return false;
         }

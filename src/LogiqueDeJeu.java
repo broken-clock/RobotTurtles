@@ -302,10 +302,7 @@ public class LogiqueDeJeu {
                         boolean murPlaceOk;
                         do {
                             obstacle = this.getMonInterface().demanderObstacleAPlacer();
-                            System.out.println("x:" + obstacle.getCoordsObstacle()[0] + ", y:" + obstacle.getCoordsObstacle()[1]);
-
                             murPlaceOk = getJoueurCourant().placerMur(this, obstacle);
-                            System.out.println("statut mur: " + murPlaceOk);
                         } while (!murPlaceOk);
                         break;
 
