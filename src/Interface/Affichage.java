@@ -43,7 +43,7 @@ public class Affichage extends JFrame implements Interface {
     private Carte carteSelectionnee = null;
     private Obstacle ObstacleSelectionne = null;
     private int cible = 10;
-    private boolean laser = false;
+    boolean laser = false;
     private final Affichage fenetre = this;
     String joueur1;
     String joueur2;
@@ -58,7 +58,7 @@ public class Affichage extends JFrame implements Interface {
     private final toggleButton toggleButtonTroisALaSuite = new toggleButton("Mode trois a la suite", 85, 660);
     private final toggleButton toggleButtonCarteBug = new toggleButton("     Carte Bug", 570, 660);
     private static final int CELL_SIZE = 70;
-    private JPanel ecran;
+    private Jeu ecran;
     private final Menu menu;
 
 
@@ -475,7 +475,9 @@ public class Affichage extends JFrame implements Interface {
         public void setNbJoueurs(int nbJoueurs) {
             this.nbJoueurs = nbJoueurs;
         }
-
+        public void setPositionCible(int[] pos) {
+        	this.positionCible = pos;
+        }
 
         public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
@@ -504,9 +506,9 @@ public class Affichage extends JFrame implements Interface {
                 if (!joueurs.get(i).isFini()) {
                     int positionX = joueurs.get(i).getTortue().getPosition().getX();
                     int positionY = joueurs.get(i).getTortue().getPosition().getY();
-//                    System.out.println(positionX);
-//                    System.out.println(positionY);
-//                    System.out.println(noms[i]);
+ //                   System.out.println(positionX);
+ //                   System.out.println(positionY);
+  //                  System.out.println(noms[i]);
                     double orientation = Math.PI;
                     if (joueurs.get(i).getTortue().getPosition().getOrientation() == Orientations.UP) {
                         orientation = 0;
@@ -603,19 +605,22 @@ public class Affichage extends JFrame implements Interface {
             	int emetteurY = (joueurCourant.getTortue().getPosition().getY()*CELL_SIZE) +360;
             	int cibleX = positionCible[0]*CELL_SIZE;
             	int cibleY = (positionCible[1]*CELL_SIZE)+360;
+            	System.out.println("aaa");
+            	System.out.println(positionCible[0]);
+            	System.out.println(positionCible[1]);
             	if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.UP) {
-            		g.fillRect(emetteurY+30,emetteurX+65,cibleY-emetteurY,cibleX-emetteurX);
+            		g.fillRect(cibleY+30,cibleX+65,10,cibleX-emetteurX);
             	}
             	else if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.LEFT) {
-            		g.fillRect(emetteurY+30,emetteurX+65,cibleY-emetteurY,cibleX-emetteurX);
+            		g.fillRect(emetteurY+65,emetteurX+30,cibleY-emetteurY,10);
             	}
             	else if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.DOWN) {
-            		g.fillRect(emetteurY+30,emetteurX+65,cibleY-emetteurY,cibleX-emetteurX);
+            		g.fillRect(emetteurY+30,emetteurX+65,10,cibleX-emetteurX);
             	}
             	else if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.RIGHT) {
-            		g.fillRect(emetteurY+30,emetteurX+65,cibleY-emetteurY,cibleX-emetteurX);
+            		g.fillRect(cibleY+65,cibleX+35,emetteurY-cibleY,10);
             	}
-            	laser = false;
+
             }
         }
 
@@ -767,6 +772,7 @@ public class Affichage extends JFrame implements Interface {
         fenetreBloquer.setResizable(true);
         fenetreBloquer.setSize(700, 75);
         fenetreBloquer.setTitle("Completer le programme");
+        fenetreBloquer.setLocationRelativeTo(null);
         fenetreBloquer.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         fenetreBloquer.setLayout(new FlowLayout());
         JToggleButton choixMur = new JToggleButton("Mur de glace");
@@ -1109,8 +1115,13 @@ public class Affichage extends JFrame implements Interface {
 
 
     
-    public void animationLaser() {
-    	boolean laser = true;
+    public void animationLaser(int[] pos,Orientations orient) {
+    	ecran.joueurCourant.getTortue().getPosition().setOrientation(orient);
+    	ecran.setPositionCible(pos);
+    	laser = true;
+    }
+    public void stopLaser() {
+    	laser = false;
     }
 }
 

@@ -5,6 +5,7 @@ import src.Joueur;
 import src.LogiqueDeJeu;
 import src.Parametres;
 import src.Tuiles.Obstacle;
+import src.Tuiles.Orientations;
 
 import java.util.Scanner;
 
@@ -166,4 +167,10 @@ public class InterfaceConsole implements Interface {
             System.out.println(joueur.getScore());
         }
     }
+    public void animationLaser(int[] pos,Orientations orient) {
+    }
+    public void stopLaser() {
+    	
+    }
+
 }
