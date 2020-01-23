@@ -332,7 +332,8 @@ public class Affichage extends JFrame implements Interface {
         System.out.println("1");
         while (!menu.getValidation() || !persoDiff(perso)) {
             try {
-   				Thread.sleep(5);
+   				menu.validation=false;
+   				Thread.sleep(4);
                 perso.set(0, liste1.getSelectedIndex());
                 perso.set(1, liste2.getSelectedIndex());
                 perso.set(2, liste3.getSelectedIndex());
