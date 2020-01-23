@@ -361,7 +361,9 @@ public class Affichage extends JFrame implements Interface {
         }
         if (nbJoueurs < 2) {
             JOptionPane.showMessageDialog(null, "Vous ne pouvez pas lancer une partie avec moins de 2 joueurs", "Alerte", JOptionPane.ERROR_MESSAGE);
-            System.exit(2);
+            menu.validation = false;
+            return parametresMenu();
+
         }
         Parametres parametres = new Parametres(nbJoueurs, menu.getModeDeJeu(), menu.getCarteBug());
         menu.removeAll();
