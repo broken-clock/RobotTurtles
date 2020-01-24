@@ -304,7 +304,7 @@ public class Affichage extends JFrame implements Interface {
             	}
             }
             if (j > 1) {
-                JOptionPane.showMessageDialog(null, "Veuillez prendre des personnages différents", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Veuillez prendre des personnages diffï¿½rents", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
 
@@ -611,13 +611,13 @@ public class Affichage extends JFrame implements Interface {
             	if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.UP) {
             		g.fillRect(cibleY+30,cibleX+65,10,cibleX-emetteurX);
             	}
-            	else if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.LEFT) {
+            	else if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.RIGHT) {
             		g.fillRect(emetteurY+65,emetteurX+30,cibleY-emetteurY,10);
             	}
             	else if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.DOWN) {
             		g.fillRect(emetteurY+30,emetteurX+65,10,cibleX-emetteurX);
             	}
-            	else if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.RIGHT) {
+            	else if (joueurCourant.getTortue().getPosition().getOrientation() == Orientations.LEFT) {
             		g.fillRect(cibleY+65,cibleX+35,emetteurY-cibleY,10);
             	}
 
