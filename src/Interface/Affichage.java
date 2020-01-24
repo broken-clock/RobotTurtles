@@ -110,7 +110,7 @@ public class Affichage extends JFrame implements Interface {
         this.setIconImage(new ImageIcon("src/images/icon.png").getImage());
         this.setVisible(true);
         this.setResizable(true);
-        this.setSize(1299, 825);
+        this.setSize(1290, 825);
         this.setTitle("Robot Turtles");
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -304,7 +304,7 @@ public class Affichage extends JFrame implements Interface {
             	}
             }
             if (j > 1) {
-                JOptionPane.showMessageDialog(null, "Veuillez prendre des personnages diff�rents", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Veuillez prendre des personnages differents", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
 

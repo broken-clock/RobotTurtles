@@ -167,10 +167,13 @@ public class InterfaceConsole implements Interface {
             System.out.println(joueur.getScore());
         }
     }
-    public void animationLaser(int[] pos,Orientations orient) {
+
+    @Override
+    public void animationLaser(int[] pos, Orientations orient) {
     }
+
+    @Override
     public void stopLaser() {
-    	
     }
 
 }

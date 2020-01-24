@@ -172,8 +172,8 @@ public class LogiqueDeJeu {
             case 3:
                 // Initialiser les positions des tortues
                 this.positionsInitialesJoueurs.add(new Position(0, 0, Orientations.DOWN));
-                this.positionsInitialesJoueurs.add(new Position(6, 3, Orientations.DOWN));
-                this.positionsInitialesJoueurs.add(new Position(6, 6, Orientations.DOWN));
+                this.positionsInitialesJoueurs.add(new Position(0, 3, Orientations.DOWN));
+                this.positionsInitialesJoueurs.add(new Position(0, 6, Orientations.DOWN));
 
                 positionDepart = this.positionsInitialesJoueurs.get(0);
                 this.getJoueurs().get(0).getTortue().setPosition(positionDepart.getX(), positionDepart.getY(), positionDepart.getOrientation());
