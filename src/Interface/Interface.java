@@ -1,7 +1,6 @@
 package src.Interface;
 
 import src.LogiqueDeJeu;
-import src.Parametres;
 import src.Tuiles.Obstacle;
 import src.Tuiles.Orientations;
 
@@ -10,7 +9,7 @@ public interface Interface {
     String getTypeInterface();
 
     // Initialisation du jeu
-    Parametres parametresMenu(); // Demande le nombre de joueurs pour la partie à venir, le mode de jeu: normal ou 3 à la suite, et s'il faut jouer avec les cartes bug
+    ParametresInitPartie parametresMenu(); // Demande le nombre de joueurs pour la partie à venir, le mode de jeu: normal ou 3 à la suite, et s'il faut jouer avec les cartes bug
 
     // Actions dans le jeu
     String demanderAction(LogiqueDeJeu logiqueDeJeu);  // Demande quelle action un joueur veut faire: compléter son programme / placer un mur / exécuter son programme / bugger un autre joueur (si possible)

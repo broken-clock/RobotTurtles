@@ -29,13 +29,11 @@ import javax.swing.JToggleButton;
 
 import src.Cartes.Carte;
 import src.Cartes.TypeCarte;
-import src.Interface.Affichage.Jeu;
 import src.Tuiles.Joyau;
 import src.Tuiles.Obstacle;
 import src.Tuiles.Orientations;
 import src.Joueur;
 import src.LogiqueDeJeu;
-import src.Parametres;
 import src.Plateau;
 
 public class Affichage extends JFrame implements Interface {
@@ -321,7 +319,7 @@ public class Affichage extends JFrame implements Interface {
         return true;
     }
 
-    public Parametres parametresMenu() {
+    public ParametresInitPartie parametresMenu() {
         ArrayList<Integer> perso = new ArrayList<>();
         perso.add(liste1.getSelectedIndex());
         perso.add(liste2.getSelectedIndex());
@@ -334,7 +332,7 @@ public class Affichage extends JFrame implements Interface {
         while (!menu.getValidation() || !persoDiff(perso)) {
             try {
    				menu.validation=false;
-   				Thread.sleep(4);
+   				Thread.sleep(20);
                 perso.set(0, liste1.getSelectedIndex());
                 perso.set(1, liste2.getSelectedIndex());
                 perso.set(2, liste3.getSelectedIndex());
@@ -366,7 +364,7 @@ public class Affichage extends JFrame implements Interface {
             return parametresMenu();
 
         }
-        Parametres parametres = new Parametres(nbJoueurs, menu.getModeDeJeu(), menu.getCarteBug());
+        ParametresInitPartie parametres = new ParametresInitPartie(nbJoueurs, menu.getModeDeJeu(), menu.getCarteBug());
         menu.removeAll();
 
         return parametres;
@@ -383,7 +381,7 @@ public class Affichage extends JFrame implements Interface {
     public String demanderAction(LogiqueDeJeu LogiqueDeJeu) {
         while (Objects.equals(action, "")) {
             try {
-   				Thread.sleep(1);
+   				Thread.sleep(20);
    				fenetre.repaint();
    			} catch (InterruptedException e) {
    				// TODO Auto-generated catch block
@@ -754,7 +752,7 @@ public class Affichage extends JFrame implements Interface {
     private String selectionnerCarte() {
         while (carteSelectionnee == null) {
             try {
-   				Thread.sleep(5);
+   				Thread.sleep(20);
    				fenetre.repaint();
    			} catch (InterruptedException e) {
    				// TODO Auto-generated catch block

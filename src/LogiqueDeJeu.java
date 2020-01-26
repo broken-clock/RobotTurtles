@@ -38,8 +38,8 @@ public class LogiqueDeJeu {
         // Musique de fond
         if (this.getMonInterface().getTypeInterface().equals("Affichage")) this.playSound("sound.wav", true);
 
-        Parametres parametres = this.getMonInterface().parametresMenu();
-        System.out.println("modejeu: " + parametres.gameMode);
+        ParametresInitPartie parametres = this.getMonInterface().parametresMenu();
+        System.out.println("modejeu: " + parametres.getGameMode());
         this.nombreJoueurs = parametres.getNbJoueurs();
         this.setModeJeu(parametres.getModeJeu());
         this.setModeBug(parametres.getModeBug());

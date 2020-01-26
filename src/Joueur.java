@@ -1,7 +1,6 @@
 package src;
 
 import src.Cartes.*;
-import src.Interface.InterfaceConsole;
 import src.Tuiles.*;
 
 public class Joueur {

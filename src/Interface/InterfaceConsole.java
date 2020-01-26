@@ -3,7 +3,6 @@ package src.Interface;
 import src.Cartes.Carte;
 import src.Joueur;
 import src.LogiqueDeJeu;
-import src.Parametres;
 import src.Tuiles.Obstacle;
 import src.Tuiles.Orientations;
 
@@ -40,7 +39,7 @@ public class InterfaceConsole implements Interface {
     }
 
     @Override
-    public Parametres parametresMenu() {
+    public ParametresInitPartie parametresMenu() {
         int nombreJoueurs;
         do {
             System.out.println("Combien de joueurs ? (entre 2 et 4): ");
@@ -57,7 +56,7 @@ public class InterfaceConsole implements Interface {
         System.out.println("Jouer avec les cartes Bug ? (o/N): ");  // Valeur par defaut = "N"
         modeCarteBug = scanner.nextLine();
 
-        return new Parametres(nombreJoueurs, modeJeu, modeCarteBug.equals("o"));
+        return new ParametresInitPartie(nombreJoueurs, modeJeu, modeCarteBug.equals("o"));
     }
 
     @Override
