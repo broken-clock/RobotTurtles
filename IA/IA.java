@@ -1,6 +1,7 @@
 package IA;
 
 import com.grooptown.ia.robotturtles.PlayerConnector;
+import com.grooptown.snorkunking.service.engine.player.PlayerSecret;
 
 import java.util.ArrayList;
 
@@ -32,13 +33,13 @@ public class IA {
                 player.waitUntilItsMyTurn(gameId);
                 String gameState = getGameStateAsString(gameId);
                 player.secret = player.playerConnector.getPlayerSecret();
-                player.playerConnector.playMove(getMove(gameState, player.idPlayer));
+                player.playerConnector.playMove(getMove(gameState, player.secret));
                 Thread.sleep(playTurnDelayMs);
             }
         }
     }
 
-    public static String getMove(String gameState, int playerId) {
-        return "3;;";
+    public static String getMove(String gameState, PlayerSecret secret) {
+        return "3;;";  // Placeholder
     }
 }

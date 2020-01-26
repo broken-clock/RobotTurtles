@@ -1,4 +1,4 @@
-package IA;
+package IA.dependences;
 
 import com.grooptown.snorkunking.service.engine.game.Game;
 import com.grooptown.snorkunking.service.engine.player.Player;
