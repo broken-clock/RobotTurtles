@@ -20,7 +20,7 @@ public class IA {
         PlayerConnector.baseUrl = "https://robot-turtles.grooptown.com/";
 
         // Paramètres
-        int gameId = 59;
+        int gameId = 68;
         int playTurnDelayMs = 1000;  // Delay en ms entre les tours de chaque joueur
         String playersFileName = "IA/src/playersInfo.txt";
         boolean createPlayers = false;  // Détermine s'il faut créer de nouveaux joueurs ou utiliser les identités de joueurs déjà créés
