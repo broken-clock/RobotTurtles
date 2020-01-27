@@ -13,11 +13,13 @@ import org.springframework.web.client.HttpClientErrorException;
  * Created by thibautdebroca on 09/01/2019.
  */
 public class Player {
+    String playerName;
     int idPlayer;
     PlayerConnector playerConnector;
     PlayerSecret secret;
 
-    public Player(int idGame, int idPlayer, String userId) {
+    public Player(int idGame, String playerName, int idPlayer, String userId) {
+        this.playerName = playerName;
         this.idPlayer = idPlayer;
         PlayerInstance myPlayerInstance = new PlayerInstance(idGame, idPlayer, userId);
         this.playerConnector = new PlayerConnector(idGame);

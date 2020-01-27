@@ -58,7 +58,7 @@ public class IA {
         String[] playerData;
         while ((st = br.readLine()) != null) {
             playerData = st.split(";");
-            players.add(new Player(gameId, Integer.parseInt(playerData[1]), playerData[2]));
+            players.add(new Player(gameId, playerData[0], Integer.parseInt(playerData[1]), playerData[2]));
         }
 
         boolean gameOver = false;
@@ -69,7 +69,8 @@ public class IA {
                 player.secret = player.playerConnector.getPlayerSecret();
 
                 if (scannerMovesMode) {
-                    System.out.println("Player " + player.idPlayer);
+                    System.out.print("Player " + player.idPlayer);
+                    System.out.println(" (" + player.playerName + ")");
                     System.out.println(player.secret);
                     System.out.println("your move:");
                     player.playerConnector.playMove(new Scanner(System.in).nextLine());
