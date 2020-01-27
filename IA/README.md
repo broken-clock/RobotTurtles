@@ -1,3 +1,7 @@
+## Comment importer les dépendences ?
+- Créer un projet de type **Maven** et installer les dépendences spécifiées dans **pom.xml**.
+- Ne pas inclure **client-1.0-SNAPSHOT-jar-with-dependencies.jar**.
+
 #### Il y a deux classes:
 
 - ```Player```: instancié autant de fois qu'il y a de joueurs
