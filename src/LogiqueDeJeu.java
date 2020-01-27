@@ -437,7 +437,7 @@ public class LogiqueDeJeu {
                 try {
                     Clip clip = AudioSystem.getClip();
                     AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                            Main.class.getResourceAsStream("music/" + url));
+                            Main.class.getResourceAsStream("../music/" + url));
                     clip.open(inputStream);
                     if (loop) clip.loop(10000);
                     clip.getMicrosecondLength();

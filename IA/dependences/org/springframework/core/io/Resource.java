@@ -1,0 +1,35 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
+package org.springframework.core.io;
+
+import java.io.File;
+import java.net.URI;
+import java.io.IOException;
+import java.net.URL;
+
+public interface Resource extends InputStreamSource
+{
+    boolean exists();
+    
+    boolean isReadable();
+    
+    boolean isOpen();
+    
+    URL getURL() throws IOException;
+    
+    URI getURI() throws IOException;
+    
+    File getFile() throws IOException;
+    
+    long contentLength() throws IOException;
+    
+    long lastModified() throws IOException;
+    
+    Resource createRelative(final String p0) throws IOException;
+    
+    String getFilename();
+    
+    String getDescription();
+}

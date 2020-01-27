@@ -1,0 +1,12 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
+package org.springframework.context;
+
+public interface SmartLifecycle extends Lifecycle, Phased
+{
+    boolean isAutoStartup();
+    
+    void stop(final Runnable p0);
+}
