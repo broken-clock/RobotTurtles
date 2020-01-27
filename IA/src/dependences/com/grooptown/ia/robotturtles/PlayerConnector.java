@@ -56,7 +56,7 @@ public class PlayerConnector {
      * Make one player joining the game. com.grooptown.ia.robotturtles.PlayerConnector will store the secret uuid of the player.
      * @param playerName The player name who want to join the game.
      */
-    public void joinGame(String playerName) {
+    public String joinGame(String playerName) {
         player = restTemplate.getForObject(
                 baseUrl+ "/api/iaconnector/addPlayer?playerName="
                         + playerName + "&idGame=" + gameId,
@@ -65,7 +65,7 @@ public class PlayerConnector {
         if (player == null) {
             throw new RuntimeException("Error while joining Game. It's either already started, or have reach max num of players.");
         }
-        System.out.println("Your secret UUI is : " + player.getUUID());
+        return player.getUUID();
     }
 
     /**

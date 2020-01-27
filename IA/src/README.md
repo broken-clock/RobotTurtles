@@ -10,3 +10,5 @@
 
 #### scannerMovesMode
 Ce flag permet de choisir si les moves sont envoyés via le ```Scanner``` (```true```) ou via la fonction ```getMove``` (```false```).
+
+######Credit to https://github.com/tdebroc/robot-turtles-ia-client

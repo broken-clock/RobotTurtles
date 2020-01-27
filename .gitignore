@@ -5,3 +5,5 @@
 **/*.iml
 **/.metadata
 **/META-INF
+**/*.project
+IA/target/**

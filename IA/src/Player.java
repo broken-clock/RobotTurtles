@@ -1,6 +1,6 @@
-package IA;
+package src;
 
-import IA.dependences.Utils;
+import src.dependences.Utils;
 import com.grooptown.ia.robotturtles.PlayerConnector;
 import com.grooptown.snorkunking.service.engine.connector.PlayerInstance;
 import com.grooptown.snorkunking.service.engine.game.Game;
