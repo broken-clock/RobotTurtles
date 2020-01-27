@@ -104,7 +104,7 @@ public class Affichage extends JFrame implements Interface {
         img[34] = (new ImageIcon(imagesPath + "poissonCompleterNormal.png")).getImage();
         img[35] = (new ImageIcon(imagesPath + "poissonBloquerNormal.png")).getImage();
 
-        this.setIconImage(new ImageIcon("icon.png").getImage());
+        this.setIconImage(new ImageIcon(imagesPath + "icon.png").getImage());
         this.setVisible(true);
         this.setResizable(true);
         this.setSize(1290, 825);

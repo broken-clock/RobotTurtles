@@ -1,7 +1,6 @@
 package src;
 
 import com.grooptown.ia.robotturtles.PlayerConnector;
-import com.grooptown.snorkunking.service.engine.player.PlayerSecret;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +12,7 @@ import java.util.Scanner;
 import static com.grooptown.ia.robotturtles.PlayerConnector.getGameStateAsString;
 import static com.grooptown.ia.robotturtles.SSLUtil.disableSSLValidation;
 
-public class IA {
+public class IARun {
     public static void main(String[] args) throws Exception {
         // With JDK inferior to 8u101 you need to disable SSL validation.
 //        disableSSLValidation();
@@ -24,7 +23,7 @@ public class IA {
         int playTurnDelayMs = 1000;  // Delay en ms entre les tours de chaque joueur
         String playersFileName = "IA/src/playersInfo.txt";
         boolean createPlayers = false;  // Détermine s'il faut créer de nouveaux joueurs ou utiliser les identités de joueurs déjà créés
-        boolean scannerMovesMode = true;
+        boolean scannerMovesMode = false;
         String[] nomsJoueurs = {"bleubidon", "bleubidu"};
         ArrayList<Player> players = new ArrayList<>();
 
@@ -75,14 +74,14 @@ public class IA {
                     System.out.println("your move:");
                     player.playerConnector.playMove(new Scanner(System.in).nextLine());
                 } else {
-                    player.playerConnector.playMove(getMove(gameState, player.secret));
+                    String move = player.idPlayer == 0 ?
+                            IAProfiles.fonceVersJoyau(gameState, player.secret):  // profil d'IA joueur 0
+                            IAProfiles.passeSonTour(gameState, player.secret);  // profil d'IA joueur 1
+
+                    player.playerConnector.playMove(move);
                     Thread.sleep(playTurnDelayMs);
                 }
             }
         }
-    }
-
-    public static String getMove(String gameState, PlayerSecret secret) {
-        return "3;;";  // Placeholder
     }
 }
