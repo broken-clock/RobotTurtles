@@ -11,6 +11,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -390,7 +391,7 @@ public class LogiqueDeJeu {
     }
 
 	public Chemin cheminJoyau2(LogiqueDeJeu logiqueDeJeu, int currentX, int currentY, Orientations currentOrien,int xDepart, int yDepart, Orientations orientationDepart) {
-
+		Programme programmeTest = new Programme();
 		Joueur test = new Joueur(logiqueDeJeu);
 		test.getTortue().setPositionDepart(xDepart, yDepart, orientationDepart);
 		test.setNumeroJoueur(10);
@@ -415,14 +416,21 @@ public class LogiqueDeJeu {
     		int y = currentY;
     		Orientations orientation = currentOrien;
 		for (int i=0;i<listeC.size();i++) {
-			Programme programmeTest = new Programme();
 			for (int j=0; j<listeC.get(i).size();j++) {
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println(listeC.get(i).get(j).getTypeCarte().toString());
     			programmeTest.enfilerCarte(listeC.get(i).get(j));
     			
 			}
     			test.getTortue().setPosition(x, y, orientation);
     			test.setProgramme(programmeTest);
     			test.executerPrgm(logiqueDeJeu);
+    			System.out.println(test.getTortue().getPosition().getX() + " : " + test.getTortue().getPosition().getY());
     			if (test.getTortue().getPosition().getX() == 7 && test.getTortue().getPosition().getY() == 3) {
     				return new Chemin(listeC.get(i).size(),listeC.get(i));
     			}
@@ -430,9 +438,12 @@ public class LogiqueDeJeu {
 		int taille = listeC.size();
 		for(int i=0;i<taille+1;i++) {
 		ArrayList copy = new ArrayList(listeC.get(i));
+		ArrayList copy2 = new ArrayList(listeC.get(i));
+		ArrayList copy3 = new ArrayList(listeC.get(i));
+
 		listeC.add(copy);
-		listeC.add(copy);
-		listeC.add(copy);    	
+		listeC.add(copy2);
+		listeC.add(copy3);    	
 		listeC.get(i).add(new Carte(TypeCarte.CARTE_BLEUE));
 		listeC.get(taille+i*3).add(new Carte (TypeCarte.CARTE_VIOLETTE));
 		listeC.get(taille+i*3+1).add(new Carte (TypeCarte.CARTE_JAUNE));
@@ -441,19 +452,77 @@ public class LogiqueDeJeu {
 	}
 		return null;
 	}
-
-	def combi(liste, p, l = None, res = None):
-	    '''fonction récursive qui renvoie toutes les combinaisons d'éléments de 'liste' à p éléments'''
-	    if l is None : l = []
-	    if res is None : res = []    
-	    if p == 0:
-	        res.append(l)
-	        return
-	    for k in liste:
-	        l1 = list(l)
-	        l1.append(k)
-	        combi(liste, p-1, l1,res)
-	    return res
+	public ArrayList<Carte> distanceJoyau(LogiqueDeJeu logiqueDeJeu, int positionX, int positionY, Orientations orientation) {
+		int[] caseActuelle = {positionX,positionY};
+		ArrayList<int[]> parcours = new ArrayList<int[]>();
+		HashMap<int[],HashMap<int[],Integer>> aParcourir = new HashMap<int[],HashMap<int[],Integer>>();
+		do {
+			parcours.add(caseActuelle);
+			for (int[] caseVoisin : caseVoisine(logiqueDeJeu,caseActuelle[0],caseActuelle[1],orientation, parcours).keySet()) {
+				
+				aParcourir.put(caseActuelle, new HashMap<int[],Integer>().put(caseVoisin,caseVoisine(logiqueDeJeu,caseActuelle[0],caseActuelle[1],orientation, parcours).get(caseVoisin)));
+			}
+		} while (!aParcourir.isEmpty());
+	}
+	public HashMap<int[],Integer> caseVoisine(LogiqueDeJeu logiqueDeJeu, int posX, int posY, Orientations orientation,ArrayList<int[]> parcours) {
+		HashMap<int[],Integer> casesVois = new HashMap<int[],Integer>();
+        if (posX > 0 && logiqueDeJeu.getPlateau().getCase(posX-1, posY) != "p" && testSiPasPresent(new int[] {posX-1,posY}, parcours)) {
+        	casesVois.put(new int[] {posX-1,posY} , calculCout(logiqueDeJeu, posX-1,posY,orientation,Orientations.UP));
+        }
+        if (posX < 7 && logiqueDeJeu.getPlateau().getCase(posX+1, posY) != "p" && testSiPasPresent(new int[] {posX+1,posY}, parcours)) {
+        	casesVois.put(new int[] {posX+1,posY} , calculCout(logiqueDeJeu, posX+1,posY,orientation,Orientations.DOWN));
+        }    
+        if (posY > 0 && logiqueDeJeu.getPlateau().getCase(posX, posY-1) != "p" && testSiPasPresent(new int[] {posX,posY-1}, parcours)) {
+        	casesVois.put(new int[] {posX,posY-1} , calculCout(logiqueDeJeu, posX,posY-1,orientation,Orientations.LEFT));
+        }
+        if (posY < 7 && logiqueDeJeu.getPlateau().getCase(posX, posY+1) != "p" && testSiPasPresent(new int[] {posX,posY+1}, parcours)) {
+        	casesVois.put(new int[] {posX,posY+1} , calculCout(logiqueDeJeu, posX,posY+1,orientation,Orientations.RIGHT));
+        }
+		return casesVois;
+	}
+	public boolean testSiPasPresent(int[] position, ArrayList<int[]> parcours) {
+		for (int[] i : parcours) {
+			if (i[0] == position[0] && i[1] == position[1]) return false;
+		}
+		return true;
+	}
+	public int calculCout(LogiqueDeJeu logiqueDeJeu,int posX, int posY, Orientations orientation, Orientations casse) {
+		int distance = (7-posX) + Math.abs(3-posY);
+		int cout;
+		if (orientation == casse) cout = 0;
+		else if (orientation.getOrientationSuivante(orientation) == casse) cout = 1;
+		else if (orientation.getOrientationPrecedente(orientation) == casse) cout = 1;
+		else cout = 2;		
+		if (logiqueDeJeu.getPlateau().getCase(posX, posY) == "g") cout++;
+		cout = cout + distance;
+		return cout;
+	}
+	public ArrayList<Carte> carteAJouer(LogiqueDeJeu logiqueDeJeu, ArrayList<Carte> main, int xDepart, int yDepart, Orientations orientationDepart, int currentX, int currentY, Orientations currentOrien) {
+		int distanceIni = cheminJoyau2(logiqueDeJeu,currentX,currentY,currentOrien,xDepart,yDepart,orientationDepart).nbInstruction;
+		int distanceMin = distanceIni;
+		ArrayList<Carte> carteJouable = new ArrayList<Carte>();
+		ArrayList<ArrayList<Carte>> arrangement = new ArrayList<ArrayList<Carte>>();
+		Joueur virtuel = new Joueur(logiqueDeJeu);
+		virtuel.getTortue().setPositionDepart(xDepart, yDepart, orientationDepart);
+		virtuel.setNumeroJoueur(10);
+		logiqueDeJeu.setJoueurCourant(virtuel);
+		Programme programmeTest = new Programme();
+		for (int i=0;i<325;i++) {
+			for (int j=0;j<arrangement.get(i).size();i++) {
+    			programmeTest.enfilerCarte(arrangement.get(i).get(j));
+				}
+			virtuel.getTortue().setPosition(currentX, currentY, currentOrien);
+			virtuel.setProgramme(programmeTest);
+			virtuel.executerPrgm(logiqueDeJeu);
+			Chemin cheminAct = cheminJoyau2(logiqueDeJeu,virtuel.getTortue().getPosition().getX(),virtuel.getTortue().getPosition().getY(),virtuel.getTortue().getPosition().getOrientation(),xDepart,yDepart,orientationDepart);
+			int distance = cheminAct.nbInstruction;
+			if (distance<distanceMin) {
+				distanceMin = distance;
+				carteJouable = cheminAct.prog;
+			}
+		}
+		return carteJouable;
+	}
 
     void lancerPartie() {
 //        // Triche init plateau
