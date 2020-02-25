@@ -190,7 +190,6 @@ public class Joueur {
                     this.getTortue().lancerLaser(logiqueDeJeu);
                     break;
             }
-        	logiqueDeJeu.getMonInterface().stopLaser();
         }
     }
 

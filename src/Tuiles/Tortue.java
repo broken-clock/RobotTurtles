@@ -73,10 +73,10 @@ public class Tortue extends Tuile {
             case ".":  // Si la case est vide
             case "J":
                 if (caseDestination.getContenu().equals(".")) {
-                    System.out.print("On deplace la tortue: ");
-                    System.out.print(caseDestination.getX());
-                    System.out.print("; ");
-                    System.out.println(caseDestination.getY());
+  //                  System.out.print("On deplace la tortue: ");
+ //                   System.out.print(caseDestination.getX());
+  //                  System.out.print("; ");
+   //                 System.out.println(caseDestination.getY());
                     deplacerTortue(logiqueDeJeu, this, new Position(caseDestination.getX(), caseDestination.getY(), this.position.getOrientation()));
                 }
 
@@ -116,7 +116,7 @@ public class Tortue extends Tuile {
         }
     }
 
-    private void disparaitre(LogiqueDeJeu logiqueDeJeu) {
+    public void disparaitre(LogiqueDeJeu logiqueDeJeu) {
         // On vide la case couramment occup�e par la tortue
         logiqueDeJeu.getPlateau().setCase(this.position.getX(), this.position.getY(), ".");
     }
@@ -196,7 +196,6 @@ public class Tortue extends Tuile {
                     }
             }
         }
-        logiqueDeJeu.getMonInterface().animationLaser(new int[] {x,y},this.getPosition().getOrientation());
         	
     }
 
