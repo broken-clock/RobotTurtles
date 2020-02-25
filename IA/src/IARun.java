@@ -19,11 +19,11 @@ public class IARun {
         PlayerConnector.baseUrl = "https://robot-turtles.grooptown.com/";
 
         // Paramètres
-        int gameId = 68;
-        int playTurnDelayMs = 1000;  // Delay en ms entre les tours de chaque joueur
+        int gameId = 69;
+        int playTurnDelayMs = 1000;  // Delai en ms entre les tours de chaque joueur (quand on est pas en mode scanner)
         String playersFileName = "IA/src/playersInfo.txt";
         boolean createPlayers = false;  // Détermine s'il faut créer de nouveaux joueurs ou utiliser les identités de joueurs déjà créés
-        boolean scannerMovesMode = false;
+        boolean scannerMovesMode = true;
         String[] nomsJoueurs = {"bleubidon", "bleubidu"};
         ArrayList<Player> players = new ArrayList<>();
 
@@ -63,25 +63,32 @@ public class IARun {
         boolean gameOver = false;
         while (!gameOver) {
             for (Player player : players) {
+//                if (player.playerName.equals("bleubidon")) continue;
                 player.waitUntilItsMyTurn(gameId);
+
+                // Recover useful data
                 String gameState = getGameStateAsString(gameId);
                 player.secret = player.playerConnector.getPlayerSecret();
 
                 if (scannerMovesMode) {
+                    System.out.println(gameState);
                     System.out.print("Player " + player.idPlayer);
                     System.out.println(" (" + player.playerName + ")");
                     System.out.println(player.secret);
                     System.out.println("your move:");
                     player.playerConnector.playMove(new Scanner(System.in).nextLine());
                 } else {
-                    String move = player.idPlayer == 0 ?
-                            IAProfiles.fonceVersJoyau(gameState, player.secret):  // profil d'IA joueur 0
+                    String move;
+                    move = player.idPlayer == 0 ?
+                            IAProfiles.fonceVersJoyau(gameState, player.secret) :  // profil d'IA joueur 0
                             IAProfiles.passeSonTour(gameState, player.secret);  // profil d'IA joueur 1
 
-                    player.playerConnector.playMove(move);
-                    Thread.sleep(playTurnDelayMs);
+                    break;
+//                    player.playerConnector.playMove(move);
+//                    Thread.sleep(playTurnDelayMs);
                 }
             }
+            break;
         }
     }
 }

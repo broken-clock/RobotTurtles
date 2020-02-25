@@ -1,5 +1,6 @@
 ## Comment importer les dépendences ?
 - Créer un projet de type **Maven** et installer les dépendences spécifiées dans **pom.xml**.
+- Activer l'option "enable annotation processing" de son IDE.
 - Ne pas inclure **client-1.0-SNAPSHOT-jar-with-dependencies.jar**.
 
 ## Comment fonctionne le module IA ?

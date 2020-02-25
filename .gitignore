@@ -2,9 +2,11 @@
 **/bin
 **/.vscode
 **/out
+**/venv
 **/*.iml
 **/.metadata
 **/META-INF
 **/.project
 IA/target/**
 IA/src/playersInfo.txt
+venv/**

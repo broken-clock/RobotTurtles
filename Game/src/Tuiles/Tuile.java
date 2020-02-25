@@ -3,6 +3,8 @@ package src.Tuiles;
 import src.Case;
 import src.LogiqueDeJeu;
 
+import java.util.ArrayList;
+
 public class Tuile {
     Position position = new Position(0, 0, Orientations.UP);
 
