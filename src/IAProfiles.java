@@ -14,10 +14,19 @@ import src.Tuiles.Orientations;
 
 public class IAProfiles {
     Joueur joueur;
+    Joueur joueurAdverse;
     LogiqueDeJeu logiqueDeJeu;
     String title;
+    public int nbPierre = 3;
+    public int nbGlace = 2;
     List<Carte> carteEnMain;
-   public String action(Joueur joueur,LogiqueDeJeu logiqueDeJeu,int nbMurPierre,ArrayList<Carte> main) {
+    List<Carte> carteProgramme;
+   public String action(Joueur joueur,Joueur joueurAdverse,LogiqueDeJeu logiqueDeJeu,int nbMurPierre,int nbMurGlace, ArrayList<Carte> main,List<Carte> carteProgramme) {
+	Programme programmeAct = new Programme();
+	for(int i=0;i<carteProgramme.size();i++) {
+		programmeAct.enfilerCarte(carteProgramme.get(i));
+	}
+    joueur.setProgramme(programmeAct);
    	String carteAJouer = "";
    	String carteADefausser = "";
    	ArrayList<Carte> mainCopie = new ArrayList<Carte>();
@@ -57,22 +66,27 @@ public class IAProfiles {
             break;
     }
    	}
-	if (executionVictorieuse(joueur, logiqueDeJeu) {
+	if (executionVictorieuse(joueur, logiqueDeJeu)) {
         return "3;;";
     }
-    else if (adversaireCompleteSonProgramme(title) && onADesMurs) {
-    	int[] coord = cheminJoyau(logiqueDeJeu,joueur.getTortue().getPosition().getX(),joueur.getTortue().getPosition().getY(),joueur.getTortue().getPosition().getOrientation(),joueur.getTortue().getPositionDepart().getX(),joueur.getTortue().getPositionDepart().getY(),joueur.getTortue().getPositionDepart().getOrientation()).get(1);
+    else if (adversaireCompleteSonProgramme(title) && nbMurGlace+nbMurPierre>1) {
+    	int[] coord = cheminJoyau(logiqueDeJeu,joueurAdverse.getTortue().getPosition().getX(),joueurAdverse.getTortue().getPosition().getY(),joueurAdverse.getTortue().getPosition().getOrientation(),joueurAdverse.getTortue().getPositionDepart().getX(),joueurAdverse.getTortue().getPositionDepart().getY(),joueurAdverse.getTortue().getPositionDepart().getOrientation()).get(1);
+    	int m = 1;
+    	while (logiqueDeJeu.getPlateau().getCase(coord[0], coord[1]) != ".") {
+    		m=m+1;
+        	coord = cheminJoyau(logiqueDeJeu,joueurAdverse.getTortue().getPosition().getX(),joueurAdverse.getTortue().getPosition().getY(),joueurAdverse.getTortue().getPosition().getOrientation(),joueurAdverse.getTortue().getPositionDepart().getX(),joueurAdverse.getTortue().getPositionDepart().getY(),joueurAdverse.getTortue().getPositionDepart().getOrientation()).get(m);
+    	}
     	int murx = coord[0];
     	int mury = coord[1];
     	String mur = "Wall";
-    	if (nbMurPierre>0)  mur = "Ice";
+    	if (nbMurPierre>0 || logiqueDeJeu.getPlateau().placementBloquant(logiqueDeJeu,coord))  mur = "Ice";
     	return ("2;" + mur + " on " + murx + "-" + mury + ";" + carteADefausser);
     	
         //poser mur devant joueur adverse sur le chemin le plus court en nombre d'instruction
         //=> méthode d'Hugues qui nous donne le chemin, on pose le mur sur la premiére case de ce chemin
        
     }
-    else if (joueur.getProgramme().getProgramme().size() > 5) {
+    else if (joueur.getProgramme().getProgramme().size() > 6) {
         return "3;;" + carteADefausser;
     }
     
@@ -84,7 +98,6 @@ public class IAProfiles {
 private boolean executionVictorieuse(Joueur joueur, LogiqueDeJeu logiqueDeJeu) {
     int[] position = new int[] {joueur.getTortue().getPosition().getX(), joueur.getTortue().getPosition().getY()};
     Orientations orientation = joueur.getTortue().getPosition().getOrientation();
-   
     for (Carte carte : joueur.getProgramme().getProgramme()) {
 
         switch (carte.getTypeCarte()) {
@@ -115,8 +128,7 @@ private boolean executionVictorieuse(Joueur joueur, LogiqueDeJeu logiqueDeJeu) {
 
 private boolean adversaireCompleteSonProgramme(String title) {
     return title == "CompleteMove";
-}        return "3;;"; 
-   }
+} 
 
 // Ex�cute son programme
 public Chemin cheminJoyau2(LogiqueDeJeu logiqueDeJeu, int currentX, int currentY, Orientations currentOrien,int xDepart, int yDepart, Orientations orientationDepart) {

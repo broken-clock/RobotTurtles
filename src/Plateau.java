@@ -118,7 +118,7 @@ public class Plateau {
     }
 
     // Fonction déterminant si placer un obstacle à ces coordonnées bloquerait l'accès à au moins une tortue à au moins un joyau
-    boolean placementBloquant(LogiqueDeJeu logiqueDeJeu, int[] coordonnees) {
+    public boolean placementBloquant(LogiqueDeJeu logiqueDeJeu, int[] coordonnees) {
         boolean placementBloquant = false;
         // Simulation d'un obstacle indestructible aux coordonnées à tester
         // On sait que ces coordonnées correspondent à une case vide, donc pas besoin de backup le contenu de la case
